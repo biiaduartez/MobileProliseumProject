@@ -1,0 +1,71 @@
+<resources>
+
+    <string name="app_name">ProliseumTCC</string>
+    <string name="name">Proliseum</string>
+
+
+    <string name="menu_inicio">Inicio</string>
+    <string name="menu_perfil">Perfil</string>
+    <string name="menu_time">Meus times</string>
+    <string name="menu_vagas">Procurar vagas</string>
+    <string name="menu_campeonatos">Campeonatos</string>
+    <string name="menu_anunciar">Anunciar FA</string>
+    <string name="menu">MENU NAVEGAÇÃO</string>
+
+    <string name="button_patrocinador">Seja um patrocinador</string>
+    <string name="button_redefinir_senha">REDEFINIR SENHA</string>
+    <string name="button_sair">sair</string>
+    <string name="button_logar">LOGAR</string>
+    <string name="button_cadastro">Ainda não tem uma conta?</string>
+    <string name="button_cadrasto">CADASTRE-SE</string>
+    <string name="button_inscricao">TORNE-SE UM PRO</string>
+    <string name="button_finalizar">FINALIZAR CADASTRO</string>
+    <string name="button_salvar">SALVAR ALTERAÇÕES</string>
+    <string name="button_editar">EDITAR</string>
+    <string name="button_proximo">PRÓXIMO</string>
+
+
+    <string name="title">Vagas</string>
+    <string name="title_propostas">Propostas:</string>
+    <string name="title_inscritos">Inscritos:</string>
+    <string name="text_cadastro">CADASTRO</string>
+
+
+    <string name="label_game">JOGO:</string>
+    <string name="label_nickname">Nickname:</string>
+    <string name="label_funcao">FUNÇÃO:</string>
+    <string name="label_rede_social">REDES SOCIAIS:</string>
+    <string name="label_nome_adc">ADC</string>
+    <string name="label_nome_top">TOP</string>
+    <string name="label_nome_jungler">JUNGLER</string>
+    <string name="label_nome_mid">MID</string>
+    <string name="label_nome_suporte">SUPORTE</string>
+    <string name="label_nome_jogador">NX-KING</string>
+    <string name="label_genero">GÊNERO</string>
+    <string name="foto_perfil">FOTO PERFIL:</string>
+    <string name="label_biografia">BIOGRAFIA:</string>
+    <string name="label_trofeu">SEM TROFÉU</string>
+    <string name="label_criar_time">CRIAR TIME</string>
+    <string name="label_nome_time">NOME DO TIME:</string>
+    <string name="label_foto_time">FOTO DO TIME</string>
+    <string name="label_atualmente">ATUALMENTE</string>
+    <string name="label_editar_jogador">EDITAR JOGADOR</string>
+    <string name="label_fa">FA</string>
+    <string name="label_user">Nome de usuário</string>
+    <string name="label_nome">Nome completo</string>
+    <string name="label_email">Email</string>
+    <string name="label_senha">Senha</string>
+
+
+    <string name="login">LOGIN</string>
+    <string name="esqueci_senha">Esqueci minha senha</string>
+    <string name="recuperar_senha">Para redefinir a senha  </string>
+    <string name="recuperar_senha_dois">digite seu e-mail </string>
+    <string name="highlights">highlights:</string>
+    <string name="elo">ELO</string>
+    <string name="config_perfil">CONFIGURAÇÕES PERFIL</string>
+    <string name="criar_organizacao">CRIAR ORGANIZAÇÃO</string>
+    <string name="jogador">TORNE-SE JOGADOR</string>
+    <string name="home">HOME</string>
+
+</resources>

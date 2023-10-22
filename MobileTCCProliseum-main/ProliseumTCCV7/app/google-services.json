@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "204060115325",
+    "project_id": "proliseum-f06a1",
+    "storage_bucket": "proliseum-f06a1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:204060115325:android:e2fb47870e92b821e8cc14",
+        "android_client_info": {
+          "package_name": "br.senai.sp.jandira.proliseumtcc"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDluJKx5W7FCxmAl8G3eMibFUeGCCpyuXI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
