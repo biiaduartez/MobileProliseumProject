@@ -46,9 +46,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.PerfilUsuarioService
@@ -63,16 +64,20 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroJogadorScreen(
-    rememberNavController: NavController,
-    dateNascimentoUsuario: String,
-    generoUsuario: String,
-    userName: String,
-    fullName: String,
-    email: String,
-    password: String,
-    sharedViewModelImageUri: SharedViewModelImageUri
+fun CadastroUsuarioPadraoScreen(
+    sharedViewModelDataAndGenderCadastroUser: SharedViewModelDataAndGenderCadastroUser,
+    sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser,
+    sharedViewModelImageUri: SharedViewModelImageUri,
+    onNavigate: (String) -> Unit
 ) {
+
+    val userName = sharedViewModelSimpleDataCadastroUser.userName
+    val fullName = sharedViewModelSimpleDataCadastroUser.fullName
+    val email = sharedViewModelSimpleDataCadastroUser.email
+    val password = sharedViewModelSimpleDataCadastroUser.password
+
+    val dateNascimentoUsuario = sharedViewModelDataAndGenderCadastroUser.selectedDate
+    val generoUsuario = sharedViewModelDataAndGenderCadastroUser.selectedGender
 
     val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
 
@@ -117,7 +122,10 @@ fun CadastroJogadorScreen(
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("cadastro_tipo_usuario") },
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("cadastro_tipo_usuario")
+                        onNavigate("cadastro_tipo_usuario")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color.White
@@ -376,7 +384,8 @@ fun CadastroJogadorScreen(
                             )
 
                             Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
-                            rememberNavController.navigate("login")
+                            //rememberNavController.navigate("login")
+                            onNavigate("login")
                         },
                         modifier = Modifier
                             .width(320.dp)

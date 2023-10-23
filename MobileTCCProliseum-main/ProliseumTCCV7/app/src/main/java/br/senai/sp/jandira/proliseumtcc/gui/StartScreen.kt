@@ -43,7 +43,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 @Composable
-fun StartScreen(rememberNavController: NavController) {
+fun StartScreen(onNavigate: (String) -> Unit) {
     // Define a família da fonte personalizada
     val customFontFamilyText = FontFamily(
         Font(R.font.font_poppins)
@@ -112,7 +112,7 @@ fun StartScreen(rememberNavController: NavController) {
                 )
                 Row {
                     Button(
-                        onClick = { rememberNavController.navigate("cadastro_perfil") },
+                        onClick = { onNavigate("cadastro_perfil")},
                         modifier = Modifier
                             .width(250.dp)
                             .height(70.dp)
@@ -141,7 +141,7 @@ fun StartScreen(rememberNavController: NavController) {
 
                 ) {
                     Button(
-                        onClick = { rememberNavController.navigate("login") },
+                        onClick = { onNavigate("login") },
                         modifier = Modifier
                             .width(108.dp)
                             .height(48.dp),

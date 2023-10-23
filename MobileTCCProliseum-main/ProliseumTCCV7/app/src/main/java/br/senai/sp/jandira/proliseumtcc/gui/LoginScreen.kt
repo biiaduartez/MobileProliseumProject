@@ -72,7 +72,7 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreen (rememberNavController: NavController, sharedViewModelTokenEId: SharedViewTokenEId) {
+fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
 
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
@@ -248,7 +248,10 @@ fun LoginScreen (rememberNavController: NavController, sharedViewModelTokenEId: 
 
                         Text(
                             text = stringResource(id = R.string.esqueci_senha),
-                            modifier = Modifier.clickable { rememberNavController.navigate("redefinir_senha") },
+                            modifier = Modifier.clickable {
+                                //rememberNavController.navigate("redefinir_senha")
+                                onNavigate("redefinir_senha")
+                                                          },
                             color = RedProliseum,
                             fontFamily = customFontFamilyText,
                             fontWeight = FontWeight(600)
@@ -288,7 +291,9 @@ fun LoginScreen (rememberNavController: NavController, sharedViewModelTokenEId: 
 
                                                     // Navegue para a próxima tela
                                                     if (idUsuario > 0 && token.isNotBlank()) {
-                                                        rememberNavController.navigate("home")
+                                                        //rememberNavController.navigate("home")
+                                                        onNavigate("home")
+
                                                     } else {
                                                         Log.e("ERRO DE NAVEGAÇÃO", "Tentativa de navegação sem valores de ID e token válidos")
                                                     }
@@ -342,7 +347,8 @@ fun LoginScreen (rememberNavController: NavController, sharedViewModelTokenEId: 
             )
             Button(
                 onClick = {
-                    rememberNavController.navigate("cadastro_perfil")
+                    //rememberNavController.navigate("cadastro_perfil")
+                    onNavigate("cadastro_perfil")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)

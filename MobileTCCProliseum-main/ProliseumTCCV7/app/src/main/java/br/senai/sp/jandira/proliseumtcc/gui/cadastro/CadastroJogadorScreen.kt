@@ -64,7 +64,7 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroJogadorScreen(rememberNavController: NavController, sharedViewModelTokenEId: SharedViewTokenEId) {
+fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedViewModelTokenEId: SharedViewTokenEId) {
 
     val token = sharedViewModelTokenEId.token
     Log.d("CadastroJogadorScreen", "Token: $token")

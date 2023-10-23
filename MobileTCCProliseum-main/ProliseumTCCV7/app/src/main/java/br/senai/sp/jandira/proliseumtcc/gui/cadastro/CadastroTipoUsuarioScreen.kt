@@ -51,7 +51,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.DateInputSample
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -62,13 +64,21 @@ import coil.request.ImageRequest
 
 @Composable
 fun CadastroTipoUsuario(
-    rememberNavController: NavController,
-    userName: String,
-    fullName: String,
-    email: String,
-    password: String,
-    sharedViewModelImageUri: SharedViewModelImageUri
+    sharedViewModelDataAndGenderCadastroUser: SharedViewModelDataAndGenderCadastroUser,
+    sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser,
+    sharedViewModelImageUri: SharedViewModelImageUri,
+    onNavigate: (String) -> Unit
 ) {
+
+    val userName = sharedViewModelSimpleDataCadastroUser.userName
+    val fullName = sharedViewModelSimpleDataCadastroUser.fullName
+    val email = sharedViewModelSimpleDataCadastroUser.email
+    val password = sharedViewModelSimpleDataCadastroUser.password
+
+    Log.i(
+        "TESTE DE SPAWM 01",
+        "Aqui esta um teste de spawn aaaaaaaaa"
+    )
 
     //FOTO DE PERFIL
 
@@ -152,7 +162,10 @@ fun CadastroTipoUsuario(
             ) {
 
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("cadastro_perfil") },
+                    modifier = Modifier.clickable {
+//                        rememberNavController.navigate("cadastro_perfil")
+                        onNavigate("cadastro_perfil")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -383,9 +396,14 @@ fun CadastroTipoUsuario(
                                         "Aqui esta URI de imagem da capa de perfil tela cadastroTipoUsuarioScreen ${sharedViewModelImageUri.imageCapaUri}"
                                     )
 
-                                    val route =
-                                        "cadastro_jogador/${selectedDate}/${selectedGender}/${userName}/${fullName}/${email}/${password}"
-                                    rememberNavController.navigate(route)
+                                    //val route =
+                                        //"cadastro_jogador/${selectedDate}/${selectedGender}/${userName}/${fullName}/${email}/${password}"
+//                                    rememberNavController.navigate(route)
+                                    sharedViewModelDataAndGenderCadastroUser.selectedDate = selectedDate
+                                    sharedViewModelDataAndGenderCadastroUser.selectedGender =
+                                        selectedGender.toString()
+
+                                    onNavigate("cadastro_usuario_padrao")
                                     Log.i(
                                         "Data e Gênero inseridos com sucesso",
                                         "Valores enviados para cadastroJogador, Data: ${selectedDate}, Gênero: ${selectedGender}, UserName: ${userName}, FullName: ${fullName}, Email: ${email} Password ${password}, URI da Imagem ${uri},URI da Imagem da Capa ${uriCapa}"

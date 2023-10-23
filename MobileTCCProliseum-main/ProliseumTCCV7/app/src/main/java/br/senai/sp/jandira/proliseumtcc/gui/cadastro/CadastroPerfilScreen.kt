@@ -59,16 +59,22 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroPerfilScreen(rememberNavController: NavController) {
+fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser, onNavigate: (String) -> Unit) {
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
     )
     val customFontFamilyText = FontFamily(
         Font(R.font.font_poppins)
+    )
+
+    Log.i(
+        "TESTE DE SPAWM 00",
+        "Aqui esta um teste de spawn aaaaaaaaa"
     )
 
     var userNamePerfilState by remember { mutableStateOf("") }
@@ -103,7 +109,10 @@ fun CadastroPerfilScreen(rememberNavController: NavController) {
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("login") },
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("login")
+                        onNavigate("login")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -328,7 +337,15 @@ fun CadastroPerfilScreen(rememberNavController: NavController) {
                                                 "1 letra maiúscula 1 caracter especial, não deve conter espaço em brancos " +
                                                 "e precisa ter um comprimeiro de ao menos 8 Caracteres."
                                 } else {
-                                    rememberNavController.navigate("cadastro_tipo_usuario/${userNamePerfilState}/${fullNamePerfilState}/${userEmailPerfilState}/${userPasswordPerfilState}")
+                                    //rememberNavController.navigate("cadastro_tipo_usuario/${userNamePerfilState}/${fullNamePerfilState}/${userEmailPerfilState}/${userPasswordPerfilState}")
+
+                                    sharedViewModelSimpleDataCadastroUser.userName = userNamePerfilState
+                                    sharedViewModelSimpleDataCadastroUser.fullName = fullNamePerfilState
+                                    sharedViewModelSimpleDataCadastroUser.email = userEmailPerfilState
+                                    sharedViewModelSimpleDataCadastroUser.password = userPasswordPerfilState
+
+                                    onNavigate("cadastro_tipo_usuario")
+                                    // /$userNamePerfilState/$fullNamePerfilState/$userEmailPerfilState/$userPasswordPerfilState
                                     Log.i("Argumentos inseridos", "${userNamePerfilState}/${fullNamePerfilState}/${userEmailPerfilState}/${userPasswordPerfilState}")
                                 }
                                       },

@@ -51,7 +51,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun HomeScreen(rememberNavController: NavController, sharedViewModelTokenEId: SharedViewTokenEId) {
+fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
 
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
@@ -123,7 +123,10 @@ fun HomeScreen(rememberNavController: NavController, sharedViewModelTokenEId: Sh
                 Icon(
                     modifier = Modifier
                         .size(40.dp)
-                        .clickable { rememberNavController.navigate("navigation_proliseum") },
+                        .clickable {
+                            //rememberNavController.navigate("navigation_proliseum")
+                            onNavigate("navigation_proliseum")
+                                   },
                     painter = painterResource(id = R.drawable.menu),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -144,7 +147,10 @@ fun HomeScreen(rememberNavController: NavController, sharedViewModelTokenEId: Sh
                     Box(
                         modifier = Modifier
                             .size(48.dp)
-                            .clickable { rememberNavController.navigate("perfil_usuario_jogador") }
+                            .clickable {
+                                //rememberNavController.navigate("perfil_usuario_jogador")
+                                onNavigate("perfil_usuario_jogador")
+                            }
                             .background(Color.Gray, CircleShape) // Define um shape circular
                     ) {
                         AsyncImage(
@@ -186,9 +192,9 @@ fun HomeScreen(rememberNavController: NavController, sharedViewModelTokenEId: Sh
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Row {
-                    BottomNavigationScreeen(rememberNavController) { navigation ->
-                        selectedNavigation = navigation
-                    }
+//                    BottomNavigationScreeen(rememberNavController) { navigation ->
+//                        selectedNavigation = navigation
+//                    }
                 }
 
                 Spacer(modifier = Modifier.height(5.dp))
