@@ -59,11 +59,16 @@ import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.TextField
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser, onNavigate: (String) -> Unit) {
+
+    val keyboardController = LocalSoftwareKeyboardController.current
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
@@ -77,13 +82,16 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
         "Aqui esta um teste de spawn aaaaaaaaa"
     )
 
-    var userNamePerfilState by remember { mutableStateOf("") }
-    var fullNamePerfilState by remember { mutableStateOf("") }
-    var userEmailPerfilState by remember { mutableStateOf("") }
-    var userPasswordPerfilState by remember { mutableStateOf("") }
+    var userNamePerfilState by rememberSaveable { mutableStateOf("") }
+    var fullNamePerfilState by rememberSaveable { mutableStateOf("") }
+    var userEmailPerfilState by rememberSaveable { mutableStateOf("") }
+    var userPasswordPerfilState by rememberSaveable { mutableStateOf("") }
 
-    var camposPreenchidosCorretamente by remember { mutableStateOf(true) }
-    var mensagemErroInputsPerfil = remember { mutableStateOf("") }
+
+
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
+
 
     Box(
         modifier = Modifier
@@ -201,9 +209,9 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     ) {
 
 
-                    OutlinedTextField(
+                    TextField(
                         value = userNamePerfilState,
-                        onValueChange = { newUserNamePerfil -> userNamePerfilState = newUserNamePerfil },
+                        onValueChange = { userNamePerfilState = it },
                         modifier = Modifier
 
                             .width(320.dp),
@@ -227,9 +235,9 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     Spacer(modifier = Modifier.height(20.dp))
 
 
-                    OutlinedTextField(
+                    TextField(
                         value = fullNamePerfilState,
-                        onValueChange = { newFullNamePerfil -> fullNamePerfilState = newFullNamePerfil },
+                        onValueChange = {  fullNamePerfilState = it },
                         modifier = Modifier
 
                             .width(320.dp),
@@ -252,13 +260,12 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    var emailErrorText by remember { mutableStateOf("") }
+                    var emailErrorText by rememberSaveable { mutableStateOf("") }
 
-                    OutlinedTextField(
+                    TextField(
                         value = userEmailPerfilState,
-                        onValueChange = { newUserEmailPerfil
-                            -> userEmailPerfilState = newUserEmailPerfil
-                            emailErrorText = if (newUserEmailPerfil.contains("@")) "" else "Email inválido"
+                        onValueChange = {  userEmailPerfilState = it
+                            emailErrorText = if (it.contains("@")) "" else "Email inválido"
                                         },
                         modifier = Modifier
 
@@ -282,13 +289,12 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     )
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    var senhaErrorText by remember { mutableStateOf("") }
+                    var senhaErrorText by rememberSaveable { mutableStateOf("") }
 
-                    OutlinedTextField(
+                    TextField(
                         value = userPasswordPerfilState,
-                        onValueChange = { newUserPasswordPerfil
-                            -> userPasswordPerfilState = newUserPasswordPerfil
-                            senhaErrorText = if (isSenhaValida(newUserPasswordPerfil)) "" else "Senha inválida"
+                        onValueChange = {  userPasswordPerfilState = it
+                            senhaErrorText = if (isSenhaValida(it)) "" else "Senha inválida"
                         },
                         modifier = Modifier
 
@@ -319,6 +325,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
+
                         Button(
                             onClick = {
                                 if (userNamePerfilState.isBlank()) {
@@ -335,9 +342,10 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                                     mensagemErroInputsPerfil.value =
                                         "Para a sua segurança, a senha deve apresentar ao menos 1 número, 1 letra minúscula, " +
                                                 "1 letra maiúscula 1 caracter especial, não deve conter espaço em brancos " +
-                                                "e precisa ter um comprimeiro de ao menos 8 Caracteres."
+                                                "e precisa ter um comprimento de ao menos 8 Caracteres."
                                 } else {
-                                    //rememberNavController.navigate("cadastro_tipo_usuario/${userNamePerfilState}/${fullNamePerfilState}/${userEmailPerfilState}/${userPasswordPerfilState}")
+                                    // Navega para a próxima tela ou executa outras ações
+                                    keyboardController?.hide()
 
                                     sharedViewModelSimpleDataCadastroUser.userName = userNamePerfilState
                                     sharedViewModelSimpleDataCadastroUser.fullName = fullNamePerfilState
@@ -345,8 +353,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                                     sharedViewModelSimpleDataCadastroUser.password = userPasswordPerfilState
 
                                     onNavigate("cadastro_tipo_usuario")
-                                    // /$userNamePerfilState/$fullNamePerfilState/$userEmailPerfilState/$userPasswordPerfilState
-                                    Log.i("Argumentos inseridos", "${userNamePerfilState}/${fullNamePerfilState}/${userEmailPerfilState}/${userPasswordPerfilState}")
+                                    Log.i("Argumentos inseridos", "$userNamePerfilState/$fullNamePerfilState/$userEmailPerfilState/$userPasswordPerfilState")
                                 }
                                       },
                             modifier = Modifier
@@ -385,7 +392,6 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
         }
     }
 }
-
 
 @Preview(showBackground = true)
 @Composable

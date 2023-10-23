@@ -40,6 +40,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.BottomNavigationScreeen
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
@@ -51,7 +53,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
+fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfilEditar: SharedViewModelPerfil, onNavigate: (String) -> Unit) {
 
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(

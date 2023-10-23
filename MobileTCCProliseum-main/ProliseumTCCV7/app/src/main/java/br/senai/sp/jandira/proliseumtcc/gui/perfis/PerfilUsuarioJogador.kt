@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
@@ -70,92 +71,50 @@ import retrofit2.Response
 
 @Composable
 fun PerfilUsuarioJogadorScreen(
-    rememberNavController: NavController,
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+    onNavigate: (String) -> Unit
 ) {
 
     val token = sharedViewModelTokenEId.token
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
-    val profileService = RetrofitFactoryCadastro().getPerfilUsuarioService()
-
-    Log.d("PerfilUsuarioJogadorScreen", "Chamando a API...")
-
-    val nomeUsuarioPerfil = remember { mutableStateOf("") }
-    val emailPerfil = remember { mutableStateOf("") }
-    val nickNamePerfil = remember { mutableStateOf("") }
-    val biografiaPerfil = remember { mutableStateOf("") }
-    val generoPerfil = remember { mutableStateOf("") }
-
-    val nickNameJogadorPerfil = remember { mutableStateOf("") }
-    val jogoJogadorPerfil = remember { mutableStateOf("") }
-    val funcaoJogadorPerfil = remember { mutableStateOf("") }
-    val eloJogadorPerfil = remember { mutableStateOf("") }
-    val idUsuario = remember { mutableStateOf("") }
-
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    profileService.getProfile("Bearer " + token).enqueue(object : Callback<ProfileResponse> {
-        override fun onResponse(call: Call<ProfileResponse>, response: Response<ProfileResponse>) {
-            if (response.isSuccessful) {
-                Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
-                val profileResponseData = response.body()
+    val idUser = sharedViewModelPerfilEditar.id
+    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
+    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
+    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
+    val emailUser = sharedViewModelPerfilEditar.email
+    val nickNameUser = sharedViewModelPerfilEditar.nickname
+    val biografiaUser = sharedViewModelPerfilEditar.biografia
+    val generoPerfilUser = sharedViewModelPerfilEditar.genero
 
-                val user = profileResponseData!!.user
-                idUsuario.value = user.id.toString()
-                nomeUsuarioPerfil.value = user.nome_usuario
-                nickNamePerfil.value = user.nickname
-                emailPerfil.value = user.email
-                biografiaPerfil.value = user.biografia
-                generoPerfil.value = user.genero.toString()
+    val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
+    val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
+    val jogoJogadorPerfilUser = sharedViewModelPerfilJogador.jogo
+    val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
+    val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
 
-                sharedViewModelPerfilEditar.id = user.id
-                sharedViewModelPerfilEditar.nome_usuario = user.nome_usuario
-                sharedViewModelPerfilEditar.nome_completo = user.nome_completo.toString()
-                sharedViewModelPerfilEditar.email = user.email
-                sharedViewModelPerfilEditar.data_nascimento = user.data_nascimento
-                sharedViewModelPerfilEditar.genero = user.genero
-                sharedViewModelPerfilEditar.nickname = user.nickname
-                sharedViewModelPerfilEditar.biografia = user.biografia
-
-                val storage = Firebase.storage
-
-                if (idUsuario.value != null && idUsuario.value != "0") {
-                    imageRef.value = storage.reference.child("${idUsuario.value}/profile")
-                }
-
-                if (idUsuario.value != null && idUsuario.value != "0") {
-                    imageCapaRef.value = storage.reference.child("${idUsuario.value}/capa")
-                }
-
-                if (profileResponseData.playerProfile != null) {
-                    val playerProfile = profileResponseData.playerProfile
-                    nickNameJogadorPerfil.value = playerProfile.nickname
-                    jogoJogadorPerfil.value = playerProfile.jogo.toString()
-                    funcaoJogadorPerfil.value = playerProfile.funcao.toString()
-                    eloJogadorPerfil.value = playerProfile.elo.toString()
-                }
+    if(idUser != null && idUser != 0){
 
 
-            } else {
-                // Trate a resposta não bem-sucedida
-                Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
-                // Log de corpo da resposta (se necessário)
-                Log.d(
-                    "PerfilUsuarioJogadorScreen",
-                    "Corpo da resposta: ${response.errorBody()?.string()}"
-                )
-            }
+        val storage = Firebase.storage
+
+        if (idUser != null && idUser != 0) {
+            imageRef.value = storage.reference.child("${idUser}/profile")
         }
 
-        override fun onFailure(call: Call<ProfileResponse>, t: Throwable) {
-            // Trate o erro de falha na rede.
-            Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
+        if (idUser != null && idUser != 0) {
+            imageCapaRef.value = storage.reference.child("${idUser}/capa")
         }
 
-    })
+    } else{
+        Log.e("TOKEN NULO", "Token do usuario esta nulo")
+        Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+    }
 
     //    FIREBASE
 
@@ -193,16 +152,16 @@ fun PerfilUsuarioJogadorScreen(
     }
 
     // FIREBASE
-    Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUsuario.value}")
+    Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUser}")
     Log.e("URI IMAGEM DO USUARIO 03", "URI da imagem do usuario ${imageUri}")
     Log.e("URI CAPA DO USUARIO 03", "URI da imagem do usuario ${imageCapaUri}")
 
 
     Column {
-        Text(text = "${nomeUsuarioPerfil.value}")
-        Text(text = "${emailPerfil.value}")
-        Text(text = "${biografiaPerfil.value}")
-        Text(text = "${generoPerfil.value}")
+        Text(text = "${nomeUser}")
+        Text(text = "${emailUser}")
+        Text(text = "${biografiaUser}")
+        Text(text = "${generoPerfilUser}")
     }
 
     val customFontFamily = FontFamily(
@@ -247,7 +206,7 @@ fun PerfilUsuarioJogadorScreen(
 
         ) {
 
-            if (idUsuario.value != null && idUsuario.value != "0") {
+            if (idUser != null && idUser != 0) {
                 // Exiba a imagem se a URI estiver definida
                 AsyncImage(
                     model = imageCapaUri,
@@ -269,14 +228,18 @@ fun PerfilUsuarioJogadorScreen(
         ) {
 
             Icon(
-                modifier = Modifier.clickable { rememberNavController.navigate("home") },
+                modifier = Modifier.clickable {
+                    //rememberNavController.navigate("home")
+                    onNavigate("home")
+                                              },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
             )
             Button(
                 onClick = {
-                    rememberNavController.navigate("editar_perfil_jogador_part_1")
+                    //rememberNavController.navigate("editar_perfil_jogador_part_1")
+                    onNavigate("editar_perfil_jogador_part_1")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
@@ -316,7 +279,7 @@ fun PerfilUsuarioJogadorScreen(
                     shape = CircleShape
                 ) {
 
-                    if (idUsuario.value != null && idUsuario.value != "0") {
+                    if (idUser != null && idUser != 0) {
                         // Exiba a imagem se a URI estiver definida
                         AsyncImage(
                             model = imageUri,
@@ -341,7 +304,7 @@ fun PerfilUsuarioJogadorScreen(
             ) {
                 item {
                     Text(
-                        text = "${nomeUsuarioPerfil.value}",
+                        text = "${nomeUser}",
                         fontSize = 28.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
@@ -350,7 +313,7 @@ fun PerfilUsuarioJogadorScreen(
                     Spacer(modifier = Modifier.height(2.dp))
 
                     Text(
-                        text = "${nickNamePerfil.value}",
+                        text = "${nickNameUser}",
                         fontSize = 14.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
@@ -370,11 +333,11 @@ fun PerfilUsuarioJogadorScreen(
                             colors = CardDefaults.cardColors(RedProliseum)
                         ) {
                             Image(
-                                painter = if ("${jogoJogadorPerfil.value}" == "0") painterResource(
+                                painter = if ("${jogoJogadorPerfilUser}" == "0") painterResource(
                                     id = R.drawable.iconcsgo
                                 )
-                                else if ("${jogoJogadorPerfil.value}" == "1") painterResource(id = R.drawable.iconlol)
-                                else if ("${jogoJogadorPerfil.value}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
+                                else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconvalorant)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
@@ -392,13 +355,13 @@ fun PerfilUsuarioJogadorScreen(
                             colors = CardDefaults.cardColors(RedProliseum)
                         ) {
                             Image(
-                                painter = if ("${funcaoJogadorPerfil.value}" == "0") painterResource(
+                                painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
                                     id = R.drawable.icontoplane
                                 )
-                                else if ("${funcaoJogadorPerfil.value}" == "1") painterResource(id = R.drawable.iconjungle)
-                                else if ("${funcaoJogadorPerfil.value}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                else if ("${funcaoJogadorPerfil.value}" == "3") painterResource(id = R.drawable.iconsupport)
-                                else if ("${funcaoJogadorPerfil.value}" == "4") painterResource(id = R.drawable.iconadc)
+                                else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
+                                else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
+                                else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
@@ -481,9 +444,9 @@ fun PerfilUsuarioJogadorScreen(
                         ) {
                             Image(
                                 painter =
-                                if ("${generoPerfil.value}" == "1") painterResource(id = R.drawable.generomasculino)
-                                else if ("${generoPerfil.value}" == "2") painterResource(id = R.drawable.generofeminino)
-                                else if ("${generoPerfil.value}" == "3") painterResource(id = R.drawable.generoindefinido)
+                                if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generomasculino)
+                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generofeminino)
+                                else if ("${generoPerfilUser}" == "3") painterResource(id = R.drawable.generoindefinido)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
@@ -525,7 +488,7 @@ fun PerfilUsuarioJogadorScreen(
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = "${biografiaPerfil.value}",
+                                text = "${biografiaUser}",
                                 fontSize = 16.sp,
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
@@ -591,15 +554,15 @@ fun PerfilUsuarioJogadorScreen(
                                 fontWeight = FontWeight(900),
                             )
                             Image(
-                                painter = if ("${eloJogadorPerfil.value}" == "0") painterResource(id = R.drawable.icone_iron)
-                                else if ("${eloJogadorPerfil.value}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                else if ("${eloJogadorPerfil.value}" == "2") painterResource(id = R.drawable.icone_silver)
-                                else if ("${eloJogadorPerfil.value}" == "3") painterResource(id = R.drawable.icone_gold)
-                                else if ("${eloJogadorPerfil.value}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                else if ("${eloJogadorPerfil.value}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                else if ("${eloJogadorPerfil.value}" == "6") painterResource(id = R.drawable.icone_master)
-                                else if ("${eloJogadorPerfil.value}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                else if ("${eloJogadorPerfil.value}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
+                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
+                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
+                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
+                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
+                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
+                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
+                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
+                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.size(100.dp)

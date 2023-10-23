@@ -38,6 +38,7 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
@@ -74,6 +75,8 @@ import retrofit2.Response
 @Composable
 fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
 
+    Log.e("TESTE SPAWN 01", "somente um teste spawn")
+
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
         Font(R.font.font_title) // Substitua pelo nome da fonte personalizada
@@ -86,6 +89,13 @@ fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String
 
     var mensagemErroInputsLogin = remember { mutableStateOf("") }
 
+    // Use remember para armazenar o estado dos campos de texto
+    var userNameState by remember { mutableStateOf("") }
+    var passwordState by remember { mutableStateOf("") }
+
+    val keyboardController = LocalSoftwareKeyboardController.current
+
+    Log.e("TESTE SPAWN 02", "somente um teste spawn")
 
     Box(
         modifier = Modifier
@@ -258,12 +268,16 @@ fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String
                         )
                         Button(
                             onClick = {
+                                Log.e("TESTE SPAWN 03", "somente um teste spawn")
                                 // Verifique se os campos de nome de usuário ou senha estão em branco
                                 if (userNameState.isBlank() || passwordState.isBlank()) {
                                     camposLoginPreenchidosCorretamente = false
                                     mensagemErroInputsLogin.value = "Preencha o Nome de usuário e a Senha."
                                     Log.i("ERRO", "Preencha o Nome de usuário e a Senha.")
                                 } else {
+
+                                    keyboardController?.hide()
+
                                     // Criar a instância do Login com os dados do usuário
                                     val login = Login(userNameState, passwordState)
 
@@ -292,7 +306,7 @@ fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String
                                                     // Navegue para a próxima tela
                                                     if (idUsuario > 0 && token.isNotBlank()) {
                                                         //rememberNavController.navigate("home")
-                                                        onNavigate("home")
+                                                        onNavigate("carregar_informacoes_perfil_usuario")
 
                                                     } else {
                                                         Log.e("ERRO DE NAVEGAÇÃO", "Tentativa de navegação sem valores de ID e token válidos")
@@ -331,6 +345,7 @@ fun LoginScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String
             }
         }
 
+        Log.e("TESTE SPAWN 04", "somente um teste spawn")
         Column(
             modifier = Modifier
                 .fillMaxSize()

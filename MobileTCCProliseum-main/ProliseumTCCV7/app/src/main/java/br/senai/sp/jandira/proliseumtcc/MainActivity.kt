@@ -21,13 +21,18 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderC
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataEGeneroETipoUsuario
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
+import br.senai.sp.jandira.proliseumtcc.gui.HomeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
 import br.senai.sp.jandira.proliseumtcc.gui.StartScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroTipoUsuario
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
 
 
 class MainActivity : ComponentActivity() {
@@ -58,6 +63,8 @@ fun MainScreen() {
         val sharedViewModelSimpleDataCadastroUser = remember { SharedViewModelSimpleDataCadastroUser()}
 
         val sharedViewModelDataAndGenderCadastroUser = remember { SharedViewModelDataAndGenderCadastroUser()}
+
+        val sharedViewModelPerfilJogador = remember { SharedViewModelPerfilJogador()}
 
         val sharedViewModelTokenEId = remember { SharedViewTokenEId() }
 
@@ -111,6 +118,27 @@ fun MainScreen() {
             }
         }
 
+        // Tela de home
+        val homeScreen: @Composable () -> Unit = {
+            HomeScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar) {
+                currentScreen = it
+            }
+        }
+
+        // Tela de carregar informações de perfil usuario
+        val carregarInformacoesPerfilUsuarioScreen: @Composable () -> Unit = {
+            CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador) {
+                currentScreen = it
+            }
+        }
+
+        // Tela de carregar informações de perfil usuario
+        val perfilUsuarioJogador: @Composable () -> Unit = {
+            PerfilUsuarioJogadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador) {
+                currentScreen = it
+            }
+        }
+
         // Navegação animada
         AnimatedContent(
             targetState = currentScreen,
@@ -124,6 +152,9 @@ fun MainScreen() {
                     "cadastro_perfil" -> cadastroPerfilScreen()
                     "cadastro_tipo_usuario" -> cadastroTipoUsuarioScreen()
                     "cadastro_usuario_padrao" -> cadastroUsuarioPadraoScreen()
+                    "home" -> homeScreen()
+                    "carregar_informacoes_perfil_usuario" -> carregarInformacoesPerfilUsuarioScreen()
+                    "perfil_usuario_jogador" -> perfilUsuarioJogador()
                     else -> startScreen()
                 }
             }
