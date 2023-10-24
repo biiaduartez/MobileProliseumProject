@@ -40,7 +40,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
 @Composable
-fun BottomNavigationScreeen(rememberNavController: NavController, onGenderSelected: (Int?) -> Unit) {
+fun BottomNavigationScreeen(onNavigate: (String) -> Unit, onGenderSelected: (Int?) -> Unit) {
 
     val toggleButtonsNavigation = listOf(
         ToggleButtonNavigation(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.home_icon, id = 0),
@@ -80,9 +80,10 @@ fun BottomNavigationScreeen(rememberNavController: NavController, onGenderSelect
                             }
 
                             if(button.id == 0){
-                                rememberNavController.navigate("home")
+                                onNavigate("home")
                             } else if(button.id == 1){
                                 //navController.navigate("login")
+                                //onNavigate("perfil_usuario_jogador")
                             }else if(button.id == 2){
                                 //navController.navigate("login")
                             }else if(button.id == 3){

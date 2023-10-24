@@ -84,10 +84,10 @@ import java.util.Locale
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditarPerfilJogadorPart1(
-    rememberNavController: NavController,
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
-    sharedViewModelImageUri: SharedViewModelImageUri
+    sharedViewModelImageUri: SharedViewModelImageUri,
+    onNavigate: (String) -> Unit
 ) {
 
     //EDITAR FOTO DE PERFIL JOGADOR
@@ -236,7 +236,10 @@ fun EditarPerfilJogadorPart1(
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("perfil_usuario_jogador") },
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("perfil_usuario_jogador")
+                        onNavigate("perfil_usuario_jogador")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -590,7 +593,7 @@ fun EditarPerfilJogadorPart1(
                                 )
 
                                 Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
-                                rememberNavController.navigate("home")
+                                onNavigate("carregar_informacoes_perfil_usuario")
 
                                 Log.i(
                                     "ID USUARIO 02",

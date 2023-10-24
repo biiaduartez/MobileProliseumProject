@@ -2,6 +2,8 @@ package br.senai.sp.jandira.proliseumtcc.gui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -34,7 +36,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 @Composable
-fun NavigationConfiguracoesPerfilScreen(rememberNavController: NavController) {
+fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
         Font(R.font.font_title) // Substitua pelo nome da fonte personalizada
@@ -59,9 +61,23 @@ fun NavigationConfiguracoesPerfilScreen(rememberNavController: NavController) {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.Start,
         ) {
-            Column(
+
+
+
+            Row(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             ) {
+                    Icon(
+                        modifier = Modifier.clickable {
+                            //rememberNavController.navigate("home")
+                            onNavigate("navigation_proliseum")
+                        },
+                        painter = painterResource(id = R.drawable.arrow_back_32),
+                        contentDescription = stringResource(id = R.string.button_sair),
+                        tint = Color.White
+                    )
+                Spacer(modifier = Modifier.height(10.dp))
+
                 Text(
                     text = stringResource(id = R.string.config_perfil),
                     fontFamily = customFontFamilyText,
@@ -75,7 +91,37 @@ fun NavigationConfiguracoesPerfilScreen(rememberNavController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
 
             Button(
-                onClick = {},
+                onClick = {
+                    onNavigate("cadastro_usuario_jogador")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.proplayer),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = stringResource(id = R.string.jogador),
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Button(
+                onClick = {
+                          onNavigate("cadastro_usuario_organizador")
+                },
                 modifier = Modifier
                     .padding(top = 20.dp)
                     .height(48.dp),
@@ -100,35 +146,8 @@ fun NavigationConfiguracoesPerfilScreen(rememberNavController: NavController) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(
-                onClick = {
-                    rememberNavController.navigate("cadastro_jogador_profile")
-                },
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .height(48.dp),
-                shape = RoundedCornerShape(73.dp),
-                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.proplayer),
-                    contentDescription = stringResource(id = R.string.button_proximo),
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.padding(start = 20.dp))
-                Text(
-                    text = stringResource(id = R.string.jogador),
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    fontFamily = customFontFamilyText,
-                    fontWeight = FontWeight(900),
-                )
-            }
             Spacer(modifier = Modifier.height(20.dp))
+
         }
     }
 }

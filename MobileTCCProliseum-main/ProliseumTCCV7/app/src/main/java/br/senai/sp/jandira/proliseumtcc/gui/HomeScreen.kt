@@ -194,9 +194,9 @@ fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfi
                 Spacer(modifier = Modifier.height(5.dp))
 
                 Row {
-//                    BottomNavigationScreeen(rememberNavController) { navigation ->
-//                        selectedNavigation = navigation
-//                    }
+                    BottomNavigationScreeen(onNavigate) { navigation ->
+                        selectedNavigation = navigation
+                    }
                 }
 
                 Spacer(modifier = Modifier.height(5.dp))

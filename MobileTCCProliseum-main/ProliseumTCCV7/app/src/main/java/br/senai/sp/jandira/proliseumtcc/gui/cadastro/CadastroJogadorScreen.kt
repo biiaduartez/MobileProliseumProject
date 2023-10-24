@@ -24,7 +24,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -44,16 +43,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonEloLol
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
 import br.senai.sp.jandira.proliseumtcc.model.CreateJogadorProfile
-import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
-import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.CreateJogadorProfileService
-import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.PerfilUsuarioService
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -64,7 +59,7 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedViewModelTokenEId: SharedViewTokenEId) {
+fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
 
     val token = sharedViewModelTokenEId.token
     Log.d("CadastroJogadorScreen", "Token: $token")
@@ -81,42 +76,7 @@ fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedView
 
     var createNickNameJogador by remember { mutableStateOf("") }
 
-    fun saveCadastroJogador(
-        nickNameState: String,
-        jogoState: String?,
-        funcaoState: String?,
-        eloState: String?,
-    ) {
-        val newJogadorProfile = CreateJogadorProfile(
-            nickname = nickNameState,
-            jogo = jogoState,
-            funcao = funcaoState,
-            elo = eloState,
 
-        )
-
-        // Obtenha o serviço de criação do perfil de jogador
-        val createProfileService = RetrofitFactoryCadastro().createJogadorProfileService()
-
-        // Execute a chamada passando o token no cabeçalho
-        createProfileService.postCreateJogadorProfile("Bearer $token", newJogadorProfile)
-            .enqueue(object : Callback<CreateJogadorProfile> {
-                override fun onResponse(call: Call<CreateJogadorProfile>, response: Response<CreateJogadorProfile>) {
-                    if (response.isSuccessful) {
-                        Log.i("SUCESSO", "Os dados foram enviados para o Banco de Dados!")
-
-                        // Você pode adicionar aqui a navegação para a próxima tela
-                        // Exemplo: navController.navigate("tela_sucesso")
-                    } else {
-                        Log.e("Erro na solicitação", "Corpo da resposta: ${response.errorBody()?.string()}")
-                    }
-                }
-
-                override fun onFailure(call: Call<CreateJogadorProfile>, t: Throwable) {
-                    Log.e("Erro na solicitação", t.message, t)
-                }
-            })
-    }
 
     Box(
         modifier = Modifier
@@ -145,7 +105,7 @@ fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedView
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("cadastro_tipo_usuario") },
+                    modifier = Modifier.clickable { onNavigate("navigation_configuracoes_perfil") },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color.White
@@ -306,7 +266,42 @@ fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedView
                     Button(
                         onClick = {
 
+                            fun saveCadastroJogador(
+                                nickNameState: String,
+                                jogoState: String?,
+                                funcaoState: String?,
+                                eloState: String?,
+                            ) {
+                                val newJogadorProfile = CreateJogadorProfile(
+                                    nickname = nickNameState,
+                                    jogo = jogoState,
+                                    funcao = funcaoState,
+                                    elo = eloState,
 
+                                    )
+
+                                // Obtenha o serviço de criação do perfil de jogador
+                                val createProfileService = RetrofitFactoryCadastro().createJogadorProfileService()
+
+                                // Execute a chamada passando o token no cabeçalho
+                                createProfileService.postCreateJogadorProfile("Bearer $token", newJogadorProfile)
+                                    .enqueue(object : Callback<CreateJogadorProfile> {
+                                        override fun onResponse(call: Call<CreateJogadorProfile>, response: Response<CreateJogadorProfile>) {
+                                            if (response.isSuccessful) {
+                                                Log.i("SUCESSO", "Os dados foram enviados para o Banco de Dados!")
+
+                                                // Você pode adicionar aqui a navegação para a próxima tela
+                                                // Exemplo: navController.navigate("tela_sucesso")
+                                            } else {
+                                                Log.e("Erro na solicitação", "Corpo da resposta: ${response.errorBody()?.string()}")
+                                            }
+                                        }
+
+                                        override fun onFailure(call: Call<CreateJogadorProfile>, t: Throwable) {
+                                            Log.e("Erro na solicitação", t.message, t)
+                                        }
+                                    })
+                            }
 
                             saveCadastroJogador(
                                 nickNameState = createNickNameJogador,
@@ -316,7 +311,7 @@ fun CadastroUsuarioPadraoScreen(rememberNavController: NavController, sharedView
                             )
 
                             Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
-                            rememberNavController.navigate("perfil_usuario_jogador")
+                            onNavigate("carregar_informacoes_perfil_usuario")
 
                             Log.i(
                                 "Jogo, Funcao e Elo inseridos com sucesso",

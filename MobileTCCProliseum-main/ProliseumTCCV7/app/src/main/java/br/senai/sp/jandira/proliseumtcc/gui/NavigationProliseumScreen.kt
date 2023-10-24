@@ -2,6 +2,7 @@ package br.senai.sp.jandira.proliseumtcc.gui
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,7 +38,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 @Composable
-fun NavigationProliseumScreen(rememberNavController: NavController) {
+fun NavigationProliseumScreen(onNavigate: (String) -> Unit) {
 
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
@@ -63,9 +64,21 @@ fun NavigationProliseumScreen(rememberNavController: NavController) {
                 .fillMaxSize(),
             horizontalAlignment = Alignment.Start,
         ) {
-            Column(
+
+
+            Row(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("home")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(10.dp))
                 Text(
                     text = stringResource(id = R.string.menu),
                     fontFamily = customFontFamilyText,
@@ -79,7 +92,7 @@ fun NavigationProliseumScreen(rememberNavController: NavController) {
             Spacer(modifier = Modifier.height(10.dp))
             Button(
                 onClick = {
-                    rememberNavController.navigate("home")
+                    onNavigate("home")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -109,7 +122,7 @@ fun NavigationProliseumScreen(rememberNavController: NavController) {
 
             Button(
                 onClick = {
-                    rememberNavController.navigate("perfil_usuario_jogador")
+                    onNavigate("perfil_usuario_jogador")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -253,7 +266,7 @@ fun NavigationProliseumScreen(rememberNavController: NavController) {
 
             Button(
                 onClick = {
-                    rememberNavController.navigate("navigation_configuracoes_perfil")
+                    onNavigate("navigation_configuracoes_perfil")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)

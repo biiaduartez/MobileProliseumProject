@@ -52,6 +52,7 @@ import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
@@ -74,6 +75,7 @@ fun PerfilUsuarioJogadorScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     onNavigate: (String) -> Unit
 ) {
 
@@ -97,6 +99,9 @@ fun PerfilUsuarioJogadorScreen(
     val jogoJogadorPerfilUser = sharedViewModelPerfilJogador.jogo
     val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
     val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
+
+    val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
+    val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
     if(idUser != null && idUser != 0){
 
@@ -239,7 +244,7 @@ fun PerfilUsuarioJogadorScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_jogador_part_1")
+                    onNavigate("editar_perfil_jogador_1")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
@@ -304,8 +309,8 @@ fun PerfilUsuarioJogadorScreen(
             ) {
                 item {
                     Text(
-                        text = "${nomeUser}",
-                        fontSize = 28.sp,
+                        text = "${nickNameUser}",
+                        fontSize = 22.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
                     )
@@ -313,13 +318,14 @@ fun PerfilUsuarioJogadorScreen(
                     Spacer(modifier = Modifier.height(2.dp))
 
                     Text(
-                        text = "${nickNameUser}",
-                        fontSize = 14.sp,
+                        text = "${nomeOrganizacao}",
+                        fontSize = 18.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
+
 
                     //jogos
                     Row(
@@ -333,7 +339,8 @@ fun PerfilUsuarioJogadorScreen(
                             colors = CardDefaults.cardColors(RedProliseum)
                         ) {
                             Image(
-                                painter = if ("${jogoJogadorPerfilUser}" == "0") painterResource(
+                                painter =
+                                if ("${jogoJogadorPerfilUser}" == "0") painterResource(
                                     id = R.drawable.iconcsgo
                                 )
                                 else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)

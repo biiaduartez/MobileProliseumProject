@@ -48,43 +48,16 @@ class RetrofitFactoryCadastro {
     }
 
     fun putEditarPerfilUsuarioService(): EditarPerfilUsuarioService {
-//        val client = OkHttpClient.Builder()
-//            .addInterceptor { chain ->
-//                // Adicione o token de autorização ao cabeçalho de cada solicitação
-//                val request = chain.request()
-//                    .newBuilder()
-//                    .build()
-//                chain.proceed(request)
-//            }
-//            .build()
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL_BASE)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .client(client)  // Use o cliente com o token no cabeçalho
-//            .build()
 
         return retrofitFactoryCadastro.create(EditarPerfilUsuarioService::class.java)
     }
 
     fun createJogadorProfileService(): CreateJogadorProfileService{
-//        val client = OkHttpClient.Builder()
-//            .addInterceptor { chain ->
-//                // Adicione o token de autorização ao cabeçalho de cada solicitação
-//                val request = chain.request()
-//                    .newBuilder()
-//                    .build()
-//                chain.proceed(request)
-//            }
-//            .build()
-//
-//        val retrofit = Retrofit.Builder()
-//            .baseUrl(URL_BASE)
-//            .addConverterFactory(GsonConverterFactory.create())
-//            .client(client)  // Use o cliente com o token no cabeçalho
-//            .build()
-
         return retrofitFactoryCadastro.create(CreateJogadorProfileService::class.java)
+    }
+
+    fun createOrganizacaoProfileService(): CreateOrganizacaoProfileService{
+        return retrofitFactoryCadastro.create(CreateOrganizacaoProfileService::class.java)
     }
 
 

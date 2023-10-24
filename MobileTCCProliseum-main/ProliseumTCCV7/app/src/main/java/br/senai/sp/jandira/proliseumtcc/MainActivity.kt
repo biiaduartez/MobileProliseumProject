@@ -22,17 +22,22 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataEGeneroETi
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.gui.HomeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
+import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesPerfilScreen
+import br.senai.sp.jandira.proliseumtcc.gui.NavigationProliseumScreen
 import br.senai.sp.jandira.proliseumtcc.gui.StartScreen
-import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroOrganizadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroTipoUsuario
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
-import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
 
 
 class MainActivity : ComponentActivity() {
@@ -65,6 +70,9 @@ fun MainScreen() {
         val sharedViewModelDataAndGenderCadastroUser = remember { SharedViewModelDataAndGenderCadastroUser()}
 
         val sharedViewModelPerfilJogador = remember { SharedViewModelPerfilJogador()}
+
+        val sharedViewModelPerfilOrganizador = remember { SharedViewModelPerfilOrganizador()}
+
 
         val sharedViewModelTokenEId = remember { SharedViewTokenEId() }
 
@@ -127,17 +135,59 @@ fun MainScreen() {
 
         // Tela de carregar informações de perfil usuario
         val carregarInformacoesPerfilUsuarioScreen: @Composable () -> Unit = {
-            CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador) {
+            CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
                 currentScreen = it
             }
         }
 
         // Tela de carregar informações de perfil usuario
         val perfilUsuarioJogador: @Composable () -> Unit = {
-            PerfilUsuarioJogadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador) {
+            PerfilUsuarioJogadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
                 currentScreen = it
             }
         }
+
+        // Tela de editar informações de perfil de usuario
+        val editarInformacoesPerfilUsuario: @Composable () -> Unit = {
+            EditarPerfilJogadorPart1(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelImageUri) {
+                currentScreen = it
+            }
+        }
+
+
+
+        // Tela de navigation proliseum
+        val navigationProliseum: @Composable () -> Unit = {
+            NavigationProliseumScreen() {
+                currentScreen = it
+            }
+        }
+
+        // Tela de navigation configurações perfil
+        val navigationConfiguracoesPerfil: @Composable () -> Unit = {
+            NavigationConfiguracoesPerfilScreen() {
+                currentScreen = it
+            }
+        }
+
+        // Tela de cadastro usuario jogador
+        val cadastroUsuarioJogador: @Composable () -> Unit = {
+            CadastroUsuarioJogadorScreen(sharedViewModelTokenEId) {
+                currentScreen = it
+            }
+        }
+
+        // Tela de cadastro usuario organizador
+        val cadastroUsuarioOrganizacao: @Composable () -> Unit = {
+            CadastroOrganizadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilOrganizador) {
+                currentScreen = it
+            }
+        }
+
+
+
+
+
 
         // Navegação animada
         AnimatedContent(
@@ -155,6 +205,11 @@ fun MainScreen() {
                     "home" -> homeScreen()
                     "carregar_informacoes_perfil_usuario" -> carregarInformacoesPerfilUsuarioScreen()
                     "perfil_usuario_jogador" -> perfilUsuarioJogador()
+                    "editar_perfil_jogador_1" -> editarInformacoesPerfilUsuario()
+                    "navigation_proliseum" -> navigationProliseum()
+                    "navigation_configuracoes_perfil" -> navigationConfiguracoesPerfil()
+                    "cadastro_usuario_jogador" -> cadastroUsuarioJogador()
+                    "cadastro_usuario_organizador" -> cadastroUsuarioOrganizacao()
                     else -> startScreen()
                 }
             }
