@@ -212,6 +212,8 @@ fun EditarPerfilJogadorPart1(
 
     val contextoEditarPerfilJogador1 = LocalContext.current
 
+//    var selectedGender by remember { mutableStateOf<Int?>(null) }
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -477,16 +479,16 @@ fun EditarPerfilJogadorPart1(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Column(
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-
-                        ToggleButtonGeneroUIPerfilUser(sharedViewModelPerfilEditar) { gender ->
-                            generoUserSharedState = gender
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//
+//                        ToggleButtonGeneroUIPerfilUser { gender ->
+//                            selectedGender = gender
+//                        }
+//                    }
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
 
                     Column(
                         modifier = Modifier
@@ -732,90 +734,90 @@ fun AtualizarDadosPerfilUsuario(
         })
 }
 
-@Composable
-fun ToggleButtonGeneroUIPerfilUser(
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
-    onGenderSelected: (Int?) -> Unit
-) {
-
-    val toggleButtons = listOf(
-        ToggleButtonGenero(
-            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino,
-            id = "0"
-        ),
-        ToggleButtonGenero(
-            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino,
-            id = "1"
-        ),
-        ToggleButtonGenero(
-            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido,
-            id = "2"
-        )
-    )
-
-    val selectedButtonGenero = remember { mutableStateOf<Int?>(null) }
-
-    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelPerfilEditar.genero) }
-
-    // Declare outras variáveis de estado para outros campos da mesma maneira
-
-    LaunchedEffect(sharedViewModelPerfilEditar) {
-        // Esta parte só será executada quando o composable for inicializado
-        generoUserSharedState = sharedViewModelPerfilEditar.genero
-        // Atribua outras variáveis de estado para outros campos da mesma maneira
-    }
-
-    Column {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            toggleButtons.forEach { button ->
-                val isSelected = button.id == generoUserSharedState.toString()
-
-                val painter = rememberImagePainter(data = button.imageRes)
-
-                Card(
-                    modifier = Modifier.size(80.dp),
-                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clickable {
-                                if (isSelected) {
-                                    generoUserSharedState = null
-                                } else {
-                                    generoUserSharedState = button.id.toInt()
-                                }
-                                // Chame a função de retorno para notificar a seleção
-                                onGenderSelected(generoUserSharedState)
-                            }
-                            .background(
-                                if (isSelected) RedProliseum else Color.White,
-                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-                            ),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painter,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(80.dp)
-                                .padding(10.dp)
-                                .background(
-                                    if (isSelected) RedProliseum else Color.White,
-                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
-                                ),
-                            alignment = Alignment.Center
-                        )
-                    }
-                }
-            }
-        }
-    }
-}
-
-data class ToggleButtonGenero(val imageRes: Int, val id: String)
+//@Composable
+//fun ToggleButtonGeneroUIPerfilUser(
+//    onGenderSelected: (Int?) -> Unit
+//) {
+//
+//    val toggleButtons = listOf(
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino,
+//            id = "0"
+//        ),
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino,
+//            id = "1"
+//        ),
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido,
+//            id = "2"
+//        )
+//    )
+//
+//    val selectedButtonGenero = remember { mutableStateOf<Int?>(null) }
+//
+////    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelPerfilEditar.genero) }
+////
+////    // Declare outras variáveis de estado para outros campos da mesma maneira
+////
+////    LaunchedEffect(sharedViewModelPerfilEditar) {
+////        // Esta parte só será executada quando o composable for inicializado
+////        generoUserSharedState = sharedViewModelPerfilEditar.genero
+////        // Atribua outras variáveis de estado para outros campos da mesma maneira
+////    }
+//
+//    Column {
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//        ) {
+//            toggleButtons.forEach { button ->
+//                val isSelected = button.id == selectedButtonGenero.value.toString()
+//
+//                val painter = rememberImagePainter(data = button.imageRes)
+//
+//                Card(
+//                    modifier = Modifier.size(80.dp),
+//                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .clickable {
+//                                if (isSelected) {
+//                                    selectedButtonGenero.value = null
+//                                } else {
+//                                    selectedButtonGenero.value = button.id.toInt()
+//                                }
+//                                // Chame a função de retorno para notificar a seleção
+//                                onGenderSelected(selectedButtonGenero.value)
+//                            }
+//                            .background(
+//                                if (isSelected) RedProliseum else Color.White,
+//                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+//                            ),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Image(
+//                            painter = painter,
+//                            contentDescription = null,
+//                            modifier = Modifier
+//                                .size(80.dp)
+//                                .padding(10.dp)
+//                                .background(
+//                                    if (isSelected) RedProliseum else Color.White,
+//                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+//                                ),
+//                            alignment = Alignment.Center
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//
+//data class ToggleButtonGenero(val imageRes: Int, val id: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

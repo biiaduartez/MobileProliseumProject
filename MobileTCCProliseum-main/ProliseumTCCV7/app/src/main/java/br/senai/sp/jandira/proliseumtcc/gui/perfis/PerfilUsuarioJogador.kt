@@ -454,9 +454,9 @@ fun PerfilUsuarioJogadorScreen(
                         ) {
                             Image(
                                 painter =
-                                if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generomasculino)
-                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generofeminino)
-                                else if ("${generoPerfilUser}" == "3") painterResource(id = R.drawable.generoindefinido)
+                                if ("${generoPerfilUser}" == "0") painterResource(id = R.drawable.generomasculino)
+                                else if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generofeminino)
+                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generoindefinido)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
