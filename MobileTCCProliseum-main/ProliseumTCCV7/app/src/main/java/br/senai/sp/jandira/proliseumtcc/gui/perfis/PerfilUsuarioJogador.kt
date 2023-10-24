@@ -319,6 +319,9 @@ fun PerfilUsuarioJogadorScreen(
 
                     Text(
                         text = "${nomeOrganizacao}",
+                        modifier = Modifier.clickable {
+                            onNavigate("redefinir_senha")
+                        },
                         fontSize = 18.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White

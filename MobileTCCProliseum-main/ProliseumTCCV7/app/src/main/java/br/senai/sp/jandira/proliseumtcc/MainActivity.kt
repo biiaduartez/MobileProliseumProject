@@ -179,7 +179,7 @@ fun MainScreen() {
 
         // Tela de cadastro usuario organizador
         val cadastroUsuarioOrganizacao: @Composable () -> Unit = {
-            CadastroOrganizadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilOrganizador) {
+            CadastroOrganizadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilOrganizador, sharedViewModelImageUri) {
                 currentScreen = it
             }
         }
