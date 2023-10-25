@@ -108,12 +108,16 @@ fun CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId: SharedViewTokenEId
                                     val playerProfile = profileResponseData.playerProfile
                                     sharedViewModelPerfilJogador.id = playerProfile.id
                                     sharedViewModelPerfilJogador.nickname = playerProfile.nickname
-                                    sharedViewModelPerfilJogador.jogo = playerProfile.jogo
-                                    sharedViewModelPerfilJogador.funcao = playerProfile.funcao
-                                    sharedViewModelPerfilJogador.elo = playerProfile.elo
+                                    sharedViewModelPerfilJogador.jogo = playerProfile.jogo!!
+                                    sharedViewModelPerfilJogador.funcao = playerProfile.funcao!!
+                                    sharedViewModelPerfilJogador.elo = playerProfile.elo!!
                                 }
 
-                                if (profileResponseData.orgProfile != null) {
+                                if (profileResponseData.orgProfile == null) {
+
+                                    Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
+                                    
+                                } else if (profileResponseData.orgProfile != null){
                                     val orgProfile = profileResponseData.orgProfile
                                     sharedViewModelPerfilOrganizador.nome_organizacao = orgProfile.nome_organizacao
                                     sharedViewModelPerfilOrganizador.biografia = orgProfile.biografia

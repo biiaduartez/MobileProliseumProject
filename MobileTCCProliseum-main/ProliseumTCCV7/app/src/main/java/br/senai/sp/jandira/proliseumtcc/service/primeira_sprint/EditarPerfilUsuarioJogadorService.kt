@@ -9,6 +9,6 @@ import retrofit2.http.PUT
 
 interface EditarPerfilUsuarioJogadorService {
 
-    @PUT("organizer")
+    @PUT("player")
     fun getProfile(@Header("Authorization") token: String, @Body EditarPerfilJogador: EditarPerfilJogador): Call<EditarPerfilJogador>
 }

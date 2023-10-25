@@ -120,6 +120,34 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
 
             Button(
                 onClick = {
+                    onNavigate("editar_perfil_jogador_1")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.editar_jogo_icon),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "EDITAR INFORMAÇÕES DE JOGADOR",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Button(
+                onClick = {
                           onNavigate("cadastro_usuario_organizador")
                 },
                 modifier = Modifier
@@ -138,6 +166,35 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
                 Spacer(modifier = Modifier.padding(start = 20.dp))
                 Text(
                     text = stringResource(id = R.string.criar_organizacao),
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            Button(
+                onClick = {
+                    onNavigate("deletar_organizacao")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.botao_deletar_icon),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "DELETAR ORGANIZAÇÃO",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Color.White,

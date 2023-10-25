@@ -31,7 +31,21 @@ enum class EloLol(val imageRes: Int, val id: Int) {
     DIAMOND(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_diamond, 5),
     MASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_master, 6),
     GRANDMASTER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_grandmaster, 7),
-    CHALLENGER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_challenger, 8)
+    CHALLENGER(br.senai.sp.jandira.proliseumtcc.R.drawable.icone_challenger, 8);
+
+    fun toRepresentationStringEloLol(): String {
+        return when (this) {
+            IRON -> "0"
+            BRONZE -> "1"
+            SILVER -> "2"
+            GOLD -> "3"
+            PLATINUM -> "4"
+            DIAMOND -> "5"
+            MASTER -> "6"
+            GRANDMASTER -> "7"
+            CHALLENGER -> "8"
+        }
+    }
 }
 
 @Composable

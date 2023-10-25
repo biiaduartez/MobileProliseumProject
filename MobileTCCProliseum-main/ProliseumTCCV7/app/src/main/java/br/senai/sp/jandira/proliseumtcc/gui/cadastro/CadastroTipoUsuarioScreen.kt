@@ -382,7 +382,7 @@ fun CadastroTipoUsuario(
                         Button(
                             onClick = {
 
-                                if (selectedDate.isNotEmpty() && selectedGender != null) {
+                                if (selectedDate.isNotEmpty() && selectedGender?.toRepresentationStrinGenero() != null) {
 
                                     // Armazene a URI da imagem no ViewModel
                                     sharedViewModelImageUri.imageUri = uri
@@ -400,14 +400,16 @@ fun CadastroTipoUsuario(
                                     //val route =
                                         //"cadastro_jogador/${selectedDate}/${selectedGender}/${userName}/${fullName}/${email}/${password}"
 //                                    rememberNavController.navigate(route)
+
+                                    val simpleGeneroSelected = selectedGender?.toRepresentationStrinGenero()
+
                                     sharedViewModelDataAndGenderCadastroUser.selectedDate = selectedDate
-                                    sharedViewModelDataAndGenderCadastroUser.selectedGender =
-                                        selectedGender.toString()
+                                    sharedViewModelDataAndGenderCadastroUser.selectedGender = simpleGeneroSelected
 
                                     onNavigate("cadastro_usuario_padrao")
                                     Log.i(
                                         "Data e Gênero inseridos com sucesso",
-                                        "Valores enviados para cadastroJogador, Data: ${selectedDate}, Gênero: ${selectedGender}, UserName: ${userName}, FullName: ${fullName}, Email: ${email} Password ${password}, URI da Imagem ${uri},URI da Imagem da Capa ${uriCapa}"
+                                        "Valores enviados para cadastroJogador, Data: ${selectedDate}, Gênero: ${selectedGender?.toRepresentationStrinGenero()}, UserName: ${userName}, FullName: ${fullName}, Email: ${email} Password ${password}, URI da Imagem ${uri},URI da Imagem da Capa ${uriCapa}"
                                     )
                                 } else {
                                     Log.i("A Data e/ou Gênero não foram inseridos", "")

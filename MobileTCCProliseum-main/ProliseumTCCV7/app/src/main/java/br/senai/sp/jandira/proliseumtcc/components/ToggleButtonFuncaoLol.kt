@@ -26,7 +26,17 @@ enum class FuncaoLol(val imageRes: Int, val id: Int) {
     JUNGLE(br.senai.sp.jandira.proliseumtcc.R.drawable.iconjungle, 1),
     MIDLANE(br.senai.sp.jandira.proliseumtcc.R.drawable.iconmidlane, 2),
     SUPPORT(br.senai.sp.jandira.proliseumtcc.R.drawable.iconsupport, 3),
-    ADC(br.senai.sp.jandira.proliseumtcc.R.drawable.iconadc, 4)
+    ADC(br.senai.sp.jandira.proliseumtcc.R.drawable.iconadc, 4);
+
+    fun toRepresentationStrinFuncao(): String {
+        return when (this) {
+            TOP -> "0"
+            JUNGLE -> "1"
+            MIDLANE -> "2"
+            SUPPORT -> "3"
+            ADC -> "4"
+        }
+    }
 }
 
 @Composable

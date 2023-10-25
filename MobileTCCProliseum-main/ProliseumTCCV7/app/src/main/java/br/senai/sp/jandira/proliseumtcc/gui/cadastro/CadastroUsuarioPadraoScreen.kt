@@ -279,7 +279,7 @@ fun CadastroUsuarioPadraoScreen(
                         userEmailPerfilState: String,
                         userPasswordPerfilState: String,
                         dataInputTipoUsuario: String,
-                        generoUsuarioJogador: String,
+                        generoUsuarioJogador: String?,
                         nickNameUserJogador: String,
                         biografiaUserJogador: String?,
                     ) {

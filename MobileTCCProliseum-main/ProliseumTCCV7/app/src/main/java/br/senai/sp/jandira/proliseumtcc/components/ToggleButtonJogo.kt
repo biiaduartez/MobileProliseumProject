@@ -25,7 +25,16 @@ import coil.compose.rememberImagePainter
 enum class Jogo(val imageRes: Int, val id: Int) {
     CSGO(br.senai.sp.jandira.proliseumtcc.R.drawable.iconcsgo, 0),
     LOL(br.senai.sp.jandira.proliseumtcc.R.drawable.iconlol, 1),
-    VALORANT(br.senai.sp.jandira.proliseumtcc.R.drawable.iconvalorant, 2)
+    VALORANT(br.senai.sp.jandira.proliseumtcc.R.drawable.iconvalorant, 2);
+
+    fun toRepresentationStringJogo(): String {
+        return when (this) {
+            CSGO -> "0"
+            LOL -> "1"
+            VALORANT -> "2"
+        }
+    }
+
 }
 
 @Composable

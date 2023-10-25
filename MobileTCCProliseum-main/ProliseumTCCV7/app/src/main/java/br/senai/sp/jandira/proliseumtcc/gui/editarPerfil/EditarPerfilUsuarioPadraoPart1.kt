@@ -59,10 +59,13 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.Genero
+import br.senai.sp.jandira.proliseumtcc.components.Jogo
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
+import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
@@ -151,6 +154,8 @@ fun EditarPerfilUsuarioPadraoPart1(
         biografiaUserSharedState = sharedViewModelPerfilEditar.biografia
         // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
+
+    var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
 
     Log.i("ID USUARIO", "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}")
 
@@ -477,16 +482,16 @@ fun EditarPerfilUsuarioPadraoPart1(
 
                     Spacer(modifier = Modifier.height(20.dp))
 
-//                    Column(
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//
-//                        ToggleButtonGeneroUIPerfilUser { gender ->
-//                            selectedGender = gender
-//                        }
-//                    }
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        ToggleButtonGeneroUI { gender ->
+                            selectedGeneroUser = gender
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
 
                     Column(
                         modifier = Modifier
@@ -587,7 +592,7 @@ fun EditarPerfilUsuarioPadraoPart1(
                                     nomeUsuarioAtualizar = userNameUserSharedState,
                                     nomeCompletoAtualizar = fullNameSharedState,
                                     dataNascimentoAtualizar = dataNascimentoSharedState,
-                                    generoAtualizar = generoUserSharedState,
+                                    generoAtualizar = selectedGeneroUser?.toRepresentationStrinGenero(),
                                     nickNameAtualizar = nickNameUserSharedState,
                                     biografiaAtualizar = biografiaUserSharedState
                                 )
@@ -679,7 +684,7 @@ fun AtualizarDadosPerfilUsuario(
     nomeUsuarioAtualizar: String,
     nomeCompletoAtualizar: String?,
     dataNascimentoAtualizar: String,
-    generoAtualizar: Int?,
+    generoAtualizar: String?,
     nickNameAtualizar: String,
     biografiaAtualizar: String
 ) {

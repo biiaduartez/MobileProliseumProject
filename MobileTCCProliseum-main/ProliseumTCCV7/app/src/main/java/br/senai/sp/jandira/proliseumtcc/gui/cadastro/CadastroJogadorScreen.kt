@@ -44,6 +44,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.EloLol
+import br.senai.sp.jandira.proliseumtcc.components.FuncaoLol
+import br.senai.sp.jandira.proliseumtcc.components.Jogo
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonEloLol
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
@@ -68,11 +71,11 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
 
-    var selectedFuncaoLol by remember { mutableStateOf<String?>(null) }
+    var selectedFuncaoLol by remember { mutableStateOf<FuncaoLol?>(null) }
 
-    var selectedJogo by remember { mutableStateOf<String?>(null) }
+    var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
 
-    var selectedEloLol by remember { mutableStateOf<String?>(null) }
+    var selectedEloLol by remember { mutableStateOf<EloLol?>(null) }
 
     var createNickNameJogador by remember { mutableStateOf("") }
 
@@ -210,7 +213,7 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
                     Column {
                         ToggleButtonJogoUI{ jogo ->
-                            selectedJogo = jogo.toString()
+                            selectedJogo = jogo
                         }
 
                     }
@@ -233,7 +236,7 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
                     Column {
                         ToggleButtonFuncaoLolUI{ funcao ->
-                            selectedFuncaoLol = funcao.toString()
+                            selectedFuncaoLol = funcao
                         }
 
                     }
@@ -256,7 +259,7 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
                     Column {
                         ToggleButtonEloLol{ eloLol ->
-                            selectedEloLol = eloLol.toString()
+                            selectedEloLol = eloLol
                         }
 
                     }
@@ -305,9 +308,9 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
                             saveCadastroJogador(
                                 nickNameState = createNickNameJogador,
-                                jogoState = selectedJogo,
-                                funcaoState = selectedFuncaoLol,
-                                eloState = selectedEloLol,
+                                jogoState = selectedJogo?.toRepresentationStringJogo(),
+                                funcaoState = selectedFuncaoLol?.toRepresentationStrinFuncao(),
+                                eloState = selectedEloLol?.toRepresentationStringEloLol(),
                             )
 
                             Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
@@ -315,7 +318,7 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
 
                             Log.i(
                                 "Jogo, Funcao e Elo inseridos com sucesso",
-                                "Valores retornados, Jogo: ${selectedJogo}, Funcao: ${selectedFuncaoLol}, Elo: ${selectedEloLol}"
+                                "Valores retornados, Jogo: ${selectedJogo?.toRepresentationStringJogo()}, Funcao: ${selectedFuncaoLol?.toRepresentationStrinFuncao()}, Elo: ${selectedEloLol?.toRepresentationStringEloLol()}"
                             )
 
                         },

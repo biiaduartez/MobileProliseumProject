@@ -1,7 +1,5 @@
 package br.senai.sp.jandira.proliseumtcc.service.primeira_sprint
 
-import android.util.Log
-import okhttp3.OkHttpClient
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -68,6 +66,11 @@ class RetrofitFactoryCadastro {
     fun putEditarPerfilJogadorService(): EditarPerfilUsuarioJogadorService {
 
         return retrofitFactoryCadastro.create(EditarPerfilUsuarioJogadorService::class.java)
+    }
+
+    fun deletarOrganizadorService(): DeleteOrganizacaoService {
+
+        return retrofitFactoryCadastro.create(DeleteOrganizacaoService::class.java)
     }
 
 

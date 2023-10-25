@@ -7,6 +7,6 @@ import androidx.lifecycle.ViewModel
 
 class SharedViewModelDataAndGenderCadastroUser : ViewModel() {
     var selectedDate: String by mutableStateOf("")
-    var selectedGender: String by mutableStateOf("")
+    var selectedGender: String? by mutableStateOf("")
     //var selectedGender: Int? by mutableStateOf(null)
 }

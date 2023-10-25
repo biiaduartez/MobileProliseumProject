@@ -27,7 +27,15 @@ import coil.compose.rememberImagePainter
 enum class Genero(val imageRes: Int, val id: Int) {
     MASCULINO(br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino, 1),
     FEMININO(br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino, 2),
-    INDEFINIDO(br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido, 3)
+    INDEFINIDO(br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido, 3);
+
+    fun toRepresentationStrinGenero(): String {
+        return when (this) {
+            MASCULINO -> "0"
+            FEMININO -> "1"
+            INDEFINIDO -> "2"
+        }
+    }
 }
 
 @Composable

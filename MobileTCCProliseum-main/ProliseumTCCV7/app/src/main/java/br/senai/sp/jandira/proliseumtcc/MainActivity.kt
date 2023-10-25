@@ -36,6 +36,8 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroTipoUsuario
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
@@ -200,6 +202,19 @@ fun MainScreen() {
             }
         }
 
+        // Tela de editar informações de perfil de usuario organizador
+        val editarInformacoesPerfilUsuarioJogador: @Composable () -> Unit = {
+            EditarPerfilJogadorPart1(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador) {
+                currentScreen = it
+            }
+        }
+
+        // Tela de editar informações de perfil de usuario organizador
+        val dletarOrganizacao: @Composable () -> Unit = {
+            DeletarOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilOrganizador) {
+                currentScreen = it
+            }
+        }
 
 
 
@@ -228,6 +243,8 @@ fun MainScreen() {
                     "cadastro_usuario_organizador" -> cadastroUsuarioOrganizacao()
                     "perfil_organizacao" -> perfilOrganizacaoScreen()
                     "editar_perfil_organizador_1" -> editarInformacoesPerfilUsuarioOrganizador()
+                    "editar_perfil_jogador_1" -> editarInformacoesPerfilUsuarioJogador()
+                    "deletar_organizacao" -> dletarOrganizacao()
                     else -> startScreen()
                 }
             }
