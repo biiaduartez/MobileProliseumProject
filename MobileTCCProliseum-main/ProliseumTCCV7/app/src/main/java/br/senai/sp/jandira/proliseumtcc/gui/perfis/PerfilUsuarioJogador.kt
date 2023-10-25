@@ -244,7 +244,7 @@ fun PerfilUsuarioJogadorScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_jogador_1")
+                    onNavigate("editar_perfil_usuario_padrao_1")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
@@ -320,7 +320,7 @@ fun PerfilUsuarioJogadorScreen(
                     Text(
                         text = "${nomeOrganizacao}",
                         modifier = Modifier.clickable {
-                            onNavigate("redefinir_senha")
+                            onNavigate("perfil_organizacao")
                         },
                         fontSize = 18.sp,
                         fontWeight = FontWeight(600),

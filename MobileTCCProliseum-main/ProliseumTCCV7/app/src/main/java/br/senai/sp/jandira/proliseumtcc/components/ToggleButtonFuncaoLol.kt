@@ -21,80 +21,55 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
-@Composable
-fun ToggleButtonFuncaoLolUI(onFuncaoLol: (Int?) -> Unit) {
-    val toggleButtons = listOf(
-        ToggleButtonFuncaoLol(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.icontoplane, id = 0),
-        ToggleButtonFuncaoLol(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconjungle, id = 1),
-        ToggleButtonFuncaoLol(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconmidlane, id = 2),
-        ToggleButtonFuncaoLol(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconsupport, id = 3),
-        ToggleButtonFuncaoLol(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconadc, id = 4)
-    )
-
-    val selectedFuncaoLolButton = remember { mutableStateOf<Int?>(null) }
-
-    Column{
-
-            toggleButtons.forEach { button ->
-                val isFuncaoLolSelected = button.id == selectedFuncaoLolButton.value
-
-                // Por via das duvidas, eu pesquisei sobre o rememberImagePainter para ver se tem outro componente
-                // importado do jetpack compose porque ele esta sendo depreciado, e achei o rememberAsyncImagePainter,
-                // porém para os parametros que estou passando o rememberAsyncImagePainter não serve para mim,
-                // o rememberImagePainter continua a carregar imagens de forma assíncrona.
-                val painterFuncaoLol = rememberImagePainter(data = button.imageRes)
-
-
-
-                Card(
-                    modifier = Modifier
-                        .size(90.dp),
-                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-
-                ) {
-                    Box(
-                        modifier = Modifier
-                            .clickable {
-                                if (isFuncaoLolSelected) {
-                                    selectedFuncaoLolButton.value = null
-                                } else {
-                                    selectedFuncaoLolButton.value = button.id
-                                }
-
-                                onFuncaoLol(selectedFuncaoLolButton.value)
-                            }
-                            .background(
-                                if (isFuncaoLolSelected) RedProliseum else Color.White,
-                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-                            ),
-
-                        contentAlignment = Alignment.Center
-                    ) {
-                        Image(
-                            painter = painterFuncaoLol,
-                            contentDescription = null,
-                            modifier = Modifier
-                                .size(90.dp)
-                                .padding(20.dp) // Adicione margem ao redor da imagem
-                                .background(
-                                    if (isFuncaoLolSelected) RedProliseum else Color.White,
-                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
-                                ),
-                            alignment = Alignment.Center
-                        )
-                    }
-                }
-                Spacer(modifier = Modifier.height(20.dp))
-            }
-
-//        Text(
-//            text = "Selecionado: ${selectedButton.value ?: "Nenhum"}",
-//            textAlign = TextAlign.Center,
-//            modifier = Modifier
-//                .fillMaxWidth()
-//                .padding(16.dp)
-//        )
-    }
+enum class FuncaoLol(val imageRes: Int, val id: Int) {
+    TOP(br.senai.sp.jandira.proliseumtcc.R.drawable.icontoplane, 0),
+    JUNGLE(br.senai.sp.jandira.proliseumtcc.R.drawable.iconjungle, 1),
+    MIDLANE(br.senai.sp.jandira.proliseumtcc.R.drawable.iconmidlane, 2),
+    SUPPORT(br.senai.sp.jandira.proliseumtcc.R.drawable.iconsupport, 3),
+    ADC(br.senai.sp.jandira.proliseumtcc.R.drawable.iconadc, 4)
 }
 
-data class ToggleButtonFuncaoLol(val imageRes: Int, val id: Int)
+@Composable
+fun ToggleButtonFuncaoLolUI(onFuncaoLol: (FuncaoLol?) -> Unit) {
+    val selectedFuncaoLolButton = remember { mutableStateOf<FuncaoLol?>(null) }
+
+    Column {
+        FuncaoLol.values().forEach { funcao ->
+            val isFuncaoLolSelected = funcao == selectedFuncaoLolButton.value
+
+            val painterFuncaoLol = rememberImagePainter(data = funcao.imageRes)
+
+            Card(
+                modifier = Modifier.size(90.dp),
+                shape = RoundedCornerShape(24.dp)
+            ) {
+                Box(
+                    modifier = Modifier
+                        .clickable {
+                            selectedFuncaoLolButton.value = if (isFuncaoLolSelected) null else funcao
+                            onFuncaoLol(selectedFuncaoLolButton.value)
+                        }
+                        .background(
+                            if (isFuncaoLolSelected) RedProliseum else Color.White,
+                            shape = RoundedCornerShape(24.dp)
+                        ),
+                    contentAlignment = Alignment.Center
+                ) {
+                    Image(
+                        painter = painterFuncaoLol,
+                        contentDescription = null,
+                        modifier = Modifier
+                            .size(90.dp)
+                            .padding(20.dp)
+                            .background(
+                                if (isFuncaoLolSelected) RedProliseum else Color.White,
+                                shape = RoundedCornerShape(20.dp)
+                            ),
+                        alignment = Alignment.Center
+                    )
+                }
+            }
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
+}

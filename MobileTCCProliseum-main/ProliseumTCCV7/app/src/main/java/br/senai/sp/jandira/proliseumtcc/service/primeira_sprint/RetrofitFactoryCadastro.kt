@@ -60,6 +60,16 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(CreateOrganizacaoProfileService::class.java)
     }
 
+    fun putEditarPerfilOrganizacaoService(): EditarPerfilUsuarioOrganizacaoService {
+
+        return retrofitFactoryCadastro.create(EditarPerfilUsuarioOrganizacaoService::class.java)
+    }
+
+    fun putEditarPerfilJogadorService(): EditarPerfilUsuarioJogadorService {
+
+        return retrofitFactoryCadastro.create(EditarPerfilUsuarioJogadorService::class.java)
+    }
+
 
 
 }

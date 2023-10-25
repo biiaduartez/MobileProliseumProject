@@ -51,6 +51,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.DateInputSample
+import br.senai.sp.jandira.proliseumtcc.components.Genero
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
@@ -131,7 +132,7 @@ fun CadastroTipoUsuario(
 
     var selectedDate by remember { mutableStateOf("") }
 
-    var selectedGender by remember { mutableStateOf<Int?>(null) }
+    var selectedGender by remember { mutableStateOf<Genero?>(null) }
 
 
     Box(

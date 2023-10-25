@@ -36,7 +36,9 @@ import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScree
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroTipoUsuario
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
-import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart1
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
 
 
@@ -148,8 +150,8 @@ fun MainScreen() {
         }
 
         // Tela de editar informações de perfil de usuario
-        val editarInformacoesPerfilUsuario: @Composable () -> Unit = {
-            EditarPerfilJogadorPart1(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelImageUri) {
+        val editarInformacoesPerfilUsuarioPadrao: @Composable () -> Unit = {
+            EditarPerfilUsuarioPadraoPart1(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelImageUri) {
                 currentScreen = it
             }
         }
@@ -184,6 +186,20 @@ fun MainScreen() {
             }
         }
 
+        // Tela de perfil da organização
+        val perfilOrganizacaoScreen: @Composable () -> Unit = {
+            PerfilOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
+                currentScreen = it
+            }
+        }
+
+        // Tela de editar informações de perfil de usuario organizador
+        val editarInformacoesPerfilUsuarioOrganizador: @Composable () -> Unit = {
+            EditarPerfilOrganizadorPart1(sharedViewModelTokenEId, sharedViewModelPerfilEditar, sharedViewModelPerfilOrganizador, sharedViewModelImageUri) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -205,11 +221,13 @@ fun MainScreen() {
                     "home" -> homeScreen()
                     "carregar_informacoes_perfil_usuario" -> carregarInformacoesPerfilUsuarioScreen()
                     "perfil_usuario_jogador" -> perfilUsuarioJogador()
-                    "editar_perfil_jogador_1" -> editarInformacoesPerfilUsuario()
+                    "editar_perfil_usuario_padrao_1" -> editarInformacoesPerfilUsuarioPadrao()
                     "navigation_proliseum" -> navigationProliseum()
                     "navigation_configuracoes_perfil" -> navigationConfiguracoesPerfil()
                     "cadastro_usuario_jogador" -> cadastroUsuarioJogador()
                     "cadastro_usuario_organizador" -> cadastroUsuarioOrganizacao()
+                    "perfil_organizacao" -> perfilOrganizacaoScreen()
+                    "editar_perfil_organizador_1" -> editarInformacoesPerfilUsuarioOrganizador()
                     else -> startScreen()
                 }
             }

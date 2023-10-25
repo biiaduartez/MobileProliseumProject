@@ -24,44 +24,38 @@ import coil.compose.rememberImagePainter
 
 
 
+enum class Genero(val imageRes: Int, val id: Int) {
+    MASCULINO(br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino, 1),
+    FEMININO(br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino, 2),
+    INDEFINIDO(br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido, 3)
+}
+
 @Composable
-fun ToggleButtonGeneroUI(onGenderSelected: (Int?) -> Unit) {
-
-    val toggleButtons = listOf(
-        ToggleButtonGenero(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino, id = 1),
-        ToggleButtonGenero(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino, id = 2),
-        ToggleButtonGenero(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido, id = 3)
-    )
-
-    val selectedButtonGenero = remember { mutableStateOf<Int?>(null) }
+fun ToggleButtonGeneroUI(onGenderSelected: (Genero?) -> Unit) {
+    val selectedButtonGenero = remember { mutableStateOf<Genero?>(null) }
 
     Column {
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            toggleButtons.forEach { button ->
-                val isSelected = button.id == selectedButtonGenero.value
+            Genero.values().forEach { genero ->
+                val isSelected = genero == selectedButtonGenero.value
 
-                val painter = rememberImagePainter(data = button.imageRes)
+                val painter = rememberImagePainter(data = genero.imageRes)
 
                 Card(
                     modifier = Modifier.size(80.dp),
-                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Box(
                         modifier = Modifier.clickable {
-                            if (isSelected) {
-                                selectedButtonGenero.value = null
-                            } else {
-                                selectedButtonGenero.value = button.id
-                            }
-                            // Chame a função de retorno para notificar a seleção
+                            selectedButtonGenero.value = if (isSelected) null else genero
                             onGenderSelected(selectedButtonGenero.value)
                         }
                             .background(
                                 if (isSelected) RedProliseum else Color.White,
-                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+                                shape = RoundedCornerShape(24.dp)
                             ),
                         contentAlignment = Alignment.Center
                     ) {
@@ -71,7 +65,7 @@ fun ToggleButtonGeneroUI(onGenderSelected: (Int?) -> Unit) {
                             modifier = Modifier.size(80.dp).padding(10.dp)
                                 .background(
                                     if (isSelected) RedProliseum else Color.White,
-                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+                                    shape = RoundedCornerShape(20.dp)
                                 ),
                             alignment = Alignment.Center
                         )
@@ -81,5 +75,3 @@ fun ToggleButtonGeneroUI(onGenderSelected: (Int?) -> Unit) {
         }
     }
 }
-
-data class ToggleButtonGenero(val imageRes: Int, val id: Int)

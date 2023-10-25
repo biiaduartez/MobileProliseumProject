@@ -1,8 +1,10 @@
 package br.senai.sp.jandira.proliseumtcc.gui.editarPerfil
 
-
+import android.app.DatePickerDialog
+import android.content.Context
 import android.net.Uri
 import android.util.Log
+import android.widget.DatePicker
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -56,16 +58,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.components.DateInputSample
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
-import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
-import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilOrganizacao
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
@@ -77,16 +74,50 @@ import coil.request.ImageRequest
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Date
+import java.util.Locale
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditarPerfilOrganizadorPart1(
+fun EditarPerfilUsuarioPadraoPart1(
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
-    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
     sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
 ) {
+
+    //EDITAR FOTO DE PERFIL JOGADOR
+    var editarFotoPerfilJogadorUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    var launcherEditarFotoPerfilJogador = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        editarFotoPerfilJogadorUri = it
+    }
+    var painterFotoPerfilJogador = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(editarFotoPerfilJogadorUri)
+            .build()
+    )
+
+
+    //EDITAR FOTO DE CAPA DE PERFIL JOGADOR
+    var editarFotoCapaPerfilJogadorUri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+    var launcherEditarFotoCapaPerfilJogador = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetContent()
+    ) {
+        editarFotoCapaPerfilJogadorUri = it
+    }
+    var painterEditarFotoCapaPerfilJogador = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(editarFotoCapaPerfilJogadorUri)
+            .build()
+    )
 
     //FONTE
     val customFontFamily = FontFamily(
@@ -100,16 +131,24 @@ fun EditarPerfilOrganizadorPart1(
 
 
     var idUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.id) }
-    var userNameUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.nome_organizacao) }
-    var biografiaUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.biografia) }
+    var userNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nome_usuario) }
+    var fullNameSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nome_completo) }
+    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.data_nascimento) }
+    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelPerfilEditar.genero) }
+    var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nickname) }
+    var biografiaUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.biografia) }
 
     // Declare outras variáveis de estado para outros campos da mesma maneira
-    LaunchedEffect(sharedViewModelPerfilEditar, sharedViewModelPerfilOrganizador) {
+    LaunchedEffect(sharedViewModelPerfilEditar) {
 
         // Esta parte só será executada quando o composable for inicializado
         idUserSharedState = sharedViewModelPerfilEditar.id
-        userNameUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.nome_organizacao
-        biografiaUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.biografia
+        userNameUserSharedState = sharedViewModelPerfilEditar.nome_usuario
+        fullNameSharedState = sharedViewModelPerfilEditar.nome_completo
+        dataNascimentoSharedState = sharedViewModelPerfilEditar.data_nascimento
+        generoUserSharedState = sharedViewModelPerfilEditar.genero
+        nickNameUserSharedState = sharedViewModelPerfilEditar.nickname
+        biografiaUserSharedState = sharedViewModelPerfilEditar.biografia
         // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
 
@@ -117,52 +156,56 @@ fun EditarPerfilOrganizadorPart1(
 
     //FOTO DE PERFIL
 
-    var uriOrganizacao by remember {
+    var uri by remember {
         mutableStateOf<Uri?>(null)
     }
 
     val singlePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
-            uriOrganizacao = it
+            uri = it
         }
     )
 
     var painterPhotoPerfil = rememberAsyncImagePainter(
         ImageRequest.Builder(LocalContext.current)
-            .data(uriOrganizacao)
+            .data(uri)
             .build()
     )
 
     //FOTO CAPA DE PERFIL
-    var uriCapaOrganizacao by remember {
+    var uriCapa by remember {
         mutableStateOf<Uri?>(null)
     }
 
     val singlePhotoCapaPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
-            uriCapaOrganizacao = it
+            uriCapa = it
         }
     )
 
     var painterPhotoCapaPerfil = rememberAsyncImagePainter(
         ImageRequest.Builder(LocalContext.current)
-            .data(uriCapaOrganizacao)
+            .data(uriCapa)
             .build()
     )
 
-    val uriImageOrganizacao = sharedViewModelImageUri.imageUri
+    val uriImage = sharedViewModelImageUri.imageUri
 
-    val uriImageCapaOrganizacao = sharedViewModelImageUri.imageCapaUri
+    val uriImageCapa = sharedViewModelImageUri.imageCapaUri
 
     Log.i(
         "URI IMAGEM 04",
-        "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImageOrganizacao}"
+        "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImage}"
     )
     Log.i(
         "URI CAPA 04",
-        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
+        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapa}"
+    )
+    Log.i(
+        "GENERO 01",
+        "Aqui esta o genero de perfil na EditarPerfilJogadorPart1Screen ${generoUserSharedState}"
     )
 
     val contextoEditarPerfilJogador1 = LocalContext.current
@@ -195,8 +238,8 @@ fun EditarPerfilOrganizadorPart1(
                 Icon(
                     modifier = Modifier.clickable {
                         //rememberNavController.navigate("perfil_usuario_jogador")
-                        onNavigate("perfil_organizacao")
-                    },
+                        onNavigate("perfil_usuario_jogador")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color(255, 255, 255, 255)
@@ -252,15 +295,13 @@ fun EditarPerfilOrganizadorPart1(
                 ) {
 
                     Column(
-                        modifier = Modifier
-                            .fillMaxSize(),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
                         OutlinedTextField(
-                            value = userNameUserOrganizadorSharedState,
-                            onValueChange = { newUserNameOrganizador ->
-                                userNameUserOrganizadorSharedState = newUserNameOrganizador
+                            value = userNameUserSharedState,
+                            onValueChange = { newUserNameJogador ->
+                                userNameUserSharedState = newUserNameJogador
                             },
                             modifier = Modifier
 
@@ -282,7 +323,66 @@ fun EditarPerfilOrganizadorPart1(
                             ),
                             textStyle = TextStyle(color = Color.White)
                         )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        OutlinedTextField(
+                            value = fullNameSharedState,
+                            onValueChange = { newFullName -> fullNameSharedState = newFullName },
+                            modifier = Modifier
+
+                                .width(350.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.label_nome),
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        Column(
+                            modifier = Modifier
+                                .fillMaxWidth(),
+                            horizontalAlignment = Alignment.CenterHorizontally
+                        ) {
+                            DateInputSamplePerfilUser(
+                                sharedViewModelPerfilEditar,
+                                context = context
+                            ) { date ->
+                                dataNascimentoSharedState = date
+                            }
+                        }
                     }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 30.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.label_genero),
+                            fontSize = 22.sp,
+                            textAlign = TextAlign.Center,
+                            color = Color.White,
+                            fontFamily = customFontFamilyText,
+                            fontWeight = FontWeight(900),
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(10.dp))
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -305,14 +405,14 @@ fun EditarPerfilOrganizadorPart1(
                                         var message = "nada"
                                         Log.i(
                                             "PROLISEUM",
-                                            "URI: ${uriOrganizacao?.path ?: message} "
+                                            "URI: ${uri?.path ?: message} "
                                         )
                                     },
                                 shape = CircleShape
                             ) {
                                 Image(
                                     painter =
-                                    if (uriOrganizacao == null)
+                                    if (uri == null)
                                         painterResource(id = R.drawable.superpersonicon)
                                     else painterPhotoPerfil,
                                     contentDescription = "",
@@ -351,14 +451,14 @@ fun EditarPerfilOrganizadorPart1(
                                         var message = "nada"
                                         Log.i(
                                             "PROLISEUM",
-                                            "URI: ${uriCapaOrganizacao?.path ?: message} "
+                                            "URI: ${uriCapa?.path ?: message} "
                                         )
                                     },
                                 shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
                             ) {
                                 Image(
                                     painter =
-                                    if (uriCapaOrganizacao == null)
+                                    if (uriCapa == null)
                                         painterResource(id = R.drawable.capa_perfil_usuario)
                                     else painterPhotoCapaPerfil,
                                     contentDescription = "",
@@ -373,6 +473,64 @@ fun EditarPerfilOrganizadorPart1(
                             )
 
                         }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+//                    Column(
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//
+//                        ToggleButtonGeneroUIPerfilUser { gender ->
+//                            selectedGender = gender
+//                        }
+//                    }
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .padding(start = 30.dp),
+                        horizontalAlignment = Alignment.Start
+                    ) {
+                        Text(
+                            text = stringResource(id = R.string.label_nickname),
+                            fontFamily = customFontFamilyText,
+                            fontSize = 22.sp,
+                            fontWeight = FontWeight(900),
+                            color = Color.White
+                        )
+                    }
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+                        OutlinedTextField(
+                            value = nickNameUserSharedState,
+                            onValueChange = { newNickNameJogador ->
+                                nickNameUserSharedState = newNickNameJogador
+                            },
+                            modifier = Modifier
+                                .width(350.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.label_nickname),
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
                     }
 
                     Spacer(modifier = Modifier.height(20.dp))
@@ -397,9 +555,9 @@ fun EditarPerfilOrganizadorPart1(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
                         OutlinedTextField(
-                            value = biografiaUserOrganizadorSharedState,
-                            onValueChange = { newFullBioOrganizador ->
-                                biografiaUserOrganizadorSharedState = newFullBioOrganizador
+                            value = biografiaUserSharedState,
+                            onValueChange = { newFullBioJogador ->
+                                biografiaUserSharedState = newFullBioJogador
                             },
                             modifier = Modifier
                                 .height(220.dp)
@@ -424,14 +582,18 @@ fun EditarPerfilOrganizadorPart1(
 
                         Button(
                             onClick = {
-                                AtualizarDadosPerfilUsuarioOrganizador(
+                                AtualizarDadosPerfilUsuario(
                                     sharedViewModelTokenEId = sharedViewModelTokenEId,
-                                    nomeOrganizadorAtualizar = userNameUserOrganizadorSharedState,
-                                    biografiaAtualizar = biografiaUserOrganizadorSharedState
+                                    nomeUsuarioAtualizar = userNameUserSharedState,
+                                    nomeCompletoAtualizar = fullNameSharedState,
+                                    dataNascimentoAtualizar = dataNascimentoSharedState,
+                                    generoAtualizar = generoUserSharedState,
+                                    nickNameAtualizar = nickNameUserSharedState,
+                                    biografiaAtualizar = biografiaUserSharedState
                                 )
 
                                 Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
-
+                                onNavigate("carregar_informacoes_perfil_usuario")
 
                                 Log.i(
                                     "ID USUARIO 02",
@@ -439,46 +601,49 @@ fun EditarPerfilOrganizadorPart1(
                                 )
                                 Log.i(
                                     "URI IMAGEM 05",
-                                    "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImageOrganizacao}"
+                                    "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImage}"
                                 )
                                 Log.i(
                                     "URI CAPA 05",
-                                    "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
+                                    "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapa}"
                                 )
 
                                 if (idUserSharedState != null && idUserSharedState != 0) {
-                                    uriOrganizacao?.let {
+                                    uri?.let {
                                         StorageUtil.uploadToStorage(
                                             uri = it,
                                             context = contextoEditarPerfilJogador1,
                                             type = "image",
                                             id = "${idUserSharedState}",
-                                            "orgprofile"
+                                            "profile"
                                         )
                                     }
 
                                     Log.i(
                                         "URI IMAGEM 06",
-                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriOrganizacao}"
+                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uri}"
                                     )
 
-                                    uriCapaOrganizacao?.let {
+                                    uriCapa?.let {
                                         StorageUtil.uploadToStorage(
                                             uri = it,
                                             context = contextoEditarPerfilJogador1,
                                             type = "image",
                                             id = "${idUserSharedState}",
-                                            "orgcapa"
+                                            "capa"
                                         )
                                     }
 
                                     Log.i(
                                         "URI CAPA 06",
-                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriCapaOrganizacao}"
+                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriCapa}"
                                     )
-
-                                    onNavigate("carregar_informacoes_perfil_usuario")
                                 }
+
+                                Log.i(
+                                    "GENERO 02",
+                                    "Aqui esta o genero de perfil na EditarPerfilJogadorPart1Screen ${generoUserSharedState}"
+                                )
                             },
                             modifier = Modifier
                                 .padding(top = 20.dp)
@@ -509,32 +674,40 @@ fun EditarPerfilOrganizadorPart1(
     }
 }
 
-fun AtualizarDadosPerfilUsuarioOrganizador(
+fun AtualizarDadosPerfilUsuario(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    nomeOrganizadorAtualizar: String,
+    nomeUsuarioAtualizar: String,
+    nomeCompletoAtualizar: String?,
+    dataNascimentoAtualizar: String,
+    generoAtualizar: Int?,
+    nickNameAtualizar: String,
     biografiaAtualizar: String
 ) {
     val token = sharedViewModelTokenEId.token
 
     // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
-    val editarPerfilOrgData = EditarPerfilOrganizacao(
-        nome_organizacao = nomeOrganizadorAtualizar,
+    val editarPerfilData = EditarPerfilUsuario(
+        nome_usuario = nomeUsuarioAtualizar,
+        nome_completo = nomeCompletoAtualizar,
+        data_nascimento = dataNascimentoAtualizar,
+        genero = generoAtualizar,
+        nickname = nickNameAtualizar,
         biografia = biografiaAtualizar
     )
 
     // Obtenha o serviço Retrofit para editar o perfil do usuário
-    val editarPerfilOrgService = RetrofitFactoryCadastro().putEditarPerfilOrganizacaoService()
+    val editarPerfilService = RetrofitFactoryCadastro().putEditarPerfilUsuarioService()
 
     // Realize a chamada de API para editar o perfil
-    editarPerfilOrgService.getProfile("Bearer " + token, editarPerfilOrgData)
-        .enqueue(object : Callback<EditarPerfilOrganizacao> {
+    editarPerfilService.getProfile("Bearer " + token, editarPerfilData)
+        .enqueue(object : Callback<EditarPerfilUsuario> {
             override fun onResponse(
-                call: Call<EditarPerfilOrganizacao>,
-                response: Response<EditarPerfilOrganizacao>
+                call: Call<EditarPerfilUsuario>,
+                response: Response<EditarPerfilUsuario>
             ) {
                 if (response.isSuccessful) {
                     Log.d(
-                        "EditarPerfilOrganizadorPart1",
+                        "EditarPerfilJogadorPart1",
                         "Perfil de usuário atualizado com sucesso: ${response.code()}"
                     )
                     // Trate a resposta bem-sucedida, se necessário
@@ -552,17 +725,186 @@ fun AtualizarDadosPerfilUsuarioOrganizador(
                 }
             }
 
-            override fun onFailure(call: Call<EditarPerfilOrganizacao>, t: Throwable) {
+            override fun onFailure(call: Call<EditarPerfilUsuario>, t: Throwable) {
                 // Trate o erro de falha na rede.
-                Log.d("EditarPerfilOrganizadorPart1", "Erro de rede: ${t.message}")
+                Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
             }
         })
 }
 
+//@Composable
+//fun ToggleButtonGeneroUIPerfilUser(
+//    onGenderSelected: (Int?) -> Unit
+//) {
+//
+//    val toggleButtons = listOf(
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generomasculino,
+//            id = "0"
+//        ),
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generofeminino,
+//            id = "1"
+//        ),
+//        ToggleButtonGenero(
+//            imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.generoindefinido,
+//            id = "2"
+//        )
+//    )
+//
+//    val selectedButtonGenero = remember { mutableStateOf<Int?>(null) }
+//
+////    var generoUserSharedState by remember { mutableStateOf<Int?>(sharedViewModelPerfilEditar.genero) }
+////
+////    // Declare outras variáveis de estado para outros campos da mesma maneira
+////
+////    LaunchedEffect(sharedViewModelPerfilEditar) {
+////        // Esta parte só será executada quando o composable for inicializado
+////        generoUserSharedState = sharedViewModelPerfilEditar.genero
+////        // Atribua outras variáveis de estado para outros campos da mesma maneira
+////    }
+//
+//    Column {
+//        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceEvenly
+//        ) {
+//            toggleButtons.forEach { button ->
+//                val isSelected = button.id == selectedButtonGenero.value.toString()
+//
+//                val painter = rememberImagePainter(data = button.imageRes)
+//
+//                Card(
+//                    modifier = Modifier.size(80.dp),
+//                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+//                ) {
+//                    Box(
+//                        modifier = Modifier
+//                            .clickable {
+//                                if (isSelected) {
+//                                    selectedButtonGenero.value = null
+//                                } else {
+//                                    selectedButtonGenero.value = button.id.toInt()
+//                                }
+//                                // Chame a função de retorno para notificar a seleção
+//                                onGenderSelected(selectedButtonGenero.value)
+//                            }
+//                            .background(
+//                                if (isSelected) RedProliseum else Color.White,
+//                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+//                            ),
+//                        contentAlignment = Alignment.Center
+//                    ) {
+//                        Image(
+//                            painter = painter,
+//                            contentDescription = null,
+//                            modifier = Modifier
+//                                .size(80.dp)
+//                                .padding(10.dp)
+//                                .background(
+//                                    if (isSelected) RedProliseum else Color.White,
+//                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+//                                ),
+//                            alignment = Alignment.Center
+//                        )
+//                    }
+//                }
+//            }
+//        }
+//    }
+//}
+//
+//
+//data class ToggleButtonGenero(val imageRes: Int, val id: String)
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateInputSamplePerfilUser(
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    context: Context,
+    onDateSelected: (String) -> Unit
+) {
+    val customFontFamily = FontFamily(Font(R.font.font_title))
+    val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
+
+    val calendar = Calendar.getInstance()
+
+    var dataNascimentoSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.data_nascimento) }
+    var dataNascimentoDate: Date? by remember { mutableStateOf(null) }
+    val dateOfDatePickerDialog = remember { mutableStateOf(calendar.time) }
+    var isInitialDateDisplayed by remember { mutableStateOf(true) } // Controla se a data inicial já foi exibida
+
+    if (dataNascimentoSharedState.isNotEmpty()) {
+        dataNascimentoDate =
+            SimpleDateFormat("yyyy-MM-dd", Locale.US).parse(dataNascimentoSharedState)
+        if (isInitialDateDisplayed) {
+            dateOfDatePickerDialog.value = dataNascimentoDate
+            isInitialDateDisplayed = false // Marca a data inicial como já exibida
+        }
+    }
+
+    // Declare outras variáveis de estado para outros campos da mesma maneira
+
+    LaunchedEffect(sharedViewModelPerfilEditar) {
+        // Esta parte só será executada quando o composable for inicializado
+        dataNascimentoSharedState = sharedViewModelPerfilEditar.data_nascimento
+        // Atribua outras variáveis de estado para outros campos da mesma maneira
+    }
+
+    var datePickerDialog = DatePickerDialog(
+        context,
+        { _: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            val selectedDate = Calendar.getInstance()
+            selectedDate.set(year, month, dayOfMonth)
+            dateOfDatePickerDialog.value = selectedDate.time
+
+            val universalDateFormat = SimpleDateFormat("yyyy-MM-dd", Locale.US)
+            val formattedDateForBackend = universalDateFormat.format(selectedDate.time)
+            onDateSelected(formattedDateForBackend)
+        },
+        calendar.get(Calendar.YEAR),
+        calendar.get(Calendar.MONTH),
+        calendar.get(Calendar.DAY_OF_MONTH)
+    )
+
+    OutlinedTextField(
+        value = formatDateForDisplay(dateOfDatePickerDialog.value, context),
+        onValueChange = { datePickerDialog.show() },
+        modifier = Modifier.width(350.dp),
+        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
+        shape = RoundedCornerShape(16.dp),
+        label = {
+            Text(
+                text = "Data de Nascimento",
+                fontFamily = customFontFamilyText,
+                fontSize = 16.sp,
+                fontWeight = FontWeight(600),
+                color = Color.White
+            )
+        },
+        colors = TextFieldDefaults.outlinedTextFieldColors(
+            unfocusedBorderColor = Color(255, 255, 255, 255),
+            focusedBorderColor = Color(255, 255, 255, 255),
+            cursorColor = Color.White
+        ),
+        textStyle = TextStyle(color = Color.White)
+    )
+}
+
+// Função para formatar a data para exibição de acordo com as configurações locais do dispositivo
+private fun formatDateForDisplay(date: Date?, context: Context): String {
+    if (date == null) {
+        return ""
+    }
+    val displayFormat = SimpleDateFormat("dd-MM-yyyy", context.resources.configuration.locales[0])
+    return displayFormat.format(date)
+}
+
+
 @Preview(showBackground = true)
 @Composable
-fun EditarPerfilOrganizadorPart1ScreenPreview() {
-    ProliseumTCCTheme{
+fun HomeScreenPreview() {
+    ProliseumTCCTheme {
 
     }
 }

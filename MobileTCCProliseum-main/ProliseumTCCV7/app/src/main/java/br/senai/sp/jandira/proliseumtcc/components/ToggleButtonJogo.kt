@@ -22,56 +22,39 @@ import androidx.compose.ui.unit.dp
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberImagePainter
 
+enum class Jogo(val imageRes: Int, val id: Int) {
+    CSGO(br.senai.sp.jandira.proliseumtcc.R.drawable.iconcsgo, 0),
+    LOL(br.senai.sp.jandira.proliseumtcc.R.drawable.iconlol, 1),
+    VALORANT(br.senai.sp.jandira.proliseumtcc.R.drawable.iconvalorant, 2)
+}
+
 @Composable
-fun ToggleButtonJogoUI(onJogoSelected: (Int?) -> Unit) {
-
-    val toggleButtons = listOf(
-        ToggleButtonJogo(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconcsgo, id = 0),
-        ToggleButtonJogo(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconlol, id = 1),
-        ToggleButtonJogo(imageRes = br.senai.sp.jandira.proliseumtcc.R.drawable.iconvalorant, id = 2)
-    )
-
-    val selectedjogoButton = remember { mutableStateOf<Int?>(null) }
+fun ToggleButtonJogoUI(onJogoSelected: (Jogo?) -> Unit) {
+    val selectedJogoButton = remember { mutableStateOf<Jogo?>(null) }
 
     Column {
         Row(
-            modifier = Modifier
-                .fillMaxWidth(),
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            toggleButtons.forEach { button ->
-                val isJogoSelected = button.id == selectedjogoButton.value
+            Jogo.values().forEach { jogo ->
+                val isJogoSelected = jogo == selectedJogoButton.value
 
-                // Por via das duvidas, eu pesquisei sobre o rememberImagePainter para ver se tem outro componente
-                // importado do jetpack compose porque ele esta sendo depreciado, e achei o rememberAsyncImagePainter,
-                // porém para os parametros que estou passando o rememberAsyncImagePainter não serve para mim,
-                // o rememberImagePainter continua a carregar imagens de forma assíncrona.
-                val painterJogo = rememberImagePainter(data = button.imageRes)
-
-
+                val painterJogo = rememberImagePainter(data = jogo.imageRes)
 
                 Card(
-                    modifier = Modifier
-                        .size(90.dp),
-                    shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-
+                    modifier = Modifier.size(90.dp),
+                    shape = RoundedCornerShape(24.dp)
                 ) {
                     Box(
-                        modifier = Modifier
-                            .clickable {
-                                if (isJogoSelected) {
-                                    selectedjogoButton.value = null
-                                } else {
-                                    selectedjogoButton.value = button.id
-                                }
-
-                                onJogoSelected(selectedjogoButton.value)
-                            }
+                        modifier = Modifier.clickable {
+                            selectedJogoButton.value = if (isJogoSelected) null else jogo
+                            onJogoSelected(selectedJogoButton.value)
+                        }
                             .background(
                                 if (isJogoSelected) RedProliseum else Color.White,
-                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+                                shape = RoundedCornerShape(24.dp)
                             ),
-
                         contentAlignment = Alignment.Center
                     ) {
                         Image(
@@ -79,21 +62,16 @@ fun ToggleButtonJogoUI(onJogoSelected: (Int?) -> Unit) {
                             contentDescription = null,
                             modifier = Modifier
                                 .size(90.dp)
-                                .padding(10.dp) // Adicione margem ao redor da imagem
+                                .padding(10.dp)
                                 .background(
                                     if (isJogoSelected) RedProliseum else Color.White,
-                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+                                    shape = RoundedCornerShape(20.dp)
                                 ),
                             alignment = Alignment.Center
                         )
                     }
                 }
-
-
             }
         }
-
     }
 }
-
-data class ToggleButtonJogo(val imageRes: Int, val id: Int)
