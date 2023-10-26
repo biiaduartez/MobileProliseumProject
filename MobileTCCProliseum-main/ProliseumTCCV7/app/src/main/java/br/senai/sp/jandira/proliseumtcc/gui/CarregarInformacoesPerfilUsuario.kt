@@ -19,6 +19,7 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.model.CreateTime
 import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
@@ -116,9 +117,10 @@ fun CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId: SharedViewTokenEId
                                 if (profileResponseData.orgProfile == null) {
 
                                     Log.e("NENHUMA ORGANIZACAO","Nenhuma organização para retornar dados")
-                                    
+
                                 } else if (profileResponseData.orgProfile != null){
                                     val orgProfile = profileResponseData.orgProfile
+                                    sharedViewModelPerfilOrganizador.orgProfile = orgProfile
                                     sharedViewModelPerfilOrganizador.nome_organizacao = orgProfile.nome_organizacao
                                     sharedViewModelPerfilOrganizador.biografia = orgProfile.biografia
                                 }
@@ -173,7 +175,39 @@ fun CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId: SharedViewTokenEId
 
                     })
 
-                    Log.e("SUCESSO","Informações do usuario carregadas com sucesso")
+                    // Time
+
+//                    val createTimeService = RetrofitFactoryCadastro().createTimeService()
+//
+//                    createTimeService.postCreateTime("Bearer " + token, CreateTime).enqueue(object : Callback<CreateTime> {
+//                        override fun onResponse(call: Call<CreateTime>, response: Response<CreateTime>) {
+//                            if (response.isSuccessful) {
+//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
+//                                val profileResponseData = response.body()
+//
+//                                //val user = profileResponseData!!.user
+//
+//
+////                            onNavigate("home")
+//                            } else {
+//                                // Trate a resposta não bem-sucedida
+//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
+//                                // Log de corpo da resposta (se necessário)
+//                                Log.d(
+//                                    "PerfilUsuarioJogadorScreen",
+//                                    "Corpo da resposta: ${response.errorBody()?.string()}"
+//                                )
+//                            }
+//                        }
+//
+//                        override fun onFailure(call: Call<CreateTime>, t: Throwable) {
+//                            // Trate o erro de falha na rede.
+//                            Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
+//                        }
+//
+//                    })
+//
+//                    Log.e("SUCESSO","Informações do usuario carregadas com sucesso")
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
                     // Lidar com o caso em que o token é nulo ou vazio

@@ -1,0 +1,400 @@
+package br.senai.sp.jandira.proliseumtcc.gui.criar
+
+import android.net.Uri
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
+import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.Genero
+import br.senai.sp.jandira.proliseumtcc.components.Jogo
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.components.StorageTeamUtil
+import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
+import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
+import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.DateInputSamplePerfilUser
+import br.senai.sp.jandira.proliseumtcc.model.CreateTime
+import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
+import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
+import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
+import coil.compose.rememberAsyncImagePainter
+import coil.request.ImageRequest
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CriarTimeScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    onNavigate: (String) -> Unit
+) {
+
+    //FONTE
+    val customFontFamily = FontFamily(
+        Font(R.font.font_title)
+    )
+    val customFontFamilyText = FontFamily(
+        Font(R.font.font_poppins)
+    )
+
+    var nomeTime by remember { mutableStateOf("") }
+    var biografiaTime by remember { mutableStateOf("") }
+    var selectedJogoUser by remember { mutableStateOf<Jogo?>(null) }
+
+    //FOTO DE PERFIL
+
+    var uri by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val singlePhotoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            uri = it
+        }
+    )
+
+    var painterPhotoPerfil = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(uri)
+            .build()
+    )
+
+    //FOTO CAPA DE PERFIL
+    var uriCapa by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val singlePhotoCapaPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            uriCapa = it
+        }
+    )
+
+    var painterPhotoCapaPerfil = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(uriCapa)
+            .build()
+    )
+
+
+//    var selectedGender by remember { mutableStateOf<Int?>(null) }
+
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    listOf(
+                        AzulEscuroProliseum,
+                        AzulEscuroProliseum
+                    )
+                )
+            )
+            .verticalScroll(rememberScrollState())
+    ) {
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(15.dp),
+                horizontalArrangement = Arrangement.Start,
+                verticalAlignment = Alignment.Top
+            ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("perfil_usuario_jogador")
+                        onNavigate("perfil_usuario_jogador")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color(255, 255, 255, 255)
+                )
+            }
+
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(top = 20.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+
+            ) {
+            Image(
+                painter = painterResource(id = R.drawable.logocadastro),
+                contentDescription = ""
+            )
+            Text(
+                text = stringResource(id = R.string.label_editar_jogador),
+                fontFamily = customFontFamily,
+                fontSize = 40.sp,
+                textAlign = TextAlign.Center,
+                color = Color.White
+
+            )
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 190.dp)
+                    .background(
+                        brush = Brush.horizontalGradient(
+                            listOf(
+                                BlackTransparentProliseum,
+                                BlackTransparentProliseum
+                            )
+                        ),
+                        shape = RoundedCornerShape(50.dp, 50.dp, 0.dp, 0.dp)
+                    )
+            ) {
+
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(top = 30.dp),
+                ) {
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        OutlinedTextField(
+                            value = nomeTime,
+                            onValueChange = { newNomeTime->
+                                nomeTime = newNomeTime
+                            },
+                            modifier = Modifier
+
+                                .width(350.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.label_user),
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+
+                        Spacer(modifier = Modifier.height(10.dp))
+
+                        OutlinedTextField(
+                            value = biografiaTime,
+                            onValueChange = { newBiografiaTime -> biografiaTime = newBiografiaTime },
+                            modifier = Modifier
+                                .height(200.dp)
+                                .width(350.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = stringResource(id = R.string.label_nome),
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
+                                )
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
+                        )
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        ToggleButtonJogoUI() { jogo ->
+                            selectedJogoUser = jogo
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Column(
+                        modifier = Modifier
+                            .fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally
+                    ) {
+
+                        Button(
+                            onClick = {
+                                CriarTime(
+                                    sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                    nomeTime = nomeTime,
+                                    biografiaTime = biografiaTime,
+                                    jogoTime = selectedJogoUser?.toRepresentationStringJogo()
+                                )
+
+                                Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
+
+                                onNavigate("carregar_informacoes_perfil_usuario")
+                            },
+                            modifier = Modifier
+                                .padding(top = 20.dp)
+                                .width(300.dp)
+                                .height(48.dp),
+                            shape = RoundedCornerShape(73.dp),
+                            colors = ButtonDefaults.buttonColors(RedProliseum)
+
+                        ) {
+                            Icon(
+                                painter = painterResource(id = R.drawable.logocadastro),
+                                contentDescription = stringResource(id = R.string.button_proximo),
+                                tint = Color(255, 255, 255, 255)
+                            )
+                            Text(
+                                text = stringResource(id = R.string.button_salvar),
+                                fontSize = 16.sp,
+                                textAlign = TextAlign.Center,
+                                color = Color.White,
+                                fontFamily = customFontFamilyText,
+                                fontWeight = FontWeight(900),
+                            )
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
+fun CriarTime(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    nomeTime: String,
+    biografiaTime: String?,
+    jogoTime: String?,
+
+) {
+    val token = sharedViewModelTokenEId.token
+
+    val criarTimeData = CreateTime(
+        nome_time = nomeTime,
+        biografia = biografiaTime,
+        jogo = jogoTime,
+    )
+
+    // Obtenha o serviço Retrofit para editar o perfil do usuário
+    val createTimeService = RetrofitFactoryCadastro().createTimeService()
+
+    // Realize a chamada de API para editar o perfil
+    createTimeService.postCreateTime("Bearer " + token, criarTimeData)
+        .enqueue(object : Callback<CreateTime> {
+            override fun onResponse(
+                call: Call<CreateTime>,
+                response: Response<CreateTime>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d(
+                        "EditarPerfilJogadorPart1",
+                        "Perfil de usuário atualizado com sucesso: ${response.code()}"
+                    )
+                    // Trate a resposta bem-sucedida, se necessário
+                } else {
+                    // Trate a resposta não bem-sucedida
+                    Log.d(
+                        "EditarPerfilJogadorPart1",
+                        "Falha ao atualizar o perfil do usuário: ${response.code()}"
+                    )
+                    // Log do corpo da resposta (se necessário)
+                    Log.d(
+                        "EditarPerfilJogadorPart1",
+                        "Corpo da resposta: ${response.errorBody()?.string()}"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<CreateTime>, t: Throwable) {
+                // Trate o erro de falha na rede.
+                Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
+            }
+        })
+}
+
+@Preview(showBackground = true)
+@Composable
+fun CriarTimeScreenPreview() {
+    ProliseumTCCTheme {
+
+    }
+}

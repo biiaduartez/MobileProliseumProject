@@ -100,6 +100,8 @@ fun PerfilUsuarioJogadorScreen(
     val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
     val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
 
+
+    val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
@@ -317,17 +319,22 @@ fun PerfilUsuarioJogadorScreen(
 
                     Spacer(modifier = Modifier.height(2.dp))
 
-                    Text(
-                        text = "${nomeOrganizacao}",
-                        modifier = Modifier.clickable {
-                            onNavigate("perfil_organizacao")
-                        },
-                        fontSize = 18.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
-                    )
+                    if(orgProfile == null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    } else if (orgProfile != null){
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "${nomeOrganizacao}",
+                            modifier = Modifier.clickable {
+                                onNavigate("perfil_organizacao")
+                            },
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight(600),
+                            color = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
 
 
                     //jogos

@@ -73,6 +73,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(DeleteOrganizacaoService::class.java)
     }
 
+    fun createTimeService(): CreateTimeService {
+        return retrofitFactoryCadastro.create(CreateTimeService::class.java)
+    }
+
 
 
 }
