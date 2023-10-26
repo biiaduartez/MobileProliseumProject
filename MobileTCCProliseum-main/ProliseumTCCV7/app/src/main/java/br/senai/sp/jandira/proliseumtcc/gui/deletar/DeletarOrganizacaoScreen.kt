@@ -104,32 +104,67 @@ fun DeletarOrganizacaoScreen(
             )
             .verticalScroll(rememberScrollState())
     ) {
-        LaunchedEffect(camposPreenchidosCorretamente) {
-            if (!camposPreenchidosCorretamente) {
-                delay(15000)
-                camposPreenchidosCorretamente = true
-            }
-        }
-
-        AnimatedVisibility(
-            visible = !camposPreenchidosCorretamente,
-            enter = slideInVertically(initialOffsetY = { it }),
-            exit = slideOutVertically(targetOffsetY = { it })
+        Column(
+            modifier = Modifier
+                .fillMaxSize(),
+            horizontalAlignment = Alignment.Start,
         ) {
-            Snackbar(
-                modifier = Modifier.padding(top = 16.dp),
-                action = {}
+
+
+            Row(
+                modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             ) {
-                Text(text = mensagemErroInputsPerfil.value)
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("navigation_configuracoes_perfil")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(20.dp))
+                Text(
+                    text = "Voltar para menu de navegação",
+                    fontFamily = customFontFamilyText,
+                    fontSize = 18.sp,
+                    fontWeight = FontWeight(900),
+                    color = Color.White
+                )
+
+            }
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
+
+                LaunchedEffect(camposPreenchidosCorretamente) {
+                    if (!camposPreenchidosCorretamente) {
+                        delay(15000)
+                        camposPreenchidosCorretamente = true
+                    }
+                }
+
+                AnimatedVisibility(
+                    visible = !camposPreenchidosCorretamente,
+                    enter = slideInVertically(initialOffsetY = { it }),
+                    exit = slideOutVertically(targetOffsetY = { it })
+                ) {
+                    Snackbar(
+                        modifier = Modifier.padding(top = 16.dp),
+                        action = {}
+                    ) {
+                        Text(text = mensagemErroInputsPerfil.value)
+                    }
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(50.dp))
 
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 100.dp),
+                .padding(top = 130.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -217,7 +252,7 @@ fun DeletarOrganizacaoScreen(
 
                         sharedViewModelPerfilOrganizador.nome_organizacao == nomeOrganizacao
                         sharedViewModelPerfilOrganizador.biografia == biografiaOrganizacao
-                        onNavigate("carregar_informacoes_perfil_usuario")
+                        onNavigate("carregar_deletar_organizacao")
                     }
 
 

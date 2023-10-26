@@ -461,7 +461,7 @@ fun PerfilUsuarioJogadorScreen(
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
                                 alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                colorFilter = ColorFilter.tint(Color.White)
                             )
                         }
 
