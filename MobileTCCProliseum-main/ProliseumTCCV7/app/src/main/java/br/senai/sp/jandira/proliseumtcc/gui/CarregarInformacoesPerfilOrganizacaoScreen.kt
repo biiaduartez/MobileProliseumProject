@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
@@ -43,6 +44,9 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    // SharedViewModelGetMyTeams GERAL
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
 
     // SharedViewModelGetMyTeams de USUARIO
     sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
@@ -116,9 +120,13 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                             if (response.isSuccessful) {
                                 val profileMyTeamsData = response.body()
 
+                                sharedGetMyTeamsGeral.myTeamsDadosGeral = profileMyTeamsData
+
                                 val dataMyTeamsUser = profileMyTeamsData?.user
 
                                 val dataMyTeamsTeam = profileMyTeamsData?.time
+
+                                sharedGetMyTeamsGeral.myTeamsDadosTime = dataMyTeamsTeam
 
                                 if (dataMyTeamsUser != null) {
                                     Log.e("ID DO USUARIO", "${dataMyTeamsUser.id}")

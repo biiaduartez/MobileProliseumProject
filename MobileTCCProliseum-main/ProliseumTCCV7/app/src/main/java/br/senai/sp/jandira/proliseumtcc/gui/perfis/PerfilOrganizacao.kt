@@ -1,11 +1,13 @@
 package br.senai.sp.jandira.proliseumtcc.gui.perfis
 
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,6 +21,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -51,6 +58,7 @@ import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
@@ -81,6 +89,9 @@ fun PerfilOrganizacaoScreen(
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    // SharedViewModel GET MY TEAMS GERAL
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
 
     // SharedViewModelGetMyTeams de USUARIO
     sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
@@ -125,7 +136,13 @@ fun PerfilOrganizacaoScreen(
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
+    val dadosGeraisGetMyTeams = sharedGetMyTeamsGeral.myTeamsDadosGeral
+    val dadosTimeGetMyTeams = sharedGetMyTeamsGeral.myTeamsDadosTime
+
     val userIdGetMyTeams = sharedViewModelGetMyTeamsUser.idData
+
+    val nomeTime = sharedViewModelGetMyTeamsTime.nomeTimeData
+    val jogoTime = sharedViewModelGetMyTeamsTime.jogoData
 
     Log.d("PerfilUsuarioJogadorScreen", "Id do usuario organizador: $userIdGetMyTeams")
 
@@ -249,6 +266,7 @@ fun PerfilOrganizacaoScreen(
                 )
             )
     ) {
+        ///////
         // Imagem Capa
         Column(
             modifier = Modifier
@@ -386,57 +404,6 @@ fun PerfilOrganizacaoScreen(
                     Spacer(modifier = Modifier.height(12.dp))
 
 
-//                    //jogos
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.Center
-//                    ) {
-//                        Card(
-//                            modifier = Modifier
-//                                .height(85.dp)
-//                                .width(85.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter =
-//                                if ("${jogoJogadorPerfilUser}" == "0") painterResource(
-//                                    id = R.drawable.iconcsgo
-//                                )
-//                                else if ("${jogoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconlol)
-//                                else if ("${jogoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconvalorant)
-//                                else painter,
-//                                contentDescription = "",
-//                                modifier = Modifier.fillMaxSize(),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//
-//                        Spacer(modifier = Modifier.width(24.dp))
-//
-//                        Card(
-//                            modifier = Modifier
-//                                .height(85.dp)
-//                                .width(85.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter = if ("${funcaoJogadorPerfilUser}" == "0") painterResource(
-//                                    id = R.drawable.icontoplane
-//                                )
-//                                else if ("${funcaoJogadorPerfilUser}" == "1") painterResource(id = R.drawable.iconjungle)
-//                                else if ("${funcaoJogadorPerfilUser}" == "2") painterResource(id = R.drawable.iconmidlane)
-//                                else if ("${funcaoJogadorPerfilUser}" == "3") painterResource(id = R.drawable.iconsupport)
-//                                else if ("${funcaoJogadorPerfilUser}" == "4") painterResource(id = R.drawable.iconadc)
-//                                else painter,
-//                                contentDescription = "",
-//                                modifier = Modifier.fillMaxSize(),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//                    }
-
                     //Social
                     Row(
                         modifier = Modifier
@@ -536,7 +503,6 @@ fun PerfilOrganizacaoScreen(
                             )
                         }
                     }
-
                     // linha
                     Box(
                         modifier = Modifier
@@ -545,16 +511,67 @@ fun PerfilOrganizacaoScreen(
                             .background(Color.Red)
                     )
 
+                    LazyRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(80.dp)
+                            .padding(start = 0.dp, top = 0.dp)
+                        ,
+                        verticalAlignment = Alignment.CenterVertically
 
+                    ){
+                        if (dadosTimeGetMyTeams != null) {
+                            items(dadosTimeGetMyTeams.size) {index ->
+                                val time = dadosTimeGetMyTeams[index]
+                                //jogos
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 20.dp, top = 20.dp)
+                                    ,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Card(
+                                        modifier = Modifier
+                                            .height(55.dp)
+                                            .width(55.dp),
+                                        colors = CardDefaults.cardColors(RedProliseum)
+                                    ) {
+                                        Image(
+                                            painter =
+                                            if ("${time.jogo}" == "0") painterResource(
+                                                id = R.drawable.iconcsgo
+                                            )
+                                            else if ("${time.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                            else if ("${time.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                            else painter,
+                                            contentDescription = "",
+                                            modifier = Modifier.fillMaxSize(),
+                                            alignment = Alignment.Center,
+                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                        )
+                                    }
 
+                                    Spacer(modifier = Modifier.width(5.dp))
 
+                                    Text(
+                                        text = "${time.nome_time}",
+                                        color = Color.White,
+                                        modifier = Modifier.padding(5.dp),
+                                        fontWeight = FontWeight(600),
+                                        fontFamily = customFontFamilyText,
+                                        fontSize = 12.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
                 }
             }
         }
     }
 }
 
-@Preview(showBackground = true)
 @Composable
 fun PerfilOrganizadorScreenPreview() {
     ProliseumTCCTheme {

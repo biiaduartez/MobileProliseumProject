@@ -16,6 +16,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.navigation.compose.rememberNavController
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import androidx.lifecycle.viewmodel.compose.viewModel
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModel
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataEGeneroETipoUsuario
@@ -89,6 +90,9 @@ fun MainScreen() {
         val sharedViewModelPerfilJogador = remember { SharedViewModelPerfilJogador()}
 
         val sharedViewModelPerfilOrganizador = remember { SharedViewModelPerfilOrganizador()}
+
+        // SharedViewModel GET MY TEAMS GERAL
+        val sharedGetMyTeamsGeral = remember { SharedGetMyTeamsGeral() }
 
 //        SharedViewModel GET MY TEAMS USER
 
@@ -232,6 +236,7 @@ fun MainScreen() {
                 sharedViewModelPerfilEditar,
                 sharedViewModelPerfilJogador,
                 sharedViewModelPerfilOrganizador,
+                sharedGetMyTeamsGeral,
                 sharedViewModelGetMyTeamsUser,
                 sharedViewModelGetMyTeamsUserPropostas,
                 sharedViewModelGetMyTeamsUserPropostasDe,
@@ -289,6 +294,7 @@ fun MainScreen() {
                 sharedViewModelPerfilEditar,
                 sharedViewModelPerfilJogador,
                 sharedViewModelPerfilOrganizador,
+                sharedGetMyTeamsGeral,
                 sharedViewModelGetMyTeamsUser,
                 sharedViewModelGetMyTeamsUserPropostas,
                 sharedViewModelGetMyTeamsUserPropostasDe,
