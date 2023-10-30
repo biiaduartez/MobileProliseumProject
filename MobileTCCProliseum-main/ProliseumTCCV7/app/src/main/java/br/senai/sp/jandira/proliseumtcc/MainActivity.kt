@@ -55,6 +55,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
 
 
@@ -287,7 +288,7 @@ fun MainScreen() {
             }
         }
 
-        // Tela de editar informações de perfil de usuario organizador
+        // Tela de carregar informações de perfil de usuario organizador
         val carregarInformacoesPerfilOrganizacao: @Composable () -> Unit = {
             CarregarInformacoesPerfilOrganizacaoScreen(
                 sharedViewModelTokenEId,
@@ -309,6 +310,32 @@ fun MainScreen() {
                 currentScreen = it
             }
         }
+
+        // Tela de perfil de time
+        val perfilTimeScreen: @Composable () -> Unit = {
+            PerfilTimeScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditar,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+                sharedGetMyTeamsGeral,
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
         // Navegação animada
@@ -339,6 +366,7 @@ fun MainScreen() {
                     "carregar_deletar_organizacao" -> carregarDeletarOrganizacao()
                     "criar_time" -> criarTime()
                     "carregar_informacoes_perfil_organizacao" -> carregarInformacoesPerfilOrganizacao()
+                    "perfil_time" -> perfilTimeScreen()
                     else -> startScreen()
                 }
             }

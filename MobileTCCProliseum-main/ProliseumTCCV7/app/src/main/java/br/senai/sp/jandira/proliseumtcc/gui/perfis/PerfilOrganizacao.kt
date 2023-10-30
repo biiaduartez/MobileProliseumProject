@@ -137,9 +137,11 @@ fun PerfilOrganizacaoScreen(
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
     val dadosGeraisGetMyTeams = sharedGetMyTeamsGeral.myTeamsDadosGeral
-    val dadosTimeGetMyTeams = sharedGetMyTeamsGeral.myTeamsDadosTime
+    val dadosTimeGetMyTeams = sharedGetMyTeamsGeral.time
 
     val userIdGetMyTeams = sharedViewModelGetMyTeamsUser.idData
+
+    val idTime = sharedViewModelGetMyTeamsTime.idData
 
     val nomeTime = sharedViewModelGetMyTeamsTime.nomeTimeData
     val jogoTime = sharedViewModelGetMyTeamsTime.jogoData
@@ -531,37 +533,47 @@ fun PerfilOrganizacaoScreen(
                                     ,
                                     horizontalArrangement = Arrangement.Center
                                 ) {
-                                    Card(
-                                        modifier = Modifier
-                                            .height(55.dp)
-                                            .width(55.dp),
-                                        colors = CardDefaults.cardColors(RedProliseum)
+                                    Button(
+                                        onClick = {
+                                            val team = sharedGetMyTeamsGeral.getTeamById(idTime) // teamId é o ID do time clicado
+                                            if (team != null) {
+                                                onNavigate("perfil_time")
+                                            }
+
+                                        }
                                     ) {
-                                        Image(
-                                            painter =
-                                            if ("${time.jogo}" == "0") painterResource(
-                                                id = R.drawable.iconcsgo
+                                        Card(
+                                            modifier = Modifier
+                                                .height(55.dp)
+                                                .width(55.dp),
+                                            colors = CardDefaults.cardColors(RedProliseum)
+                                        ) {
+                                            Image(
+                                                painter =
+                                                if ("${time.jogo}" == "0") painterResource(
+                                                    id = R.drawable.iconcsgo
+                                                )
+                                                else if ("${time.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                                else if ("${time.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                                else painter,
+                                                contentDescription = "",
+                                                modifier = Modifier.fillMaxSize(),
+                                                alignment = Alignment.Center,
+                                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
                                             )
-                                            else if ("${time.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                            else if ("${time.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
-                                            else painter,
-                                            contentDescription = "",
-                                            modifier = Modifier.fillMaxSize(),
-                                            alignment = Alignment.Center,
-                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                        }
+
+                                        Spacer(modifier = Modifier.width(5.dp))
+
+                                        Text(
+                                            text = "${time.nome_time}",
+                                            color = Color.White,
+                                            modifier = Modifier.padding(5.dp),
+                                            fontWeight = FontWeight(600),
+                                            fontFamily = customFontFamilyText,
+                                            fontSize = 12.sp
                                         )
                                     }
-
-                                    Spacer(modifier = Modifier.width(5.dp))
-
-                                    Text(
-                                        text = "${time.nome_time}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 12.sp
-                                    )
                                 }
                             }
                         }

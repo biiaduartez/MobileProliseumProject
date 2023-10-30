@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -20,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -29,6 +31,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,13 +57,186 @@ import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
 import br.senai.sp.jandira.proliseumtcc.MainActivity
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsTimeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDe
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUser
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUserPropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
+import coil.compose.AsyncImage
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.StorageReference
+import com.google.firebase.storage.ktx.storage
+import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PerfilTimeScreen(rememberNavController: NavController) {
+fun PerfilTimeScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    // SharedViewModel GET MY TEAMS GERAL
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+
+    // SharedViewModelGetMyTeams de USUARIO
+    sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
+    sharedViewModelGetMyTeamsUserPropostas: SharedViewModelGetMyTeamsUserPropostas,
+    sharedViewModelGetMyTeamsUserPropostasDe: SharedGetMyTeamsUserPropostasDe,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadores: SharedGetMyTeamsUserPropostasDeJogadores,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos: SharedGetMyTeamsUserPropostasDeJogadoresAtivos,
+    sharedViewModelGetMyTeamsUserPropostasDePropostas: SharedGetMyTeamsUserPropostasDePropostas,
+
+    // SharedViewModelGetMyTeams de TIME
+    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
+    sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
+    sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
+    onNavigate: (String) -> Unit
+) {
+
+    val token = sharedViewModelTokenEId.token
+    Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
+
+    val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+    val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
+    val imageOrgCapaRef = remember { mutableStateOf<StorageReference?>(null) }
+
+    val idUser = sharedViewModelPerfilEditar.id
+    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
+    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
+    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
+    val emailUser = sharedViewModelPerfilEditar.email
+    val nickNameUser = sharedViewModelPerfilEditar.nickname
+    val biografiaUser = sharedViewModelPerfilEditar.biografia
+    val generoPerfilUser = sharedViewModelPerfilEditar.genero
+
+    val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
+    val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
+    val jogoJogadorPerfilUser = sharedViewModelPerfilJogador.jogo
+    val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
+    val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
+
+
+    val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
+    val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
+    val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
+
+    val myTeamsDataTime = sharedGetMyTeamsGeral.time
+    val infoListaJogadores = sharedViewModelGetMyTeamsTimeJogadores.infoJogadoresEmTime
+
+    val idTime = sharedViewModelGetMyTeamsTime.idData
+    val nomeTime = sharedViewModelGetMyTeamsTime.nomeTimeData
+    val jogoEscolhidoTime = sharedViewModelGetMyTeamsTime.jogoData
+    val biografiaTime = sharedViewModelGetMyTeamsTime.biografiaData
+
+    val idjogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.idData
+    val nickNameJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.nickNameData
+    val jogoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.jogoData
+    val funcaoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.funcaoData
+    val eloJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.eloData
+
+    val idProposta = sharedViewModelGetMyTeamsTimePropostas.idData
+    val menssagemProposta = sharedViewModelGetMyTeamsTimePropostas.mensagemData
+
+    if(idUser != null && idUser != 0){
+
+
+        val storage = Firebase.storage
+
+        if (idUser != null && idUser != 0) {
+            imageRef.value = storage.reference.child("${idUser}/profile")
+        }
+
+        if (idUser != null && idUser != 0) {
+            imageOrgRef.value = storage.reference.child("${idUser}/orgprofile")
+        }
+
+        if (idUser != null && idUser != 0) {
+            imageOrgCapaRef.value = storage.reference.child("${idUser}/orgcapa")
+        }
+
+    } else{
+        Log.e("TOKEN NULO", "Token do usuario esta nulo")
+        Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+    }
+
+    //    FIREBASE
+
+    var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
+    var imageOrgCapaUri by remember { mutableStateOf<Uri?>(null) }
+
+    if (imageRef.value != null) { // Verifique a referência do Firebase
+        LaunchedEffect(Unit) {
+            try {
+                val uriOrg = imageRef.value!!.downloadUrl.await()
+                imageUri = uriOrg
+
+                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
+
+            } catch (e: Exception) {
+                // Trate os erros, se houver algum
+                Log.e("DEBUG", "Erro ao buscar imagem: $e")
+            }
+        }
+    }
+
+    if (imageOrgRef.value != null) { // Verifique a referência do Firebase
+        LaunchedEffect(Unit) {
+            try {
+                val uri = imageOrgRef.value!!.downloadUrl.await()
+                imageOrgUri = uri
+
+                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uri}")
+
+            } catch (e: Exception) {
+                // Trate os erros, se houver algum
+                Log.e("DEBUG", "Erro ao buscar imagem: $e")
+            }
+        }
+    }
+
+    if (imageOrgCapaRef.value != null) { // Verifique a referência do Firebase
+        LaunchedEffect(Unit) {
+            try {
+                val uriCapa = imageOrgCapaRef.value!!.downloadUrl.await()
+                imageOrgCapaUri = uriCapa
+
+
+                Log.e("URI CAPA DO USUARIO 02", "URI da imagem do usuario ${uriCapa}")
+            } catch (e: Exception) {
+                // Trate os erros, se houver algum
+                Log.e("DEBUG", "Erro ao buscar imagem: $e")
+            }
+        }
+    }
+
+    // FIREBASE
+    Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUser}")
+    Log.e("URI IMAGEM DO USUARIO 03", "URI da imagem do usuario ${imageUri}")
+    Log.e("URI CAPA DO USUARIO 03", "URI da imagem do usuario ${imageOrgCapaRef}")
+
+
+    Column {
+        Text(text = "${nomeUser}")
+        Text(text = "${emailUser}")
+        Text(text = "${biografiaUser}")
+        Text(text = "${generoPerfilUser}")
+    }
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
@@ -69,14 +245,9 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
         Font(R.font.font_poppins)
     )
 
-    val context = LocalContext.current
-
     var photoUri by remember {
         mutableStateOf<Uri?>(null)
     }
-
-    val bioText =
-        "Esta é a minha biografia estática. Eu sou um exemplo de texto que não pode ser editado."
 
     var launcher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetContent()
@@ -89,6 +260,7 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
             .data(photoUri)
             .build()
     )
+
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -100,14 +272,26 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                 )
             )
     ) {
-
-
+        ///////
         // Imagem Capa
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Image(
-                painter = painterResource(id = R.drawable.background),
-                contentDescription = "",
-            )
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(200.dp)
+
+        ) {
+
+            if (idUser != null && idUser != 0) {
+                // Exiba a imagem se a URI estiver definida
+                AsyncImage(
+                    model = imageOrgCapaUri,
+                    contentDescription = null,
+                    contentScale = ContentScale.Crop
+                )
+            } else {
+                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+
+            }
         }
 
         Row(
@@ -119,20 +303,24 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
         ) {
 
             Icon(
-                modifier = Modifier.clickable { rememberNavController.navigate("home") },
+                modifier = Modifier.clickable {
+                    //rememberNavController.navigate("home")
+                    onNavigate("perfil_organizacao")
+                },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
             )
             Button(
                 onClick = {
-                    rememberNavController.navigate("editar_perfil_time")
+                    //rememberNavController.navigate("editar_perfil_jogador_part_1")
+                    //onNavigate("editar_perfil_organizador_1")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
 
                 Text(
-                    text = "Editar",
+                    text = stringResource(id = R.string.button_editar),
                     color = Color.White,
                     fontFamily = customFontFamilyText,
                     fontWeight = FontWeight(600),
@@ -145,45 +333,64 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                     contentDescription = "Editar"
                 )
             }
-
-
         }
-
 
         // Imagem Perfil
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(top = 80.dp),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .padding(top = 90.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
         ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+            ) {
 
-            Box(contentAlignment = Alignment.BottomEnd) {
-                Card(
-                    modifier = Modifier
-                        .size(150.dp)
-                        .clickable {
-                            launcher.launch("image/*")
-                            var message = "nada"
-                            Log.i(
-                                "PROLISEUM",
-                                "URI: ${photoUri?.path ?: message} "
-                            )
-                        },
-                    shape = CircleShape
-                ) {
-                    Image(
+                Box(contentAlignment = Alignment.TopEnd) {
+                    Card(
                         modifier = Modifier
-                            .background(Color.White),
-                        painter = if (photoUri == null) painterResource(id = R.drawable.superpersonicon) else painter,
-                        contentDescription = "",
-                        contentScale = ContentScale.Crop
-                    )
+                            .size(150.dp),
+                        shape = CircleShape
+                    ) {
+                        if (idUser != null && idUser != 0) {
+                            // Exiba a imagem se a URI estiver definida
+                            AsyncImage(
+                                model = imageOrgUri,
+                                contentDescription = null,
+                                modifier = Modifier.fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                            Text("Carregando imagem...")
+                        }
+                    }
+                    Card(
+                        modifier = Modifier
+                            .size(40.dp),
+                        shape = CircleShape
+                    ) {
+                        if (idUser != null && idUser != 0) {
+                            // Exiba a imagem se a URI estiver definida
+                            AsyncImage(
+                                model = imageUri,
+                                contentDescription = null,
+                                modifier = Modifier
+                                    .fillMaxSize(),
+                                contentScale = ContentScale.Crop
+                            )
+                        } else {
+                            // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                            Text("Carregando imagem...")
+                        }
+                    }
                 }
-
             }
+
         }
+
+
 
         Column(
             modifier = Modifier.padding(top = 250.dp),
@@ -194,43 +401,14 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
             ) {
                 item {
                     Text(
-                        text = "BOOM",
-                        fontSize = 28.sp,
-                        fontWeight = FontWeight(600),
-                        color = Color.White
-                    )
-
-                    Spacer(modifier = Modifier.height(2.dp))
-
-                    Text(
-                        text = "BOOM",
-                        fontSize = 14.sp,
+                        text = "${nomeTime}",
+                        fontSize = 22.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
                     )
 
                     Spacer(modifier = Modifier.height(12.dp))
 
-                    //jogos
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Card(
-                            modifier = Modifier
-                                .height(85.dp)
-                                .width(85.dp),
-                            colors = CardDefaults.cardColors(RedProliseum)
-                        ) {
-                            Image(
-                                painter = painterResource(id = R.drawable.iconlol),
-                                contentDescription = "",
-                                modifier = Modifier.fillMaxSize(),
-                                alignment = Alignment.Center,
-                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                            )
-                        }
-                    }
 
                     //Social
                     Row(
@@ -259,7 +437,7 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                         }
 
                         Text(
-                            text = "Boom",
+                            text = stringResource(id = R.string.label_nome_jogador),
                             color = Color.White,
                             modifier = Modifier.padding(5.dp),
                             fontWeight = FontWeight(600),
@@ -267,7 +445,7 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                             fontSize = 14.sp
                         )
 
-                        Spacer(modifier = Modifier.width(15.dp))
+                        Spacer(modifier = Modifier.width(5.dp))
 
                         Card(
                             modifier = Modifier
@@ -287,7 +465,7 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                         }
 
                         Text(
-                            text = "Boom",
+                            text = stringResource(id = R.string.label_nome_jogador),
                             color = Color.White,
                             modifier = Modifier.padding(5.dp),
                             fontWeight = FontWeight(600),
@@ -295,6 +473,40 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                             fontSize = 14.sp
                         )
 
+                        Spacer(modifier = Modifier.width(5.dp))
+
+
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                        ,
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Card(
+                            modifier = Modifier
+                                .height(55.dp)
+                                .width(55.dp),
+                            colors = CardDefaults.cardColors(RedProliseum)
+                        ) {
+                            Image(
+                                painter =
+                                if ("${jogoEscolhidoTime}" == "0") painterResource(
+                                    id = R.drawable.iconcsgo
+                                )
+                                else if ("${jogoEscolhidoTime}" == "1") painterResource(id = R.drawable.iconlol)
+                                else if ("${jogoEscolhidoTime}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                else painter,
+                                contentDescription = "",
+                                modifier = Modifier.fillMaxSize(),
+                                alignment = Alignment.Center,
+                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                            )
+                        }
                     }
 
                     //Biografia
@@ -319,7 +531,7 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = bioText,
+                                text = "${biografiaTime}",
                                 fontSize = 16.sp,
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
@@ -328,7 +540,6 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                             )
                         }
                     }
-
                     // linha
                     Box(
                         modifier = Modifier
@@ -337,45 +548,64 @@ fun PerfilTimeScreen(rememberNavController: NavController) {
                             .background(Color.Red)
                     )
 
-
-                    Column(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .padding(10.dp),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.Center
-                    ) {
-                        Text(
-                            text = "TITULOS ",
-                            fontSize = 25.sp,
-                            color = Color.White,
-                            fontFamily = customFontFamilyText,
-                            fontWeight = FontWeight(900),
-                        )
-                        Image(
-                            painter = painterResource(id = R.drawable.trofeu),
-                            contentDescription = "",
-                            modifier = Modifier.height(110.dp)
-                        )
-                        Spacer(modifier = Modifier.height(5.dp))
-                        Text(
-                            text = "1º LUGAR COPA PORO",
-                            fontSize = 15.sp,
-                            color = Color.White,
-                            fontFamily = customFontFamilyText,
-                            fontWeight = FontWeight(400),
-                            textAlign = TextAlign.Center,
-
-                            )
-                    }
-                    Box(
+                    LazyRow(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .height(0.5.dp)
-                            .background(Color.Red)
-                    )
-                }
+                            .height(80.dp)
+                            .padding(start = 0.dp, top = 0.dp)
+                        ,
+                        verticalAlignment = Alignment.CenterVertically
 
+                    ){
+                        if (infoListaJogadores != null) {
+                            items(infoListaJogadores.size) {index ->
+                                val infoJogadores = infoListaJogadores[index]
+                                //jogos
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxWidth()
+                                        .padding(start = 20.dp, top = 20.dp)
+                                    ,
+                                    horizontalArrangement = Arrangement.Center
+                                ) {
+                                    Card(
+                                        modifier = Modifier
+                                            .height(55.dp)
+                                            .width(55.dp),
+                                        colors = CardDefaults.cardColors(RedProliseum)
+                                    ) {
+                                        Image(
+                                            painter =
+                                            if ("${infoJogadores.funcao}" == "0") painterResource(
+                                                id = R.drawable.icontoplane
+                                            )
+                                            else if ("${infoJogadores.funcao}" == "1") painterResource(id = R.drawable.iconjungle)
+                                            else if ("${infoJogadores.funcao}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                            else if ("${infoJogadores.funcao}" == "3") painterResource(id = R.drawable.iconsupport)
+                                            else if ("${infoJogadores.funcao}" == "4") painterResource(id = R.drawable.iconadc)
+                                            else painter,
+                                            contentDescription = "",
+                                            modifier = Modifier.fillMaxSize(),
+                                            alignment = Alignment.Center,
+                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                        )
+                                    }
+
+                                    Spacer(modifier = Modifier.width(5.dp))
+
+                                    Text(
+                                        text = "${infoJogadores.nickname}",
+                                        color = Color.White,
+                                        modifier = Modifier.padding(5.dp),
+                                        fontWeight = FontWeight(600),
+                                        fontFamily = customFontFamilyText,
+                                        fontSize = 12.sp
+                                    )
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     }

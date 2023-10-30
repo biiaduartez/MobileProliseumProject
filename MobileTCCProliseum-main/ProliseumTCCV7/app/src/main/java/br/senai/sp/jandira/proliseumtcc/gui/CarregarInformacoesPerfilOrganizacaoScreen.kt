@@ -126,7 +126,7 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
 
                                 val dataMyTeamsTeam = profileMyTeamsData?.time
 
-                                sharedGetMyTeamsGeral.myTeamsDadosTime = dataMyTeamsTeam
+                                sharedGetMyTeamsGeral.time = profileMyTeamsData?.time
 
                                 if (dataMyTeamsUser != null) {
                                     Log.e("ID DO USUARIO", "${dataMyTeamsUser.id}")
@@ -176,6 +176,8 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                                                         sharedViewModelGetMyTeamsUserPropostasDe.biografiaData = userDe.biografia
 
                                                         val jogadoresList = userDe.jogadores
+
+                                                        sharedViewModelGetMyTeamsTimeJogadores.infoJogadoresEmTime = userDe.jogadores
 
                                                         if(jogadoresList != null){
                                                             for (jogadoresInfoList in jogadoresList){

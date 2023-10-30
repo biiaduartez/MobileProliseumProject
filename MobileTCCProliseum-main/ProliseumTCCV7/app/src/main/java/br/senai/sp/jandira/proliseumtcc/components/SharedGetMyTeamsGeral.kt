@@ -6,5 +6,9 @@ import br.senai.sp.jandira.proliseumtcc.model.TimeForGetMyTeams
 
 class SharedGetMyTeamsGeral: ViewModel() {
     var myTeamsDadosGeral: MeusTimes? = null
-    var myTeamsDadosTime: List<TimeForGetMyTeams>? = null
+    var time: List<TimeForGetMyTeams>? = null
+
+    fun getTeamById(teamId: Int): TimeForGetMyTeams? {
+        return time?.find { it.id == teamId }
+    }
 }

@@ -209,7 +209,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     ) {
 
 
-                    TextField(
+                    OutlinedTextField(
                         value = userNamePerfilState,
                         onValueChange = { userNamePerfilState = it },
                         modifier = Modifier
@@ -235,7 +235,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     Spacer(modifier = Modifier.height(20.dp))
 
 
-                    TextField(
+                    OutlinedTextField(
                         value = fullNamePerfilState,
                         onValueChange = {  fullNamePerfilState = it },
                         modifier = Modifier
@@ -262,7 +262,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
 
                     var emailErrorText by rememberSaveable { mutableStateOf("") }
 
-                    TextField(
+                    OutlinedTextField(
                         value = userEmailPerfilState,
                         onValueChange = {  userEmailPerfilState = it
                             emailErrorText = if (it.contains("@")) "" else "Email inválido"
@@ -291,7 +291,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
 
                     var senhaErrorText by rememberSaveable { mutableStateOf("") }
 
-                    TextField(
+                    OutlinedTextField(
                         value = userPasswordPerfilState,
                         onValueChange = {  userPasswordPerfilState = it
                             senhaErrorText = if (isSenhaValida(it)) "" else "Senha inválida"
