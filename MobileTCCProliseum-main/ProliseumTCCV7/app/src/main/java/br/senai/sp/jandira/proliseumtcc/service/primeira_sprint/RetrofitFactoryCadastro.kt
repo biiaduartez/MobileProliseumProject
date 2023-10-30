@@ -6,7 +6,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class RetrofitFactoryCadastro {
 
-    private val URL_BASE = "https://proliseum-back.cyclic.app/"
+    private val URL_BASE = "https://alive-dog-parka.cyclic.app/"
 
     //Guarda a conexão com o servidor, devolve a conexão
     private val retrofitFactoryCadastro = Retrofit
@@ -75,6 +75,10 @@ class RetrofitFactoryCadastro {
 
     fun createTimeService(): CreateTimeService {
         return retrofitFactoryCadastro.create(CreateTimeService::class.java)
+    }
+
+    fun getMyTeamsService(): MeusTimesService {
+        return retrofitFactoryCadastro.create(MeusTimesService::class.java)
     }
 
 

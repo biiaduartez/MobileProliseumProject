@@ -1,10 +1,8 @@
 package br.senai.sp.jandira.proliseumtcc.gui.perfis
 
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -48,19 +45,26 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
-import br.senai.sp.jandira.proliseumtcc.MainActivity
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsTimeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUser
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUserPropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDe
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
@@ -77,8 +81,24 @@ fun PerfilOrganizacaoScreen(
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+
+    // SharedViewModelGetMyTeams de USUARIO
+    sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
+    sharedViewModelGetMyTeamsUserPropostas: SharedViewModelGetMyTeamsUserPropostas,
+    sharedViewModelGetMyTeamsUserPropostasDe: SharedGetMyTeamsUserPropostasDe,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadores: SharedGetMyTeamsUserPropostasDeJogadores,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos: SharedGetMyTeamsUserPropostasDeJogadoresAtivos,
+    sharedViewModelGetMyTeamsUserPropostasDePropostas: SharedGetMyTeamsUserPropostasDePropostas,
+
+    // SharedViewModelGetMyTeams de TIME
+    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
+    sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
+    sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
     onNavigate: (String) -> Unit
 ) {
+
+
 
     val token = sharedViewModelTokenEId.token
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
@@ -104,6 +124,10 @@ fun PerfilOrganizacaoScreen(
 
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
+
+    val userIdGetMyTeams = sharedViewModelGetMyTeamsUser.idData
+
+    Log.d("PerfilUsuarioJogadorScreen", "Id do usuario organizador: $userIdGetMyTeams")
 
     if(idUser != null && idUser != 0){
 
@@ -478,33 +502,6 @@ fun PerfilOrganizacaoScreen(
 
                         Spacer(modifier = Modifier.width(5.dp))
 
-//                        Card(
-//                            modifier = Modifier
-//                                .height(45.dp)
-//                                .width(45.dp),
-//                            colors = CardDefaults.cardColors(RedProliseum)
-//                        ) {
-//                            Image(
-//                                painter =
-//                                if ("${generoPerfilUser}" == "0") painterResource(id = R.drawable.generomasculino)
-//                                else if ("${generoPerfilUser}" == "1") painterResource(id = R.drawable.generofeminino)
-//                                else if ("${generoPerfilUser}" == "2") painterResource(id = R.drawable.generoindefinido)
-//                                else painter,
-//                                contentDescription = "",
-//                                modifier = Modifier.fillMaxSize(),
-//                                alignment = Alignment.Center,
-//                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-//                            )
-//                        }
-//
-//                        Text(
-//                            text = stringResource(id = R.string.label_genero),
-//                            color = Color.White,
-//                            modifier = Modifier.padding(5.dp),
-//                            fontWeight = FontWeight(600),
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 14.sp
-//                        )
 
                     }
 
@@ -548,94 +545,9 @@ fun PerfilOrganizacaoScreen(
                             .background(Color.Red)
                     )
 
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxSize()
-//                            .padding(10.dp),
-//                        horizontalArrangement = Arrangement.SpaceAround,
-//
-//                        )
-//                    {
-//                        Column(
-//                            modifier = Modifier
-//                                .fillMaxHeight()
-//                                .padding(10.dp),
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            Text(
-//                                text = stringResource(id = R.string.label_atualmente),
-//                                fontSize = 15.sp,
-//                                color = Color.White,
-//                                fontFamily = customFontFamilyText,
-//                                fontWeight = FontWeight(900),
-//                            )
-//                            Image(
-//                                painter = painterResource(id = R.drawable.brasao),
-//                                contentDescription = ""
-//                            )
-//                            Text(
-//                                text = stringResource(id = R.string.label_fa),
-//                                fontSize = 15.sp,
-//                                color = Color.White,
-//                                fontFamily = customFontFamilyText,
-//                                fontWeight = FontWeight(400),
-//                            )
-//                        }
-//
-//                        Column(
-//                            modifier = Modifier
-//
-//                                .padding(10.dp),
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            Text(
-//                                text = stringResource(id = R.string.elo),
-//                                fontSize = 15.sp,
-//                                color = Color.White,
-//                                fontFamily = customFontFamilyText,
-//                                fontWeight = FontWeight(900),
-//                            )
-//                            Image(
-//                                painter = if ("${eloJogadorPerfilUser}" == "0") painterResource(id = R.drawable.icone_iron)
-//                                else if ("${eloJogadorPerfilUser}" == "1") painterResource(id = R.drawable.icone_bronze)
-//                                else if ("${eloJogadorPerfilUser}" == "2") painterResource(id = R.drawable.icone_silver)
-//                                else if ("${eloJogadorPerfilUser}" == "3") painterResource(id = R.drawable.icone_gold)
-//                                else if ("${eloJogadorPerfilUser}" == "4") painterResource(id = R.drawable.icone_platinum)
-//                                else if ("${eloJogadorPerfilUser}" == "5") painterResource(id = R.drawable.icone_diamond)
-//                                else if ("${eloJogadorPerfilUser}" == "6") painterResource(id = R.drawable.icone_master)
-//                                else if ("${eloJogadorPerfilUser}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-//                                else if ("${eloJogadorPerfilUser}" == "8") painterResource(id = R.drawable.icone_challenger)
-//                                else painter,
-//                                contentDescription = "",
-//                                modifier = Modifier.size(100.dp)
-//                            )
-//                        }
-//
-//                        Column(
-//                            modifier = Modifier
-//                                .padding(10.dp),
-//                            horizontalAlignment = Alignment.CenterHorizontally
-//                        ) {
-//                            Text(
-//                                text = stringResource(id = R.string.label_trofeu),
-//                                fontSize = 15.sp,
-//                                color = Color.White,
-//                                fontFamily = customFontFamilyText,
-//                                fontWeight = FontWeight(900),
-//                            )
-//                            Image(
-//                                painter = painterResource(id = R.drawable.trofeu_padrao),
-//                                contentDescription = "",
-//                                modifier = Modifier.size(80.dp)
-//                            )
-//                        }
-//                    }
-//                    Box(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .height(0.5.dp)
-//                            .background(Color.Red)
-//                    )
+
+
+
                 }
             }
         }

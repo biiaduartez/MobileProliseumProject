@@ -326,7 +326,7 @@ fun PerfilUsuarioJogadorScreen(
                         Text(
                             text = "${nomeOrganizacao}",
                             modifier = Modifier.clickable {
-                                onNavigate("perfil_organizacao")
+                                onNavigate("carregar_informacoes_perfil_organizacao")
                             },
                             fontSize = 18.sp,
                             fontWeight = FontWeight(600),
