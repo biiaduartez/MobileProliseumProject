@@ -320,7 +320,7 @@ fun PerfilTimeScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    //onNavigate("editar_perfil_organizador_1")
+                    onNavigate("editar_perfil_time")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {

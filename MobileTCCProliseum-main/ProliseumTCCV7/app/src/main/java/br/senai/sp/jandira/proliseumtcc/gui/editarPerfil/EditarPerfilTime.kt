@@ -55,57 +55,82 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
+import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.model.infoAtualizarTime
+import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.rememberAsyncImagePainter
 import coil.request.ImageRequest
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EditarPerfilTime(rememberNavController: NavController) {
+fun EditarPerfilTime(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    onNavigate: (String) -> Unit
+) {
 
     val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
 
-    var editarFotoPerfilTimeUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
+//    var editarFotoPerfilTimeUri by remember {
+//        mutableStateOf<Uri?>(null)
+//    }
+//
+//    var launcherEditarFotoPerfilTime = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.GetContent()
+//    ){
+//        editarFotoPerfilTimeUri = it
+//    }
+//
+//    var painterEditarFotoPerfilTime = rememberAsyncImagePainter(
+//        ImageRequest.Builder(LocalContext.current)
+//            .data(editarFotoPerfilTimeUri)
+//            .build()
+//    )
 
-    var launcherEditarFotoPerfilTime = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ){
-        editarFotoPerfilTimeUri = it
-    }
+//    //EDITAR FOTO DE CAPA DE PERFIL TIME
+//
+//    var editarFotoCapaPerfilTimeUri by remember {
+//        mutableStateOf<Uri?>(null)
+//    }
+//
+//    var launcherEditarFotoCapaPerfilTime = rememberLauncherForActivityResult(
+//        contract = ActivityResultContracts.GetContent()
+//    ){
+//        editarFotoCapaPerfilTimeUri = it
+//    }
+//
+//    var painterEditarFotoCapaPerfilTime = rememberAsyncImagePainter(
+//        ImageRequest.Builder(LocalContext.current)
+//            .data(editarFotoCapaPerfilTimeUri)
+//            .build()
+//    )
 
-    var painterEditarFotoPerfilTime = rememberAsyncImagePainter(
-        ImageRequest.Builder(LocalContext.current)
-            .data(editarFotoPerfilTimeUri)
-            .build()
-    )
+    val token = sharedViewModelTokenEId.token
 
-    //EDITAR FOTO DE CAPA DE PERFIL TIME
+    var nomeTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.nomeTimeData) }
+    var biografiaTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.biografiaData) }
 
-    var editarFotoCapaPerfilTimeUri by remember {
-        mutableStateOf<Uri?>(null)
-    }
+    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
 
-    var launcherEditarFotoCapaPerfilTime = rememberLauncherForActivityResult(
-        contract = ActivityResultContracts.GetContent()
-    ){
-        editarFotoCapaPerfilTimeUri = it
-    }
+    val idUsuarioOrganizador = sharedViewModelPerfilEditar.id
 
-    var painterEditarFotoCapaPerfilTime = rememberAsyncImagePainter(
-        ImageRequest.Builder(LocalContext.current)
-            .data(editarFotoCapaPerfilTimeUri)
-            .build()
-    )
-
-    var selectedGame by remember { mutableStateOf<String?>(null) }
 
     Box(
         modifier = Modifier
@@ -134,7 +159,9 @@ fun EditarPerfilTime(rememberNavController: NavController) {
                 verticalAlignment = Alignment.Top
             ) {
                 Icon(
-                    modifier = Modifier.clickable { rememberNavController.navigate("criar_time") },
+                    modifier = Modifier.clickable {
+                        onNavigate("perfil_time")
+                                                  },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
                     tint = Color.White
@@ -207,11 +234,12 @@ fun EditarPerfilTime(rememberNavController: NavController) {
 
                     Spacer(modifier = Modifier.height(10.dp))
 
-                    var nomeOrganizacaoState by remember { mutableStateOf("") }
+                    //var nomeOrganizacaoState by remember { mutableStateOf("") }
+
 
                     OutlinedTextField(
-                        value = nomeOrganizacaoState,
-                        onValueChange = { newNomeOrganizacao -> nomeOrganizacaoState = newNomeOrganizacao },
+                        value = nomeTime,
+                        onValueChange = { newNomeTime -> nomeTime = newNomeTime },
                         modifier = Modifier
                             .width(370.dp),
                         shape = RoundedCornerShape(16.dp),
@@ -232,6 +260,7 @@ fun EditarPerfilTime(rememberNavController: NavController) {
                         textStyle = TextStyle(color = Color.White)
                     )
 
+
                     Spacer(modifier = Modifier.height(20.dp))
 
                     Row(
@@ -247,282 +276,161 @@ fun EditarPerfilTime(rememberNavController: NavController) {
                         )
                     }
 
+//                    Spacer(modifier = Modifier.height(20.dp))
+//
+//                    Column(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        Box(contentAlignment = Alignment.BottomEnd){
+//                            Card(
+//                                modifier = Modifier
+//                                    .size(100.dp)
+//                                    .clickable {
+//                                        launcherEditarFotoPerfilTime.launch("image/*")
+//                                        var message = "nada"
+//                                        Log.i(
+//                                            "PROLISEUM",
+//                                            "URI: ${editarFotoPerfilTimeUri?.path ?: message} "
+//                                        )
+//                                    },
+//                                shape = CircleShape
+//                            ){
+//                                Image(
+//                                    modifier = Modifier
+//                                        .background(Color.White),
+//                                    painter = if(editarFotoPerfilTimeUri == null) painterResource (id = R.drawable.superpersonicon) else painterEditarFotoPerfilTime,
+//                                    contentDescription = "",
+//                                    contentScale = ContentScale.Crop
+//                                )
+//                            }
+//                            Icon(
+//                                painter = painterResource(id = R.drawable.add_a_photo),
+//                                contentDescription = "",
+//                                tint = RedProliseum
+//                            )
+//
+//                        }
+//                    }
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+//
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                    ) {
+//                        Text(
+//                            text = "CAPA PERFIL:",
+//                            fontFamily = customFontFamilyText,
+//                            fontSize = 25.sp,
+//                            fontWeight = FontWeight(900),
+//                            color = Color.White
+//                        )
+//                    }
+//
+//
+//                    Spacer(modifier = Modifier.height(20.dp))
+//
+//                    Column(
+//                        modifier = Modifier.fillMaxWidth(),
+//                        horizontalAlignment = Alignment.CenterHorizontally
+//                    ) {
+//                        Box(contentAlignment = Alignment.BottomEnd){
+//                            Card(
+//                                modifier = Modifier
+//                                    .height(200.dp)
+//                                    .width(370.dp)
+//                                    .clickable {
+//                                        launcherEditarFotoCapaPerfilTime.launch("image/*")
+//                                        var message = "nada"
+//                                        Log.i(
+//                                            "PROLISEUM",
+//                                            "URI: ${editarFotoCapaPerfilTimeUri?.path ?: message} "
+//                                        )
+//                                    },
+//                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
+//                            ){
+//                                Image(
+//                                    modifier = Modifier
+//                                        .background(Color.White),
+//                                    painter = if(editarFotoCapaPerfilTimeUri == null) painterResource (id = R.drawable.capa_perfil_usuario) else painterEditarFotoCapaPerfilTime,
+//                                    contentDescription = "",
+//                                    contentScale = ContentScale.Crop
+//                                )
+//                            }
+//                            Icon(
+//                                painter = painterResource(id = R.drawable.add_circle),
+//                                contentDescription = "",
+//                                tint = RedProliseum
+//                            )
+//
+//                        }
+//                    }
+
                     Spacer(modifier = Modifier.height(20.dp))
 
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(contentAlignment = Alignment.BottomEnd){
-                            Card(
-                                modifier = Modifier
-                                    .size(100.dp)
-                                    .clickable {
-                                        launcherEditarFotoPerfilTime.launch("image/*")
-                                        var message = "nada"
-                                        Log.i(
-                                            "PROLISEUM",
-                                            "URI: ${editarFotoPerfilTimeUri?.path ?: message} "
-                                        )
-                                    },
-                                shape = CircleShape
-                            ){
-                                Image(
-                                    modifier = Modifier
-                                        .background(Color.White),
-                                    painter = if(editarFotoPerfilTimeUri == null) painterResource (id = R.drawable.superpersonicon) else painterEditarFotoPerfilTime,
-                                    contentDescription = "",
-                                    contentScale = ContentScale.Crop
+                    //var fullBioJogadorState by remember { mutableStateOf("") }
+
+                    biografiaTime?.let {
+                        OutlinedTextField(
+                            value = it,
+                            onValueChange = { newBioTime -> biografiaTime = newBioTime },
+                            modifier = Modifier
+                                .height(220.dp)
+                                .width(370.dp),
+                            shape = RoundedCornerShape(16.dp),
+                            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
+                            label = {
+                                Text(
+                                    text = "BIOGRAFIA",
+                                    color = Color.White,
+                                    fontFamily = customFontFamilyText,
+                                    fontWeight = FontWeight(600),
                                 )
-                            }
-                            Icon(
-                                painter = painterResource(id = R.drawable.add_a_photo),
-                                contentDescription = "",
-                                tint = RedProliseum
-                            )
-
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "CAPA PERFIL:",
-                            fontFamily = customFontFamilyText,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(900),
-                            color = Color.White
+                            },
+                            colors = TextFieldDefaults.outlinedTextFieldColors(
+                                unfocusedBorderColor = Color(255, 255, 255, 255),
+                                focusedBorderColor = Color(255, 255, 255, 255),
+                                cursorColor = Color.White
+                            ),
+                            textStyle = TextStyle(color = Color.White)
                         )
                     }
-
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Column(
-                        modifier = Modifier.fillMaxWidth(),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-                        Box(contentAlignment = Alignment.BottomEnd){
-                            Card(
-                                modifier = Modifier
-                                    .height(200.dp)
-                                    .width(370.dp)
-                                    .clickable {
-                                        launcherEditarFotoCapaPerfilTime.launch("image/*")
-                                        var message = "nada"
-                                        Log.i(
-                                            "PROLISEUM",
-                                            "URI: ${editarFotoCapaPerfilTimeUri?.path ?: message} "
-                                        )
-                                    },
-                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-                            ){
-                                Image(
-                                    modifier = Modifier
-                                        .background(Color.White),
-                                    painter = if(editarFotoCapaPerfilTimeUri == null) painterResource (id = R.drawable.capa_perfil_usuario) else painterEditarFotoCapaPerfilTime,
-                                    contentDescription = "",
-                                    contentScale = ContentScale.Crop
-                                )
-                            }
-                            Icon(
-                                painter = painterResource(id = R.drawable.add_circle),
-                                contentDescription = "",
-                                tint = RedProliseum
-                            )
-
-                        }
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = stringResource(id = R.string.label_game),
-                            fontFamily = customFontFamilyText,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(900),
-                            color = Color.White
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-
-                    ToggleButtonJogoUI{ jogo ->
-                        selectedGame = jogo.toString()
-                    }
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "REDES SOCIAIS:",
-                            fontFamily = customFontFamilyText,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(900),
-                            color = Color.White
-                        )
-                    }
-
-                    Spacer(modifier = Modifier.height(10.dp))
-
-                    var editarRedeSocialPerfilJogador1State by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = editarRedeSocialPerfilJogador1State,
-                        onValueChange = { newEditarRedeSocialPerfilJogador1 -> editarRedeSocialPerfilJogador1State = newEditarRedeSocialPerfilJogador1 },
-                        modifier = Modifier
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "Rede social",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    var editarRedeSocialPerfilJogador2State by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = editarRedeSocialPerfilJogador2State,
-                        onValueChange = { newEditarRedeSocialPerfilJogador2 -> editarRedeSocialPerfilJogador2State = newEditarRedeSocialPerfilJogador2 },
-                        modifier = Modifier
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "Rede social",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    var editarRedeSocialPerfilJogador3State by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = editarRedeSocialPerfilJogador3State,
-                        onValueChange = { newEditarRedeSocialPerfilJogador3 -> editarRedeSocialPerfilJogador3State = newEditarRedeSocialPerfilJogador3 },
-                        modifier = Modifier
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "Rede social",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    var editarRedeSocialPerfilJogador4State by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = editarRedeSocialPerfilJogador4State,
-                        onValueChange = { newEditarRedeSocialPerfilJogador4 -> editarRedeSocialPerfilJogador4State = newEditarRedeSocialPerfilJogador4 },
-                        modifier = Modifier
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "Rede social",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
-
-                    Spacer(modifier = Modifier.height(20.dp))
-
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Text(
-                            text = "BIOGRAFIA:",
-                            fontFamily = customFontFamilyText,
-                            fontSize = 25.sp,
-                            fontWeight = FontWeight(900),
-                            color = Color.White
-                        )
-                    }
-
-                    var fullBioJogadorState by remember { mutableStateOf("") }
-
-                    OutlinedTextField(
-                        value = fullBioJogadorState,
-                        onValueChange = { newFullBioJogador -> fullBioJogadorState = newFullBioJogador },
-                        modifier = Modifier
-                            .height(220.dp)
-                            .width(370.dp),
-                        shape = RoundedCornerShape(16.dp),
-                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
-                        label = {
-                            Text(
-                                text = "BIOGRAFIA",
-                                color = Color.White,
-                                fontFamily = customFontFamilyText,
-                                fontWeight = FontWeight(600),
-                            )
-                        },
-                        colors = TextFieldDefaults.outlinedTextFieldColors(
-                            unfocusedBorderColor = Color(255, 255, 255, 255),
-                            focusedBorderColor = Color(255, 255, 255, 255),
-                            cursorColor = Color.White
-                        ),
-                        textStyle = TextStyle(color = Color.White)
-                    )
 
                     Button(
-                        onClick = { rememberNavController.navigate("home")  },
+                        onClick = {
+                            if(selectedTimeId != null && token != null && idUsuarioOrganizador != null){
+                                AtualizarDadosPerfilTime(
+                                    sharedViewModelTokenEId = sharedViewModelTokenEId,
+                                    sharedGetMyTeamsGeral = sharedGetMyTeamsGeral,
+                                    nomeTimeAtualizar = nomeTime,
+                                    biografiaTimeAtualizar = biografiaTime
+                                )
+                                onNavigate("carregar_informacoes_perfil_usuario")
+                            }
+
+//                            uriOrganizacao?.let {
+//                                StorageUtil.uploadToStorage(
+//                                    uri = it,
+//                                    context = contextoEditarPerfilJogador1,
+//                                    type = "image",
+//                                    id = "${idUserSharedState}",
+//                                    "orgprofile"
+//                                )
+//                            }
+//
+//                            uriCapaOrganizacao?.let {
+//                                StorageUtil.uploadToStorage(
+//                                    uri = it,
+//                                    context = contextoEditarPerfilJogador1,
+//                                    type = "image",
+//                                    id = "${idUserSharedState}",
+//                                    "orgcapa"
+//                                )
+//                            }
+
+
+                                  },
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .width(300.dp)
@@ -537,7 +445,7 @@ fun EditarPerfilTime(rememberNavController: NavController) {
                             tint = Color(255, 255, 255, 255)
                         )
                         Text(
-                            text = "SALVAR ALTERAÇÕES",
+                            text = "SALVAR ALTERAÇÕES DE TIME",
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center,
                             color = Color.White,
@@ -550,6 +458,61 @@ fun EditarPerfilTime(rememberNavController: NavController) {
                 }
             }
         }
+    }
+}
+
+fun AtualizarDadosPerfilTime(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+    nomeTimeAtualizar: String,
+    biografiaTimeAtualizar: String?,
+) {
+    val token = sharedViewModelTokenEId.token
+
+    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
+
+    // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados
+    val editarPerfilTimeData = infoAtualizarTime(
+        nome_time = nomeTimeAtualizar,
+        biografia = biografiaTimeAtualizar
+    )
+
+    // Obtenha o serviço Retrofit para editar o perfil do usuário
+    val editarPerfilTimeService = RetrofitFactoryCadastro().postUpdateTimeService()
+
+    // Realize a chamada de API para editar o perfil
+    if (selectedTimeId != null) {
+        editarPerfilTimeService.postUpdateTime("Bearer " + token, selectedTimeId, editarPerfilTimeData)
+            .enqueue(object : Callback<infoAtualizarTime> {
+                override fun onResponse(
+                    call: Call<infoAtualizarTime>,
+                    response: Response<infoAtualizarTime>
+                ) {
+                    if (response.isSuccessful) {
+                        Log.d(
+                            "EditarPerfilJogadorPart1",
+                            "Perfil de usuário atualizado com sucesso: ${response.code()}"
+                        )
+                        // Trate a resposta bem-sucedida, se necessário
+                    } else {
+                        // Trate a resposta não bem-sucedida
+                        Log.d(
+                            "EditarPerfilJogadorPart1",
+                            "Falha ao atualizar o perfil do usuário: ${response.code()}"
+                        )
+                        // Log do corpo da resposta (se necessário)
+                        Log.d(
+                            "EditarPerfilJogadorPart1",
+                            "Corpo da resposta: ${response.errorBody()?.string()}"
+                        )
+                    }
+                }
+
+                override fun onFailure(call: Call<infoAtualizarTime>, t: Throwable) {
+                    // Trate o erro de falha na rede.
+                    Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
+                }
+            })
     }
 }
 

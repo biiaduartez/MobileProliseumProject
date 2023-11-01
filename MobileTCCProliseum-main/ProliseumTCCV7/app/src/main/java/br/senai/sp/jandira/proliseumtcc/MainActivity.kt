@@ -54,6 +54,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
+import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilTime
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
@@ -333,8 +334,16 @@ fun MainScreen() {
             }
         }
 
-
-
+        val editarPerfilTime: @Composable () -> Unit = {
+            EditarPerfilTime(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditar,
+                sharedGetMyTeamsGeral,
+                sharedViewModelGetMyTeamsTime,
+            ) {
+                currentScreen = it
+            }
+        }
 
 
         // Navegação animada
@@ -366,6 +375,7 @@ fun MainScreen() {
                     "criar_time" -> criarTime()
                     "carregar_informacoes_perfil_organizacao" -> carregarInformacoesPerfilOrganizacao()
                     "perfil_time" -> perfilTimeScreen()
+                    "editar_perfil_time" -> editarPerfilTime()
                     else -> startScreen()
                 }
             }

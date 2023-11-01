@@ -81,6 +81,12 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(MeusTimesService::class.java)
     }
 
+    fun postUpdateTimeService(): AtualizarInfoTimeService {
+        return retrofitFactoryCadastro.create(AtualizarInfoTimeService::class.java)
+    }
+
+
+
 
 
 }
