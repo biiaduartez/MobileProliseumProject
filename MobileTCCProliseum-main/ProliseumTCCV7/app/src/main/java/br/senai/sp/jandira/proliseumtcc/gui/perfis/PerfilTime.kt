@@ -149,6 +149,12 @@ fun PerfilTimeScreen(
     val funcaoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.funcaoData
     val eloJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.eloData
 
+    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
+    Log.e("ID DO TIME COMPARTILHADO","ID compartilhado ${selectedTimeId}")
+
+    val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
+    Log.e("ID DO TIME ESCOLHIDO","o id do time da tela PerfilTime ${team}")
+
     val idProposta = sharedViewModelGetMyTeamsTimePropostas.idData
     val menssagemProposta = sharedViewModelGetMyTeamsTimePropostas.mensagemData
 
@@ -401,7 +407,7 @@ fun PerfilTimeScreen(
             ) {
                 item {
                     Text(
-                        text = "${nomeTime}",
+                        text = team?.nome_time ?: "Time não encontrado",
                         fontSize = 22.sp,
                         fontWeight = FontWeight(600),
                         color = Color.White
@@ -495,11 +501,11 @@ fun PerfilTimeScreen(
                         ) {
                             Image(
                                 painter =
-                                if ("${jogoEscolhidoTime}" == "0") painterResource(
+                                if ("${team?.jogo}" == "0") painterResource(
                                     id = R.drawable.iconcsgo
                                 )
-                                else if ("${jogoEscolhidoTime}" == "1") painterResource(id = R.drawable.iconlol)
-                                else if ("${jogoEscolhidoTime}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                else if ("${team?.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                else if ("${team?.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),
@@ -531,7 +537,7 @@ fun PerfilTimeScreen(
                                 .padding(10.dp)
                         ) {
                             Text(
-                                text = "${biografiaTime}",
+                                text = "${team?.biografia ?: "Biografia não encontrada"}",
                                 fontSize = 16.sp,
                                 color = Color.White,
                                 fontFamily = customFontFamilyText,
@@ -548,42 +554,35 @@ fun PerfilTimeScreen(
                             .background(Color.Red)
                     )
 
-                    LazyRow(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(80.dp)
-                            .padding(start = 0.dp, top = 0.dp)
-                        ,
-                        verticalAlignment = Alignment.CenterVertically
+                    if (team != null) {
+//                        // Exibir informações do time
+//                        Text(text = "Nome do Time: ${team.nomeTime}")
+//                        Text(text = "Jogo do Time: ${team.jogo}")
+//                        Text(text = "Biografia do Time: ${team.biografia}")
 
-                    ){
-                        if (infoListaJogadores != null) {
-                            items(infoListaJogadores.size) {index ->
-                                val infoJogadores = infoListaJogadores[index]
-                                //jogos
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(start = 20.dp, top = 20.dp)
-                                    ,
-                                    horizontalArrangement = Arrangement.Center
-                                ) {
+                        // Exibir jogadores do time
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth().height(80.dp).padding(start = 0.dp, top = 0.dp),
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            if (team.jogadores != null) {
+                                items(team.jogadores.size) { index ->
+                                    val jogador = team.jogadores[index]
+
+                                    // Exibir informações dos jogadores
                                     Card(
-                                        modifier = Modifier
-                                            .height(55.dp)
-                                            .width(55.dp),
+                                        modifier = Modifier.height(55.dp).width(55.dp),
                                         colors = CardDefaults.cardColors(RedProliseum)
                                     ) {
                                         Image(
-                                            painter =
-                                            if ("${infoJogadores.funcao}" == "0") painterResource(
-                                                id = R.drawable.icontoplane
-                                            )
-                                            else if ("${infoJogadores.funcao}" == "1") painterResource(id = R.drawable.iconjungle)
-                                            else if ("${infoJogadores.funcao}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                            else if ("${infoJogadores.funcao}" == "3") painterResource(id = R.drawable.iconsupport)
-                                            else if ("${infoJogadores.funcao}" == "4") painterResource(id = R.drawable.iconadc)
-                                            else painter,
+                                            painter = when (jogador.funcao) {
+                                                0 -> painterResource(id = R.drawable.icontoplane)
+                                                1 -> painterResource(id = R.drawable.iconjungle)
+                                                2 -> painterResource(id = R.drawable.iconmidlane)
+                                                3 -> painterResource(id = R.drawable.iconsupport)
+                                                4 -> painterResource(id = R.drawable.iconadc)
+                                                else -> painter
+                                            },
                                             contentDescription = "",
                                             modifier = Modifier.fillMaxSize(),
                                             alignment = Alignment.Center,
@@ -594,7 +593,7 @@ fun PerfilTimeScreen(
                                     Spacer(modifier = Modifier.width(5.dp))
 
                                     Text(
-                                        text = "${infoJogadores.nickname}",
+                                        text = "${jogador.nickname}",
                                         color = Color.White,
                                         modifier = Modifier.padding(5.dp),
                                         fontWeight = FontWeight(600),

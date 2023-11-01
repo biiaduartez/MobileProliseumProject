@@ -1,13 +1,11 @@
 package br.senai.sp.jandira.proliseumtcc.gui.perfis
 
-import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -22,10 +20,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyHorizontalGrid
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -52,7 +46,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
@@ -535,8 +528,13 @@ fun PerfilOrganizacaoScreen(
                                 ) {
                                     Button(
                                         onClick = {
-                                            val team = sharedGetMyTeamsGeral.getTeamById(idTime) // teamId é o ID do time clicado
-                                            if (team != null) {
+                                            val timeId = time.id // Obtenha o ID do time clicado
+                                            val verificacao = true
+
+                                            if (verificacao == true) {
+                                                verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
+                                                sharedGetMyTeamsGeral.selectedTimeId = timeId
+                                                Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
                                                 onNavigate("perfil_time")
                                             }
 
@@ -582,6 +580,15 @@ fun PerfilOrganizacaoScreen(
             }
         }
     }
+}
+
+fun verificarIdDoTime(
+    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+    timeId: Int // Adicione um novo parâmetro para o ID do time
+) {
+    val team = sharedGetMyTeamsGeral.getTeamById(timeId) // Use o ID do time passado como argumento
+    Log.e("ID TIME 01", "Aqui está o id do time escolhido $team")
 }
 
 @Composable

@@ -311,7 +311,6 @@ fun MainScreen() {
             }
         }
 
-        // Tela de perfil de time
         val perfilTimeScreen: @Composable () -> Unit = {
             PerfilTimeScreen(
                 sharedViewModelTokenEId,
