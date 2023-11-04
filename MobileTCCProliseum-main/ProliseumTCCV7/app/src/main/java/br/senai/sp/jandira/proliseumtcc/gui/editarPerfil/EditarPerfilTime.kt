@@ -124,13 +124,16 @@ fun EditarPerfilTime(
 
     val token = sharedViewModelTokenEId.token
 
-    var nomeTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.nomeTimeData) }
-    var biografiaTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.biografiaData) }
+    val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
+    Log.e("ID DO TIME COMPARTILHADO 02","ID compartilhado EditarPerfilTime ${selectedTimeId}")
 
-    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
+    val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
+    Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
 
     val idUsuarioOrganizador = sharedViewModelPerfilEditar.id
 
+    var nomeTime by remember { mutableStateOf(team?.nome_time ?: "Nome do Time não encontrado") }
+    var biografiaTime by remember { mutableStateOf(team?.biografia ?: "Biografia do Time não encontrado") }
 
     Box(
         modifier = Modifier
@@ -268,7 +271,7 @@ fun EditarPerfilTime(
                             .fillMaxWidth()
                     ) {
                         Text(
-                            text = "FOTO TIME",
+                            text = "BIOGRAFIA",
                             fontFamily = customFontFamilyText,
                             fontSize = 25.sp,
                             fontWeight = FontWeight(900),
@@ -445,7 +448,7 @@ fun EditarPerfilTime(
                             tint = Color(255, 255, 255, 255)
                         )
                         Text(
-                            text = "SALVAR ALTERAÇÕES DE TIME",
+                            text = "SALVAR ALTERAÇÕES",
                             fontSize = 16.sp,
                             textAlign = TextAlign.Center,
                             color = Color.White,

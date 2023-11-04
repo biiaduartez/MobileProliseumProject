@@ -149,8 +149,9 @@ fun PerfilTimeScreen(
     val funcaoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.funcaoData
     val eloJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.eloData
 
-    val selectedTimeId = sharedGetMyTeamsGeral.selectedTimeId
+    val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
     Log.e("ID DO TIME COMPARTILHADO","ID compartilhado ${selectedTimeId}")
+
 
     val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
     Log.e("ID DO TIME ESCOLHIDO","o id do time da tela PerfilTime ${team}")

@@ -244,7 +244,7 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                                         val timeBiografiaTime = times.biografia
 
                                         sharedViewModelGetMyTeamsTime.idData = times.id
-                                        sharedViewModelGetMyTeamsTime.nomeTimeData = times.nome_time
+                                        sharedViewModelGetMyTeamsTime.nomeTimeData = times.nome_time.toString()
                                         sharedViewModelGetMyTeamsTime.jogoData = times.jogo
                                         sharedViewModelGetMyTeamsTime.biografiaData = times.biografia
 
