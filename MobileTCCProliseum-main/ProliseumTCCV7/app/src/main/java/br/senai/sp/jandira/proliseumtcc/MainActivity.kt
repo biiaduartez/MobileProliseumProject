@@ -340,6 +340,7 @@ fun MainScreen() {
                 sharedViewModelPerfilEditar,
                 sharedGetMyTeamsGeral,
                 sharedViewModelGetMyTeamsTime,
+                sharedViewModelImageUri
             ) {
                 currentScreen = it
             }

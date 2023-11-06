@@ -87,6 +87,8 @@ fun CriarTimeScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    val token = sharedViewModelTokenEId.token
+
     //FONTE
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
@@ -101,40 +103,44 @@ fun CriarTimeScreen(
 
     //FOTO DE PERFIL
 
-    var uri by remember {
+    var uriTime by remember {
         mutableStateOf<Uri?>(null)
     }
 
     val singlePhotoPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
-            uri = it
+            uriTime = it
         }
     )
 
     var painterPhotoPerfil = rememberAsyncImagePainter(
         ImageRequest.Builder(LocalContext.current)
-            .data(uri)
+            .data(uriTime)
             .build()
     )
 
     //FOTO CAPA DE PERFIL
-    var uriCapa by remember {
+    var uriCapaTime by remember {
         mutableStateOf<Uri?>(null)
     }
 
     val singlePhotoCapaPicker = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.PickVisualMedia(),
         onResult = {
-            uriCapa = it
+            uriCapaTime = it
         }
     )
 
     var painterPhotoCapaPerfil = rememberAsyncImagePainter(
         ImageRequest.Builder(LocalContext.current)
-            .data(uriCapa)
+            .data(uriCapaTime)
             .build()
     )
+
+    var context = LocalContext.current
+
+    val userResponseDataId = remember { mutableStateOf("") }
 
 
 //    var selectedGender by remember { mutableStateOf<Int?>(null) }
@@ -251,7 +257,114 @@ fun CriarTimeScreen(
                             textStyle = TextStyle(color = Color.White)
                         )
 
-                        Spacer(modifier = Modifier.height(10.dp))
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        // FOTO DE PERFIL
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+
+                            Box(contentAlignment = Alignment.BottomEnd) {
+
+                                Card(
+                                    modifier = Modifier
+                                        .size(100.dp)
+                                        .clickable {
+                                            singlePhotoPicker.launch(
+                                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                            )
+                                            var message = "nada"
+                                            Log.i(
+                                                "PROLISEUM",
+                                                "URI: ${uriTime?.path ?: message} "
+                                            )
+                                        },
+                                    shape = CircleShape
+                                ) {
+                                    Image(
+                                        painter =
+                                        if (uriTime == null)
+                                            painterResource(id = R.drawable.superpersonicon)
+                                        else painterPhotoPerfil,
+                                        contentDescription = "",
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                                Icon(
+                                    painter = painterResource(id = R.drawable.add_a_photo),
+                                    contentDescription = "",
+                                    tint = RedProliseum
+                                )
+
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        //FOTO CAPA DE PERFIL
+                        Column(
+                            modifier = Modifier.fillMaxSize(),
+                            horizontalAlignment = Alignment.CenterHorizontally,
+                            verticalArrangement = Arrangement.Center
+                        ) {
+
+                            Box(contentAlignment = Alignment.BottomEnd) {
+
+                                Card(
+                                    modifier = Modifier
+                                        .height(200.dp)
+                                        .width(320.dp)
+                                        .clickable {
+                                            singlePhotoCapaPicker.launch(
+                                                PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                            )
+                                            var message = "nada"
+                                            Log.i(
+                                                "PROLISEUM",
+                                                "URI: ${uriCapaTime?.path ?: message} "
+                                            )
+                                        },
+                                    shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+                                ) {
+                                    Image(
+                                        painter =
+                                        if (uriCapaTime == null)
+                                            painterResource(id = R.drawable.capa_perfil_usuario)
+                                        else painterPhotoCapaPerfil,
+                                        contentDescription = "",
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                }
+                                Icon(
+                                    painter = painterResource(id = R.drawable.add_circle),
+                                    contentDescription = "",
+                                    tint = RedProliseum
+                                )
+
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
+
+                        Column(
+                            modifier = Modifier
+                                .padding(start = 30.dp),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            Text(
+                                text = stringResource(id = R.string.label_biografia),
+                                fontFamily = customFontFamilyText,
+                                fontSize = 22.sp,
+                                fontWeight = FontWeight(900),
+                                color = Color.White
+                            )
+                        }
+
+                        Spacer(modifier = Modifier.height(20.dp))
 
                         OutlinedTextField(
                             value = biografiaTime,
@@ -297,6 +410,103 @@ fun CriarTimeScreen(
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
 
+                        fun CriarTime(
+                            sharedViewModelTokenEId: SharedViewTokenEId,
+                            nomeTime: String,
+                            biografiaTime: String?,
+                            jogoTime: String?,
+
+                            ) {
+                            val token = sharedViewModelTokenEId.token
+
+                            val criarTimeData = CreateTime(
+                                nome_time = nomeTime,
+                                biografia = biografiaTime,
+                                jogo = jogoTime,
+                                id = null
+                            )
+
+                            // Obtenha o serviço Retrofit para editar o perfil do usuário
+                            val createTimeService = RetrofitFactoryCadastro().createTimeService()
+
+                            // Realize a chamada de API para editar o perfil
+                            createTimeService.postCreateTime("Bearer " + token, criarTimeData)
+                                .enqueue(object : Callback<CreateTime> {
+                                    override fun onResponse(
+                                        call: Call<CreateTime>,
+                                        response: Response<CreateTime>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            val dadosUsuario = response.body()
+
+                                            Log.d(
+                                                "EditarPerfilJogadorPart1",
+                                                "Perfil de usuário atualizado com sucesso: ${response.code()}"
+                                            )
+
+                                            if (dadosUsuario != null) {
+                                                userResponseDataId.value = dadosUsuario.id.toString()
+                                                Log.i(
+                                                    "ID USUARIO",
+                                                    "Aqui esta o ID do usuario ${userResponseDataId.value}"
+                                                )
+                                            }
+
+                                            if (userResponseDataId.value != null && userResponseDataId.value != "0") {
+                                                uriTime?.let {
+                                                    StorageTeamUtil.uploadToTeamStorage(
+                                                        uri = it,
+                                                        context = context,
+                                                        type = "team",
+                                                        id = "${userResponseDataId.value}",
+                                                        "profile"
+                                                    )
+                                                }
+
+                                                Log.i(
+                                                    "URI IMAGEM 06",
+                                                    "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriTime}"
+                                                )
+
+                                                uriCapaTime?.let {
+                                                    StorageTeamUtil.uploadToTeamStorage(
+                                                        uri = it,
+                                                        context = context,
+                                                        type = "team",
+                                                        id = "${userResponseDataId.value}",
+                                                        "capa"
+                                                    )
+                                                }
+
+                                                Log.i(
+                                                    "URI CAPA 06",
+                                                    "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriCapaTime}"
+                                                )
+
+                                            }
+
+                                            // Trate a resposta bem-sucedida, se necessário
+                                        } else {
+                                            // Trate a resposta não bem-sucedida
+                                            Log.d(
+                                                "EditarPerfilJogadorPart1",
+                                                "Falha ao atualizar o perfil do usuário: ${response.code()}"
+                                            )
+                                            // Log do corpo da resposta (se necessário)
+                                            Log.d(
+                                                "EditarPerfilJogadorPart1",
+                                                "Corpo da resposta: ${response.errorBody()?.string()}"
+                                            )
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<CreateTime>, t: Throwable) {
+                                        // Trate o erro de falha na rede.
+                                        Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
+                                    }
+                                })
+                        }
+
                         Button(
                             onClick = {
                                 CriarTime(
@@ -307,6 +517,8 @@ fun CriarTimeScreen(
                                 )
 
                                 Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
+
+
 
                                 onNavigate("carregar_informacoes_perfil_usuario")
                             },
@@ -339,57 +551,7 @@ fun CriarTimeScreen(
     }
 }
 
-fun CriarTime(
-    sharedViewModelTokenEId: SharedViewTokenEId,
-    nomeTime: String,
-    biografiaTime: String?,
-    jogoTime: String?,
 
-) {
-    val token = sharedViewModelTokenEId.token
-
-    val criarTimeData = CreateTime(
-        nome_time = nomeTime,
-        biografia = biografiaTime,
-        jogo = jogoTime,
-    )
-
-    // Obtenha o serviço Retrofit para editar o perfil do usuário
-    val createTimeService = RetrofitFactoryCadastro().createTimeService()
-
-    // Realize a chamada de API para editar o perfil
-    createTimeService.postCreateTime("Bearer " + token, criarTimeData)
-        .enqueue(object : Callback<CreateTime> {
-            override fun onResponse(
-                call: Call<CreateTime>,
-                response: Response<CreateTime>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d(
-                        "EditarPerfilJogadorPart1",
-                        "Perfil de usuário atualizado com sucesso: ${response.code()}"
-                    )
-                    // Trate a resposta bem-sucedida, se necessário
-                } else {
-                    // Trate a resposta não bem-sucedida
-                    Log.d(
-                        "EditarPerfilJogadorPart1",
-                        "Falha ao atualizar o perfil do usuário: ${response.code()}"
-                    )
-                    // Log do corpo da resposta (se necessário)
-                    Log.d(
-                        "EditarPerfilJogadorPart1",
-                        "Corpo da resposta: ${response.errorBody()?.string()}"
-                    )
-                }
-            }
-
-            override fun onFailure(call: Call<CreateTime>, t: Throwable) {
-                // Trate o erro de falha na rede.
-                Log.d("EditarPerfilJogadorPart1", "Erro de rede: ${t.message}")
-            }
-        })
-}
 
 @Preview(showBackground = true)
 @Composable

@@ -115,6 +115,7 @@ fun EditarPerfilOrganizadorPart1(
 
     Log.i("ID USUARIO", "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}")
 
+
     //FOTO DE PERFIL
 
     var uriOrganizacao by remember {
@@ -155,15 +156,10 @@ fun EditarPerfilOrganizadorPart1(
     val uriImageOrganizacao = sharedViewModelImageUri.imageUri
 
     val uriImageCapaOrganizacao = sharedViewModelImageUri.imageCapaUri
-
-    Log.i(
-        "URI IMAGEM 04",
-        "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImageOrganizacao}"
-    )
-    Log.i(
-        "URI CAPA 04",
-        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
-    )
+//    Log.i(
+//        "URI CAPA 04",
+//        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
+//    )
 
     val contextoEditarPerfilJogador1 = LocalContext.current
 
@@ -437,14 +433,14 @@ fun EditarPerfilOrganizadorPart1(
                                     "ID USUARIO 02",
                                     "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}"
                                 )
-                                Log.i(
-                                    "URI IMAGEM 05",
-                                    "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImageOrganizacao}"
-                                )
-                                Log.i(
-                                    "URI CAPA 05",
-                                    "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
-                                )
+//                                Log.i(
+//                                    "URI IMAGEM 05",
+//                                    "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImageOrganizacao}"
+//                                )
+//                                Log.i(
+//                                    "URI CAPA 05",
+//                                    "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
+//                                )
 
                                 if (idUserSharedState != null && idUserSharedState != 0) {
                                     uriOrganizacao?.let {

@@ -112,8 +112,8 @@ fun PerfilTimeScreen(
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
-    val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
-    val imageOrgCapaRef = remember { mutableStateOf<StorageReference?>(null) }
+    val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
+    val imageTimeCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
     val idUser = sharedViewModelPerfilEditar.id
     val nomeUser = sharedViewModelPerfilEditar.nome_usuario
@@ -169,11 +169,15 @@ fun PerfilTimeScreen(
         }
 
         if (idUser != null && idUser != 0) {
-            imageOrgRef.value = storage.reference.child("${idUser}/orgprofile")
+            if (team != null) {
+                imageTimeRef.value = storage.reference.child("team/${team.id}/profile")
+            }
         }
 
         if (idUser != null && idUser != 0) {
-            imageOrgCapaRef.value = storage.reference.child("${idUser}/orgcapa")
+            if (team != null) {
+                imageTimeCapaRef.value = storage.reference.child("team/${team.id}/capa")
+            }
         }
 
     } else{
@@ -184,8 +188,8 @@ fun PerfilTimeScreen(
     //    FIREBASE
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
-    var imageOrgCapaUri by remember { mutableStateOf<Uri?>(null) }
+    var imageTimeUri by remember { mutableStateOf<Uri?>(null) }
+    var imageTimeCapaUri by remember { mutableStateOf<Uri?>(null) }
 
     if (imageRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
@@ -202,13 +206,13 @@ fun PerfilTimeScreen(
         }
     }
 
-    if (imageOrgRef.value != null) { // Verifique a referência do Firebase
+    if (imageTimeRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
             try {
-                val uri = imageOrgRef.value!!.downloadUrl.await()
-                imageOrgUri = uri
+                val uriTime = imageTimeRef.value!!.downloadUrl.await()
+                imageTimeUri = uriTime
 
-                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uri}")
+                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriTime}")
 
             } catch (e: Exception) {
                 // Trate os erros, se houver algum
@@ -217,14 +221,14 @@ fun PerfilTimeScreen(
         }
     }
 
-    if (imageOrgCapaRef.value != null) { // Verifique a referência do Firebase
+    if (imageTimeCapaRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
             try {
-                val uriCapa = imageOrgCapaRef.value!!.downloadUrl.await()
-                imageOrgCapaUri = uriCapa
+                val uriTimeCapa = imageTimeCapaRef.value!!.downloadUrl.await()
+                imageTimeCapaUri = uriTimeCapa
 
 
-                Log.e("URI CAPA DO USUARIO 02", "URI da imagem do usuario ${uriCapa}")
+                Log.e("URI CAPA DO USUARIO 02", "URI da imagem do usuario ${uriTimeCapa}")
             } catch (e: Exception) {
                 // Trate os erros, se houver algum
                 Log.e("DEBUG", "Erro ao buscar imagem: $e")
@@ -235,7 +239,7 @@ fun PerfilTimeScreen(
     // FIREBASE
     Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUser}")
     Log.e("URI IMAGEM DO USUARIO 03", "URI da imagem do usuario ${imageUri}")
-    Log.e("URI CAPA DO USUARIO 03", "URI da imagem do usuario ${imageOrgCapaRef}")
+    Log.e("URI CAPA DO USUARIO 03", "URI da imagem do usuario ${imageTimeCapaRef}")
 
 
     Column {
@@ -291,7 +295,7 @@ fun PerfilTimeScreen(
             if (idUser != null && idUser != 0) {
                 // Exiba a imagem se a URI estiver definida
                 AsyncImage(
-                    model = imageOrgCapaUri,
+                    model = imageTimeCapaUri,
                     contentDescription = null,
                     contentScale = ContentScale.Crop
                 )
@@ -363,7 +367,7 @@ fun PerfilTimeScreen(
                         if (idUser != null && idUser != 0) {
                             // Exiba a imagem se a URI estiver definida
                             AsyncImage(
-                                model = imageOrgUri,
+                                model = imageTimeUri,
                                 contentDescription = null,
                                 modifier = Modifier.fillMaxSize(),
                                 contentScale = ContentScale.Crop
@@ -562,45 +566,122 @@ fun PerfilTimeScreen(
 //                        Text(text = "Biografia do Time: ${team.biografia}")
 
                         // Exibir jogadores do time
+//                        LazyRow(
+//                            modifier = Modifier.fillMaxWidth().height(80.dp).padding(start = 0.dp, top = 0.dp),
+//                            verticalAlignment = Alignment.CenterVertically
+//                        ) {
+//                            if (team.jogadores != null) {
+//                                items(team.jogadores.size) { index ->
+//                                    val jogador = team.jogadores[index]
+//
+//                                    // Exibir informações dos jogadores
+//                                    Card(
+//                                        modifier = Modifier.height(55.dp).width(55.dp),
+//                                        colors = CardDefaults.cardColors(RedProliseum)
+//                                    ) {
+//                                        Image(
+//                                            painter = when (jogador.funcao) {
+//                                                0 -> painterResource(id = R.drawable.icontoplane)
+//                                                1 -> painterResource(id = R.drawable.iconjungle)
+//                                                2 -> painterResource(id = R.drawable.iconmidlane)
+//                                                3 -> painterResource(id = R.drawable.iconsupport)
+//                                                4 -> painterResource(id = R.drawable.iconadc)
+//                                                else -> painter
+//                                            },
+//                                            contentDescription = "",
+//                                            modifier = Modifier.fillMaxSize(),
+//                                            alignment = Alignment.Center,
+//                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+//                                        )
+//                                    }
+//
+//                                    Spacer(modifier = Modifier.width(5.dp))
+//
+//                                    Text(
+//                                        text = "${jogador.nickname}",
+//                                        color = Color.White,
+//                                        modifier = Modifier.padding(5.dp),
+//                                        fontWeight = FontWeight(600),
+//                                        fontFamily = customFontFamilyText,
+//                                        fontSize = 12.sp
+//                                    )
+//                                }
+//                            }
+//                        }
                         LazyRow(
-                            modifier = Modifier.fillMaxWidth().height(80.dp).padding(start = 0.dp, top = 0.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(80.dp)
+                                .padding(start = 0.dp, top = 0.dp)
+                            ,
                             verticalAlignment = Alignment.CenterVertically
-                        ) {
+
+                        ){
                             if (team.jogadores != null) {
                                 items(team.jogadores.size) { index ->
                                     val jogador = team.jogadores[index]
-
-                                    // Exibir informações dos jogadores
-                                    Card(
-                                        modifier = Modifier.height(55.dp).width(55.dp),
-                                        colors = CardDefaults.cardColors(RedProliseum)
+                                    //jogos
+                                    Row(
+                                        modifier = Modifier
+                                            .fillMaxWidth()
+                                            .padding(start = 20.dp, top = 20.dp)
+                                        ,
+                                        horizontalArrangement = Arrangement.Center
                                     ) {
-                                        Image(
-                                            painter = when (jogador.funcao) {
-                                                0 -> painterResource(id = R.drawable.icontoplane)
-                                                1 -> painterResource(id = R.drawable.iconjungle)
-                                                2 -> painterResource(id = R.drawable.iconmidlane)
-                                                3 -> painterResource(id = R.drawable.iconsupport)
-                                                4 -> painterResource(id = R.drawable.iconadc)
-                                                else -> painter
+                                        Button(
+                                            onClick = {
+//                                                val timeId = time.id // Obtenha o ID do time clicado
+//                                                val verificacao = true
+//
+//                                                if (verificacao == true) {
+//                                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
+//                                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
+//                                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
+//                                                    onNavigate("perfil_time")
+//                                                }
+
                                             },
-                                            contentDescription = "",
-                                            modifier = Modifier.fillMaxSize(),
-                                            alignment = Alignment.Center,
-                                            colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                        )
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .height(80.dp)
+                                                .padding(start = 0.dp, top = 0.dp),
+                                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                            colors = ButtonDefaults.buttonColors(RedProliseum)
+                                        ) {
+                                            Card(
+                                                modifier = Modifier
+                                                    .height(55.dp)
+                                                    .width(55.dp),
+                                                colors = CardDefaults.cardColors(RedProliseum)
+                                            ) {
+                                                Image(
+                                                    painter = when (jogador.funcao) {
+                                                        0 -> painterResource(id = R.drawable.icontoplane)
+                                                        1 -> painterResource(id = R.drawable.iconjungle)
+                                                        2 -> painterResource(id = R.drawable.iconmidlane)
+                                                        3 -> painterResource(id = R.drawable.iconsupport)
+                                                        4 -> painterResource(id = R.drawable.iconadc)
+                                                        else -> painter
+                                                    },
+                                                    contentDescription = "",
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    alignment = Alignment.Center,
+                                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                                )
+                                            }
+
+                                            Spacer(modifier = Modifier.width(5.dp))
+
+                                            Text(
+                                                text = "${jogador.nickname}",
+                                                color = Color.White,
+                                                modifier = Modifier.padding(5.dp),
+                                                fontWeight = FontWeight(600),
+                                                fontFamily = customFontFamilyText,
+                                                fontSize = 12.sp
+                                            )
+                                        }
                                     }
-
-                                    Spacer(modifier = Modifier.width(5.dp))
-
-                                    Text(
-                                        text = "${jogador.nickname}",
-                                        color = Color.White,
-                                        modifier = Modifier.padding(5.dp),
-                                        fontWeight = FontWeight(600),
-                                        fontFamily = customFontFamilyText,
-                                        fontSize = 12.sp
-                                    )
                                 }
                             }
                         }

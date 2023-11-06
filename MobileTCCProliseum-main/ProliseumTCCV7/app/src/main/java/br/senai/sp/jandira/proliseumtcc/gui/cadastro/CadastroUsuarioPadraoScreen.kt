@@ -1,6 +1,9 @@
 package br.senai.sp.jandira.proliseumtcc.gui.cadastro
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -23,12 +26,15 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Snackbar
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -58,6 +64,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.ProliseumTCCTheme
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
+import kotlinx.coroutines.delay
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -96,6 +103,9 @@ fun CadastroUsuarioPadraoScreen(
     )
 
     val contextTipoUsuario = LocalContext.current
+
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -145,6 +155,7 @@ fun CadastroUsuarioPadraoScreen(
             )
 
             Spacer(modifier = Modifier.height(20.dp))
+
             Text(
                 text = stringResource(id = R.string.text_cadastro),
                 fontFamily = customFontFamilyTitle,
@@ -152,13 +163,35 @@ fun CadastroUsuarioPadraoScreen(
                 textAlign = TextAlign.Center,
                 color = Color.White
             )
+
+            Spacer(modifier = Modifier.height(20.dp))
+
+            LaunchedEffect(camposPreenchidosCorretamente) {
+                if (!camposPreenchidosCorretamente) {
+                    delay(10000)
+                    camposPreenchidosCorretamente = true
+                }
+            }
+
+            AnimatedVisibility(
+                visible = !camposPreenchidosCorretamente,
+                enter = slideInVertically(initialOffsetY = { it }),
+                exit = slideOutVertically(targetOffsetY = { it })
+            ) {
+                Snackbar(
+                    modifier = Modifier.padding(top = 16.dp),
+                    action = {}
+                ) {
+                    Text(text = mensagemErroInputsPerfil.value)
+                }
+            }
         }
 
         // Conteúdo do formulário
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 250.dp), // Ajuste o valor do topo para centralizar verticalmente
+                .padding(top = 290.dp), // Ajuste o valor do topo para centralizar verticalmente
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -354,7 +387,12 @@ fun CadastroUsuarioPadraoScreen(
                                         )
                                     }
 
+                                    onNavigate("login")
+
                                 } else {
+                                    camposPreenchidosCorretamente = false
+                                    mensagemErroInputsPerfil.value = "${response.errorBody()?.string()}"
+
                                     Log.e(
                                         "Erro na solicitação",
                                         "Corpo da resposta: ${response.errorBody()?.string()}"
@@ -385,7 +423,7 @@ fun CadastroUsuarioPadraoScreen(
 
                             Log.i("JSON ACEITO", "Estrutura de JSON Correta!")
                             //rememberNavController.navigate("login")
-                            onNavigate("login")
+
                         },
                         modifier = Modifier
                             .width(320.dp)

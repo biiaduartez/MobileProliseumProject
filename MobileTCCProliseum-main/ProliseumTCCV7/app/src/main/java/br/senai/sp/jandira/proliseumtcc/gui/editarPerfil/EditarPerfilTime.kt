@@ -1,8 +1,10 @@
 package br.senai.sp.jandira.proliseumtcc.gui.editarPerfil
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.PickVisualMediaRequest
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -57,8 +59,10 @@ import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.components.StorageTeamUtil
 import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
@@ -82,6 +86,7 @@ fun EditarPerfilTime(
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
     sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
 ) {
 
@@ -134,6 +139,54 @@ fun EditarPerfilTime(
 
     var nomeTime by remember { mutableStateOf(team?.nome_time ?: "Nome do Time não encontrado") }
     var biografiaTime by remember { mutableStateOf(team?.biografia ?: "Biografia do Time não encontrado") }
+
+    //FOTO DE PERFIL
+
+    var uriTime by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val singlePhotoPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            uriTime = it
+        }
+    )
+
+    var painterPhotoPerfil = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(uriTime)
+            .build()
+    )
+
+    //FOTO CAPA DE PERFIL
+    var uriCapaTime by remember {
+        mutableStateOf<Uri?>(null)
+    }
+
+    val singlePhotoCapaPicker = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.PickVisualMedia(),
+        onResult = {
+            uriCapaTime = it
+        }
+    )
+
+    var painterPhotoCapaPerfil = rememberAsyncImagePainter(
+        ImageRequest.Builder(LocalContext.current)
+            .data(uriCapaTime)
+            .build()
+    )
+
+    Log.e("URI FOTO TIME","URI DA FOTO DO TIME -> ${uriTime}")
+    Log.e("URI CAPA TIME","URI DA CAPA DO TIME -> ${uriCapaTime}")
+
+    val uriImageTime = sharedViewModelImageUri.imageUri
+
+    val uriImageCapaTime = sharedViewModelImageUri.imageCapaUri
+
+    val context = LocalContext.current
+
+    val idTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.idData) }
 
     Box(
         modifier = Modifier
@@ -263,6 +316,96 @@ fun EditarPerfilTime(
                         textStyle = TextStyle(color = Color.White)
                     )
 
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    // FOTO DE PERFIL
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+
+                        Box(contentAlignment = Alignment.BottomEnd) {
+
+                            Card(
+                                modifier = Modifier
+                                    .size(100.dp)
+                                    .clickable {
+                                        singlePhotoPicker.launch(
+                                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                        )
+                                        var message = "nada"
+                                        Log.i(
+                                            "PROLISEUM",
+                                            "URI: ${uriTime?.path ?: message} "
+                                        )
+                                    },
+                                shape = CircleShape
+                            ) {
+                                Image(
+                                    painter =
+                                    if (uriTime == null)
+                                        painterResource(id = R.drawable.superpersonicon)
+                                    else painterPhotoPerfil,
+                                    contentDescription = "",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                            Icon(
+                                painter = painterResource(id = R.drawable.add_a_photo),
+                                contentDescription = "",
+                                tint = RedProliseum
+                            )
+
+                        }
+                    }
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    //FOTO CAPA DE PERFIL
+                    Column(
+                        modifier = Modifier.fillMaxSize(),
+                        horizontalAlignment = Alignment.CenterHorizontally,
+                        verticalArrangement = Arrangement.Center
+                    ) {
+
+                        Box(contentAlignment = Alignment.BottomEnd) {
+
+                            Card(
+                                modifier = Modifier
+                                    .height(200.dp)
+                                    .width(320.dp)
+                                    .clickable {
+                                        singlePhotoCapaPicker.launch(
+                                            PickVisualMediaRequest(ActivityResultContracts.PickVisualMedia.ImageOnly)
+                                        )
+                                        var message = "nada"
+                                        Log.i(
+                                            "PROLISEUM",
+                                            "URI: ${uriCapaTime?.path ?: message} "
+                                        )
+                                    },
+                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp)
+                            ) {
+                                Image(
+                                    painter =
+                                    if (uriCapaTime == null)
+                                        painterResource(id = R.drawable.capa_perfil_usuario)
+                                    else painterPhotoCapaPerfil,
+                                    contentDescription = "",
+                                    modifier = Modifier.fillMaxSize(),
+                                    contentScale = ContentScale.Crop
+                                )
+                            }
+                            Icon(
+                                painter = painterResource(id = R.drawable.add_circle),
+                                contentDescription = "",
+                                tint = RedProliseum
+                            )
+
+                        }
+                    }
 
                     Spacer(modifier = Modifier.height(20.dp))
 
@@ -431,6 +574,46 @@ fun EditarPerfilTime(
 //                                    "orgcapa"
 //                                )
 //                            }
+                            if (team != null) {
+                                if (team.id != null && team.id != 0) {
+                                    uriTime?.let {
+                                        StorageTeamUtil.uploadToTeamStorage(
+                                            uri = it,
+                                            context = context,
+                                            type = "team",
+                                            id = "${team.id}",
+                                            "profile"
+                                        )
+                                    }
+
+                                    Log.i(
+                                        "URI IMAGEM 06",
+                                        "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriTime}"
+                                    )
+
+                                    uriCapaTime?.let {
+                                        StorageTeamUtil.uploadToTeamStorage(
+                                            uri = it,
+                                            context = context,
+                                            type = "team",
+                                            id = "${team.id}",
+                                            "capa"
+                                        )
+                                    }
+
+                                    Log.i(
+                                        "FOTO TIME 01",
+                                        "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriTime}"
+                                    )
+
+                                    Log.i(
+                                        "CAPA TIME 01",
+                                        "Aqui esta a URI da imagem na EditarPerfilTime -> ${uriCapaTime}"
+                                    )
+
+                                    onNavigate("carregar_informacoes_perfil_usuario")
+                                }
+                            }
 
 
                                   },

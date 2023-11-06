@@ -22,7 +22,7 @@ class StorageTeamUtil {
 
             var spaceRef: StorageReference
 
-            spaceRef = storageRef.child("team/$id/$local")
+            spaceRef = storageRef.child("$type/$id/$local")
 
             val byteArray: ByteArray? = context.contentResolver
                 .openInputStream(uri)
