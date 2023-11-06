@@ -265,7 +265,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                     OutlinedTextField(
                         value = userEmailPerfilState,
                         onValueChange = {  userEmailPerfilState = it
-                            emailErrorText = if (it.contains("@")) "" else "Email inválido"
+                            emailErrorText = if (isEmailValido(it)) "" else "Email inválido"
                                         },
                         modifier = Modifier
 
@@ -336,7 +336,7 @@ fun CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelS
                                     mensagemErroInputsPerfil.value = "Preencha o Nome completo."
                                 } else if (userEmailPerfilState.isBlank() || emailErrorText.isNotEmpty()) {
                                     camposPreenchidosCorretamente = false
-                                    mensagemErroInputsPerfil.value = "O E-mail deve apresentar um @."
+                                    mensagemErroInputsPerfil.value = "Preencha o Email corretamente."
                                 } else if (userPasswordPerfilState.isBlank() || senhaErrorText.isNotEmpty()) {
                                     camposPreenchidosCorretamente = false
                                     mensagemErroInputsPerfil.value =
@@ -404,4 +404,9 @@ fun CadastroPerfilScreenPreview() {
 fun isSenhaValida(senha: String): Boolean {
     val senhaPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+\$).{8,}\$".toRegex()
     return senhaPattern.matches(senha)
+}
+
+fun isEmailValido(email: String): Boolean{
+    val emailPattern = "[a-zA-Z0-9!#%ˆ&*_+-]{3,}+[@](gmail|hotmail|outlook)[.][a-zA-Z]{3,}+([.][a-zA-Z]+)?".toRegex()
+    return emailPattern.matches(email)
 }
