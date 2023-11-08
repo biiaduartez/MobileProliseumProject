@@ -36,13 +36,20 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.gui.CampeonatoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarDeletarOrganizacao
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.gui.HomeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.ListaDeJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeJogadores
+import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeTimes
+import br.senai.sp.jandira.proliseumtcc.gui.ListaDeTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
 import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.NavigationProliseumScreen
+import br.senai.sp.jandira.proliseumtcc.gui.PremiumScreen
+import br.senai.sp.jandira.proliseumtcc.gui.PropostasScreen
 import br.senai.sp.jandira.proliseumtcc.gui.StartScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroOrganizadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScreen
@@ -349,6 +356,64 @@ fun MainScreen() {
             }
         }
 
+        val listaDeTimesScreen: @Composable () -> Unit = {
+            ListaDeTimesScreen(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val listaDeJogadoresScreen: @Composable () -> Unit = {
+            ListaDeJogadoresScreen(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val propostasScreen: @Composable () -> Unit = {
+            PropostasScreen(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val listaDePublicacoesDeJogadores: @Composable () -> Unit = {
+            ListaDePublicacoesDeJogadores(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val listaDePublicacoesDeTimes: @Composable () -> Unit = {
+            ListaDePublicacoesDeTimes(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val campeonatoScreen: @Composable () -> Unit = {
+            CampeonatoScreen(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val premiumScreen: @Composable () -> Unit = {
+            PremiumScreen(
+
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
         // Navegação animada
         AnimatedContent(
@@ -380,6 +445,14 @@ fun MainScreen() {
                     "carregar_informacoes_perfil_organizacao" -> carregarInformacoesPerfilOrganizacao()
                     "perfil_time" -> perfilTimeScreen()
                     "editar_perfil_time" -> editarPerfilTime()
+
+                    "lista_de_times" -> listaDeTimesScreen()
+                    "lista_de_jogadores" -> listaDeJogadoresScreen()
+                    "propostas" -> propostasScreen()
+                    "lista_de_publicacoes_jogadores" -> listaDePublicacoesDeJogadores()
+                    "lista_de_publicacoes_times" -> listaDePublicacoesDeTimes()
+                    "campeonatos" -> campeonatoScreen()
+                    "premium" -> premiumScreen()
                     else -> startScreen()
                 }
             }

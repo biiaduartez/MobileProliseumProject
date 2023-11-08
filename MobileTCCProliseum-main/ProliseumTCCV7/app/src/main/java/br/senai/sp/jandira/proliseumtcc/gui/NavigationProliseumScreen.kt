@@ -242,7 +242,7 @@ fun NavigationProliseumScreen(
 
                 Button(
                     onClick = {
-                        //onNavigate("perfil_usuario_jogador")
+                        onNavigate("lista_de_times")
                     },
                     modifier = Modifier
                         .padding(top = 20.dp)
@@ -271,7 +271,9 @@ fun NavigationProliseumScreen(
                 Spacer(modifier = Modifier.height(20.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                              onNavigate("lista_de_jogadores")
+                    },
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .height(48.dp),
@@ -299,7 +301,9 @@ fun NavigationProliseumScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                              onNavigate("propostas")
+                    },
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .height(48.dp),
@@ -328,7 +332,9 @@ fun NavigationProliseumScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                              onNavigate("lista_de_publicacoes_jogadores")
+                    },
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .height(48.dp),
@@ -356,7 +362,9 @@ fun NavigationProliseumScreen(
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Button(
-                    onClick = {},
+                    onClick = {
+                              onNavigate("lista_de_publicacoes_times")
+                    },
                     modifier = Modifier
                         .padding(top = 20.dp)
                         .height(48.dp),
@@ -386,7 +394,7 @@ fun NavigationProliseumScreen(
 
                 Button(
                     onClick = {
-                        //onNavigate("")
+                        onNavigate("campeonatos")
                     },
                     modifier = Modifier
                         .padding(top = 20.dp)
@@ -459,7 +467,9 @@ fun NavigationProliseumScreen(
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Button(
-                        onClick = { },
+                        onClick = {
+                                  onNavigate("premium")
+                        },
                         modifier = Modifier
                             .padding(top = 20.dp)
                             .height(48.dp)
