@@ -205,7 +205,10 @@ fun MainScreen() {
 
         // Tela de navigation proliseum
         val navigationProliseum: @Composable () -> Unit = {
-            NavigationProliseumScreen() {
+            NavigationProliseumScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditar
+            ) {
                 currentScreen = it
             }
         }

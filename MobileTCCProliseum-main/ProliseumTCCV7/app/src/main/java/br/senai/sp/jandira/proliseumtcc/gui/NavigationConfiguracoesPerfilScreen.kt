@@ -62,8 +62,6 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
             horizontalAlignment = Alignment.Start,
         ) {
 
-
-
             Row(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             ) {
