@@ -364,13 +364,13 @@ fun MainScreen() {
             }
         }
 
-        val listaDeJogadoresScreen: @Composable () -> Unit = {
-            ListaDeJogadoresScreen(
-
-            ) {
-                currentScreen = it
-            }
-        }
+//        val listaDeJogadoresScreen: @Composable () -> Unit = {
+//            ListaDeJogadoresScreen(
+//
+//            ) {
+//                currentScreen = it
+//            }
+//        }
 
         val propostasScreen: @Composable () -> Unit = {
             PropostasScreen(
@@ -447,7 +447,7 @@ fun MainScreen() {
                     "editar_perfil_time" -> editarPerfilTime()
 
                     "lista_de_times" -> listaDeTimesScreen()
-                    "lista_de_jogadores" -> listaDeJogadoresScreen()
+//                    "lista_de_jogadores" -> listaDeJogadoresScreen()
                     "propostas" -> propostasScreen()
                     "lista_de_publicacoes_jogadores" -> listaDePublicacoesDeJogadores()
                     "lista_de_publicacoes_times" -> listaDePublicacoesDeTimes()

@@ -85,6 +85,9 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(AtualizarInfoTimeService::class.java)
     }
 
+    fun getJogadoresService(): GetJogadoresService {
+        return retrofitFactoryCadastro.create(GetJogadoresService::class.java)
+    }
 
 
 

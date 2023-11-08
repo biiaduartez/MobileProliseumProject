@@ -30,7 +30,13 @@ import retrofit2.Callback
 import retrofit2.Response
 
 @Composable
-fun CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfilEditar: SharedViewModelPerfil, sharedViewModelPerfilJogador: SharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador, onNavigate: (String) -> Unit) {
+fun CarregarInformacoesPerfilUsuario(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+    onNavigate: (String) -> Unit
+) {
 
     var loading by remember { mutableStateOf(true) }
 
