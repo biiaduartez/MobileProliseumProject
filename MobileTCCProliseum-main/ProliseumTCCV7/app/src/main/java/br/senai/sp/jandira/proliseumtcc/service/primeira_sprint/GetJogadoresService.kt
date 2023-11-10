@@ -14,8 +14,7 @@ interface GetJogadoresService {
     fun getListajogadores(
         @Query("perPage") perPage: Int?,
         @Query("page") page: Int?,
-        @Query("name") name: String?,
-        @Body getJogadores: GetJogadores
+        @Query("name") name: String?
     ): Call<ResponseGetListaJogadores>
 
 

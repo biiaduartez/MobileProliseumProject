@@ -1,7 +1,12 @@
 package br.senai.sp.jandira.proliseumtcc.components
 
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.lifecycle.ViewModel
 
 class SharedViewModelNomeJogadorListaJogadores: ViewModel() {
-    var nomeJogadorPesquisado: String? = ""
+    var perPage: Int? = 0
+    var page: Int? = 0
+    var name: String? = ""
 }

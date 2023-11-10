@@ -4,5 +4,5 @@ import androidx.lifecycle.ViewModel
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadoresTimeAtualListaJogadores
 
 class SharedViewModelGetListaJogadoresDentroDeTime: ViewModel() {
-    val infoListaJogadoresDentroDeTime: List<ResponseGetListaJogadoresTimeAtualListaJogadores>? = null
+    var infoListaJogadoresDentroDeTime: List<ResponseGetListaJogadoresTimeAtualListaJogadores>? = null
 }

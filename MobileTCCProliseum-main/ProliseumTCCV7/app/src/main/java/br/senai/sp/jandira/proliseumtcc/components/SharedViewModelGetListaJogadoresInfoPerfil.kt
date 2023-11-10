@@ -3,13 +3,13 @@ package br.senai.sp.jandira.proliseumtcc.components
 import androidx.lifecycle.ViewModel
 
 class SharedViewModelGetListaJogadoresInfoPerfil: ViewModel() {
-    val idInfoPerfilJogador: Int? = 0
-    val nomeUsuarioInfoPerfilJogador: String? = ""
-    val nomeCompletoInfoPerfilJogador: String? = ""
-    val emailInfoPerfilJogador: String? = ""
-    val senhaInfoPerfilJogador: String? = ""
-    val dataNascimentoInfoPerfilJogador: String? = ""
-    val generoInfoPerfilJogador: Int? = 0
-    val nickNameInfoPerfilJogador: String? = ""
-    val biografiaInfoPerfilJogador: String? = ""
+    var idInfoPerfilJogador: Int? = 0
+    var nomeUsuarioInfoPerfilJogador: String? = ""
+    var nomeCompletoInfoPerfilJogador: String? = ""
+    var emailInfoPerfilJogador: String? = ""
+    var senhaInfoPerfilJogador: String? = ""
+    var dataNascimentoInfoPerfilJogador: String? = ""
+    var generoInfoPerfilJogador: Int? = 0
+    var nickNameInfoPerfilJogador: String? = ""
+    var biografiaInfoPerfilJogador: String? = ""
 }

@@ -36,6 +36,15 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTimeList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresInfoPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresPropostasList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresPropostasRecebidas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresTimeAtual
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelNomeJogadorListaJogadores
 import br.senai.sp.jandira.proliseumtcc.gui.CampeonatoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarDeletarOrganizacao
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOrganizacaoScreen
@@ -126,6 +135,18 @@ fun MainScreen() {
         val sharedViewModelGetMyTeamsTimeJogadoresAtivos = remember { SharedGetMyTeamsTimeJogadoresAtivos() }
 
         val sharedViewModelGetMyTeamsTimePropostas = remember { SharedViewModelGetMyTeamsTimePropostas() }
+
+        // SharedViewModel GET LISTA DE JOGADORES
+
+        val sharedViewModelNomeJogadorListaJogadores = remember { SharedViewModelNomeJogadorListaJogadores() }
+        val sharedViewModelGetListaJogadores = remember { SharedViewModelGetListaJogadores() }
+        val sharedViewModelGetListaJogadoresList = remember { SharedViewModelGetListaJogadoresList() }
+        val sharedViewModelGetListaJogadoresInfoPerfil = remember { SharedViewModelGetListaJogadoresInfoPerfil() }
+        val sharedViewModelGetListaJogadoresTimeAtual = remember { SharedViewModelGetListaJogadoresTimeAtual() }
+        val sharedViewModelGetListaJogadoresDentroDeTime = remember { SharedViewModelGetListaJogadoresDentroDeTime() }
+        val sharedViewModelGetListaJogadoresDentroDeTimeList = remember { SharedViewModelGetListaJogadoresDentroDeTimeList() }
+        val sharedViewModelGetListaJogadoresPropostasList = remember { SharedViewModelGetListaJogadoresPropostasList() }
+        val sharedViewModelGetListaJogadoresPropostasRecebidas = remember { SharedViewModelGetListaJogadoresPropostasRecebidas() }
 
 
         val sharedViewModelTokenEId = remember { SharedViewTokenEId() }
@@ -364,13 +385,43 @@ fun MainScreen() {
             }
         }
 
-//        val listaDeJogadoresScreen: @Composable () -> Unit = {
-//            ListaDeJogadoresScreen(
-//
-//            ) {
-//                currentScreen = it
-//            }
-//        }
+        val listaDeJogadoresScreen: @Composable () -> Unit = {
+            ListaDeJogadoresScreen(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditar,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+            ) {
+                currentScreen = it
+            }
+        }
 
         val propostasScreen: @Composable () -> Unit = {
             PropostasScreen(
@@ -447,7 +498,7 @@ fun MainScreen() {
                     "editar_perfil_time" -> editarPerfilTime()
 
                     "lista_de_times" -> listaDeTimesScreen()
-//                    "lista_de_jogadores" -> listaDeJogadoresScreen()
+                    "lista_de_jogadores" -> listaDeJogadoresScreen()
                     "propostas" -> propostasScreen()
                     "lista_de_publicacoes_jogadores" -> listaDePublicacoesDeJogadores()
                     "lista_de_publicacoes_times" -> listaDePublicacoesDeTimes()
