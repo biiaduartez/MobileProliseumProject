@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.proliseumtcc.gui
 
+import android.content.Intent
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -10,6 +11,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -76,6 +78,7 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.verificarIdDoTime
 import br.senai.sp.jandira.proliseumtcc.model.GetJogadores
 import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadores
+import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadoresList
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -129,7 +132,7 @@ fun ListaDeJogadoresScreen(
     val token = sharedViewModelTokenEId.token
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
-    val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+
     val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageOrgCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
@@ -176,14 +179,12 @@ fun ListaDeJogadoresScreen(
     val testeid = remember { mutableStateOf<Int?>(0) }
     val listaIds = remember {mutableListOf<Int?>()}
 
+    val listaIdDeJogadores = remember { mutableListOf<Int?>() }
+
     if(idUser != null && idUser != 0){
 
 
         val storage = Firebase.storage
-
-        if (idUser != null && idUser != 0) {
-            imageRef.value = storage.reference.child("${idUser}/profile")
-        }
 
         if (idUser != null && idUser != 0) {
             imageOrgRef.value = storage.reference.child("${idUser}/orgprofile")
@@ -200,24 +201,10 @@ fun ListaDeJogadoresScreen(
 
     //    FIREBASE
 
-    var imageUri by remember { mutableStateOf<Uri?>(null) }
+
     var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
     var imageOrgCapaUri by remember { mutableStateOf<Uri?>(null) }
 
-    if (imageRef.value != null) { // Verifique a referência do Firebase
-        LaunchedEffect(Unit) {
-            try {
-                val uriOrg = imageRef.value!!.downloadUrl.await()
-                imageUri = uriOrg
-
-                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
-
-            } catch (e: Exception) {
-                // Trate os erros, se houver algum
-                Log.e("DEBUG", "Erro ao buscar imagem: $e")
-            }
-        }
-    }
 
     if (imageOrgRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
@@ -251,16 +238,7 @@ fun ListaDeJogadoresScreen(
 
     // FIREBASE
     Log.e("URL IMAGEM DO USUARIO 03", "Id do URL da imagem do usuario ${idUser}")
-    Log.e("URI IMAGEM DO USUARIO 03", "URI da imagem do usuario ${imageUri}")
     Log.e("URI CAPA DO USUARIO 03", "URI da imagem do usuario ${imageOrgCapaRef}")
-
-
-    Column {
-        Text(text = "${nomeUser}")
-        Text(text = "${emailUser}")
-        Text(text = "${biografiaUser}")
-        Text(text = "${generoPerfilUser}")
-    }
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
@@ -284,6 +262,176 @@ fun ListaDeJogadoresScreen(
             .data(photoUri)
             .build()
     )
+
+    var jogadores by remember {
+        mutableStateOf(listOf<ResponseGetListaJogadoresList>())
+    }
+
+    // Se o tempo de espera terminou, continue com a validação do token
+    // Restante do código aqui
+//    val token = sharedViewModelTokenEId.token
+    // Restante do seu código de validação do token
+    Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
+
+    if(token != null && token.isNotEmpty()){
+
+//                val perPage by remember { mutableStateOf<Int?>(null) }
+//                val page by remember { mutableStateOf<Int?>(null) }
+//                val name by remember { mutableStateOf<String?>("") }
+
+        val perPage = 0
+        val page = 0
+        val name = ""
+
+
+        sharedViewModelNomeJogadorListaJogadores.perPage = perPage
+        sharedViewModelNomeJogadorListaJogadores.page = page
+        sharedViewModelNomeJogadorListaJogadores.name = name
+
+
+
+        val getInfoJogadoresService = RetrofitFactoryCadastro().getJogadoresService()
+
+        getInfoJogadoresService.getListajogadores(perPage, page, name).enqueue(object :
+            Callback<ResponseGetListaJogadores> {
+            override fun onResponse(call: Call<ResponseGetListaJogadores>, response: Response<ResponseGetListaJogadores>) {
+                if (response.isSuccessful) {
+                    Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
+
+
+                    val filtragemPorNomeData = response.body()
+
+                    val listaJogadores = filtragemPorNomeData?.players
+
+                    if (listaJogadores != null) {
+                        jogadores = listaJogadores
+                    }
+
+                    sharedViewModelGetListaJogadores.playerList = listaJogadores ?: emptyList()
+
+
+                    if(listaJogadores != null){
+                        for (infoJogadores in listaJogadores){
+                            val idJogador = infoJogadores.id
+                            val nicknameJogador = infoJogadores.nickname
+                            val jogoJogador = infoJogadores.jogo
+                            val funcaoJogador = infoJogadores.funcao
+                            val eloJogador = infoJogadores.elo
+
+                            testeid.value = infoJogadores.id
+
+                            listaIds.add(idJogador)
+
+                            sharedViewModelGetListaJogadoresList.id = infoJogadores.id
+                            sharedViewModelGetListaJogadoresList.nickname = nicknameJogador
+                            sharedViewModelGetListaJogadoresList.jogo = jogoJogador
+                            sharedViewModelGetListaJogadoresList.funcao = funcaoJogador
+                            sharedViewModelGetListaJogadoresList.elo = eloJogador
+
+                            //Log.e("ID DE OUTRO JOGADOR 02", "aqui esta o id de outro jogador ${idJogador}")
+
+
+
+                            val infoPerfilId = infoJogadores.perfil_id
+
+                            val idInfoPerfilJogador = infoPerfilId?.id
+                            val nomeUsuarioInfoPerfilJogador = infoPerfilId?.nome_usuario
+                            val nomeCompletoInfoPerfilJogador = infoPerfilId?.nome_completo
+                            val emailInfoPerfilJogador = infoPerfilId?.email
+                            val senhaInfoPerfilJogador = infoPerfilId?.senha
+                            val dataNascimentoInfoPerfilJogador = infoPerfilId?.data_nascimento
+                            val generoInfoPerfilJogador = infoPerfilId?.genero
+                            val nickNameInfoPerfilJogador = infoPerfilId?.nickname
+                            val biografiaInfoPerfilJogador = infoPerfilId?.biografia
+
+                            listaIdDeJogadores.add(idInfoPerfilJogador)
+
+                            sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
+                            sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
+
+                            val infoTimeAtual = infoJogadores.time_atual
+
+                            val idInfoTime = infoTimeAtual?.id
+                            val nomeInfoTime = infoTimeAtual?.nome_time
+                            val jogoInfoTime = infoTimeAtual?.jogo
+                            val biografiaInfoTime = infoTimeAtual?.biografia
+
+                            sharedViewModelGetListaJogadoresTimeAtual.idInfoTime = idInfoTime
+                            sharedViewModelGetListaJogadoresTimeAtual.nomeInfoTime = nomeInfoTime
+                            sharedViewModelGetListaJogadoresTimeAtual.jogoInfoTime = jogoInfoTime
+                            sharedViewModelGetListaJogadoresTimeAtual.biografiaInfoTime = biografiaInfoTime
+
+
+                            val infoJogadoresDentroTime = infoTimeAtual?.jogadores
+
+                            if(infoJogadoresDentroTime != null){
+                                for (infoJogadoresTime in infoJogadoresDentroTime){
+                                    val idInfoJogadoresDentroDoTime = infoJogadoresTime.id
+                                    val nickNameInfoJogadoresDentroDoTime = infoJogadoresTime.nickname
+                                    val jogoInfoJogadoresDentroDoTime = infoJogadoresTime.jogo
+                                    val funcaoInfoJogadoresDentroDoTime = infoJogadoresTime.funcao
+                                    val eloInfoJogadoresDentroDoTime = infoJogadoresTime.elo
+
+                                    sharedViewModelGetListaJogadoresDentroDeTimeList.id = idInfoJogadoresDentroDoTime
+                                    sharedViewModelGetListaJogadoresDentroDeTimeList.nickname = nickNameInfoJogadoresDentroDoTime
+                                    sharedViewModelGetListaJogadoresDentroDeTimeList.jogo = jogoInfoJogadoresDentroDoTime
+                                    sharedViewModelGetListaJogadoresDentroDeTimeList.funcao = funcaoInfoJogadoresDentroDoTime
+                                    sharedViewModelGetListaJogadoresDentroDeTimeList.elo = eloInfoJogadoresDentroDoTime
+                                }
+                            }
+
+                            val infoPropostas = infoTimeAtual?.propostas
+
+                            if (infoPropostas != null){
+                                for (infoProposta in infoPropostas){
+                                    val idInfoProposta = infoProposta.id
+                                    val menssagemInfoProposta = infoProposta.menssagem
+
+                                    sharedViewModelGetListaJogadoresPropostasList.id = idInfoProposta
+                                    sharedViewModelGetListaJogadoresPropostasList.menssagem = menssagemInfoProposta
+
+                                }
+                            }
+                        }
+                    }
+
+                    Log.e("ID DE OUTRO JOGADOR 04", "aqui esta o id de outro jogador ${listaIds}")
+
+
+
+                    Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
+                    Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
+
+
+
+                } else {
+                    // Trate a resposta não bem-sucedida
+                    Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
+                    // Log de corpo da resposta (se necessário)
+                    Log.d(
+                        "PerfilUsuarioJogadorScreen",
+                        "Corpo da resposta: ${response.errorBody()?.string()}"
+                    )
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseGetListaJogadores>, t: Throwable) {
+                // Trate o erro de falha na rede.
+                Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
+            }
+
+        })
+
+    } else{
+        Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
+
+    }
 
     Box(
         modifier = Modifier
@@ -359,207 +507,425 @@ fun ListaDeJogadoresScreen(
             }
         }
 
-        Spacer(modifier = Modifier.height(12.dp))
-
-
-
-
-
         Spacer(modifier = Modifier.height(100.dp))
+
+        val listaIdsPerfisJogadores = remember { mutableListOf<Int>() }
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(top = 20.dp)
             ,
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Text(
-                text = "AAAAA",
-                color = Color.White,
-                modifier = Modifier.padding(5.dp),
-                fontWeight = FontWeight(600),
-                fontFamily = customFontFamilyText,
-                fontSize = 12.sp
+            LazyColumn(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(top = 250.dp),
+                content = {
+                    items(jogadores.size){ index ->
+                        val playerListJogadores = jogadores[index]
+
+                        val infoPerfilId = playerListJogadores.perfil_id
+                        val idInfoPerfilJogador = infoPerfilId?.id ?: 0
+
+                        listaIdsPerfisJogadores.add(idInfoPerfilJogador)
+
+                        val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+
+                        if(sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador != null && sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador != 0){
+
+
+                            val storage = Firebase.storage
+
+                            if (jogadores != null && jogadores.isNotEmpty()) {
+                                val playerListJogadores = jogadores[index]
+                                val infoPerfilId = playerListJogadores.perfil_id
+                                val idInfoPerfilJogador = infoPerfilId?.id
+
+                                if (idInfoPerfilJogador != null && idInfoPerfilJogador != 0) {
+                                    // Utilize o ID do perfil aqui
+                                    imageRef.value = storage.reference.child("$idInfoPerfilJogador/profile")
+                                } else {
+                                    Log.e("ID DO PERFIL INVÁLIDO", "O ID do perfil é nulo ou igual a zero")
+                                }
+                            } else {
+                                Log.e("LISTA DE JOGADORES VAZIA", "A lista de jogadores está vazia ou nula")
+                            }
+
+
+                        } else{
+                            Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                            Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                        }
+
+                        var imageUri by remember { mutableStateOf<Uri?>(null) }
+
+                        if (imageRef.value != null) { // Verifique a referência do Firebase
+                            LaunchedEffect(Unit) {
+                                try {
+                                    val uriOrg = imageRef.value!!.downloadUrl.await()
+                                    imageUri = uriOrg
+
+                                    Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
+
+                                } catch (e: Exception) {
+                                    // Trate os erros, se houver algum
+                                    Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                }
+                            }
+                        }
+
+
+                        //jogos
+                        Column(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .height(250.dp)
+                                .padding(start = 20.dp, top = 20.dp),
+                        ) {
+                            Button(
+                                onClick = {
+//                                val timeId = time.id // Obtenha o ID do time clicado
+//                                val verificacao = true
+//
+//                                if (verificacao == true) {
+//                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
+//                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
+//                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
+//                                    onNavigate("perfil_time")
+//                                }
+
+                                },
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .height(250.dp)
+                                    .padding(start = 0.dp, top = 0.dp),
+                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                colors = ButtonDefaults.buttonColors(RedProliseum),
+                            ) {
+
+                                Box(contentAlignment = Alignment.BottomEnd) {
+                                    Card(
+                                        modifier = Modifier
+                                            .height(150.dp)
+                                            .width(150.dp),
+
+                                        shape = CircleShape
+                                    ) {
+
+                                        if (idUser != null && idUser != 0) {
+                                            // Exiba a imagem se a URI estiver definida
+                                            AsyncImage(
+                                                model = imageUri,
+                                                contentDescription = null,
+                                                modifier = Modifier.fillMaxSize(),
+                                                contentScale = ContentScale.Crop
+                                            )
+                                        } else {
+                                            // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                            Text("Carregando imagem...")
+                                        }
+                                    }
+                                }
+
+                                Spacer(modifier = Modifier.width(25.dp))
+
+                                Text(
+                                    text = "${playerListJogadores.nickname}",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 12.sp
+                                )
+
+                                Card(
+                                    modifier = Modifier
+                                        .height(250.dp)
+                                        .width(55.dp),
+                                    colors = CardDefaults.cardColors(RedProliseum)
+                                ) {
+                                    Image(
+                                        painter =
+                                        if ("${playerListJogadores.jogo}" == "0") painterResource(
+                                            id = R.drawable.iconcsgo
+                                        )
+                                        else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                        else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                        else painter,
+                                        contentDescription = "",
+                                        modifier = Modifier.fillMaxSize(),
+                                        alignment = Alignment.Center,
+                                        colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                    )
+                                }
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                Text(
+                                    text = "${playerListJogadores.id}",
+                                    color = Color.White,
+                                    modifier = Modifier.padding(5.dp),
+                                    fontWeight = FontWeight(600),
+                                    fontFamily = customFontFamilyText,
+                                    fontSize = 12.sp
+                                )
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                Card(
+                                    modifier = Modifier
+                                        .height(55.dp)
+                                        .width(55.dp),
+                                    colors = CardDefaults.cardColors(RedProliseum)
+                                ) {
+                                    Image(
+                                        painter =
+                                        if ("${playerListJogadores.elo}" == "0") painterResource(
+                                            id = R.drawable.icone_iron
+                                        )
+                                        else if ("${playerListJogadores.elo}" == "1") painterResource(id = R.drawable.icone_bronze)
+                                        else if ("${playerListJogadores.elo}" == "2") painterResource(id = R.drawable.icone_silver)
+                                        else if ("${playerListJogadores.elo}" == "3") painterResource(id = R.drawable.icone_gold)
+                                        else if ("${playerListJogadores.elo}" == "4") painterResource(id = R.drawable.icone_platinum)
+                                        else if ("${playerListJogadores.elo}" == "5") painterResource(id = R.drawable.icone_diamond)
+                                        else if ("${playerListJogadores.elo}" == "6") painterResource(id = R.drawable.icone_master)
+                                        else if ("${playerListJogadores.elo}" == "7") painterResource(id = R.drawable.icone_grandmaster)
+                                        else if ("${playerListJogadores.elo}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                        else painter,
+                                        contentDescription = "",
+                                        modifier = Modifier.fillMaxSize(),
+                                    )
+                                }
+
+//                                Text(
+//                                    text = "${playerListJogadores.elo}",
+//                                    color = Color.White,
+//                                    modifier = Modifier.padding(5.dp),
+//                                    fontWeight = FontWeight(600),
+//                                    fontFamily = customFontFamilyText,
+//                                    fontSize = 12.sp
+//                                )
+
+                                Spacer(modifier = Modifier.width(5.dp))
+
+                                Card(
+                                    modifier = Modifier
+                                        .height(250.dp)
+                                        .width(55.dp),
+                                    colors = CardDefaults.cardColors(RedProliseum)
+                                ) {
+                                    Image(
+                                        painter =
+                                        if ("${playerListJogadores.jogo}" == "0") painterResource(
+                                            id = R.drawable.icontoplane
+                                        )
+                                        else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconjungle)
+                                        else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                        else if ("${playerListJogadores.jogo}" == "3") painterResource(id = R.drawable.iconsupport)
+                                        else if ("${playerListJogadores.jogo}" == "4") painterResource(id = R.drawable.iconadc)
+                                        else painter,
+                                        contentDescription = "",
+                                        modifier = Modifier.fillMaxSize(),
+
+                                    )
+                                }
+
+//                                Text(
+//                                    text = "${playerListJogadores.funcao}",
+//                                    color = Color.White,
+//                                    modifier = Modifier.padding(5.dp),
+//                                    fontWeight = FontWeight(600),
+//                                    fontFamily = customFontFamilyText,
+//                                    fontSize = 12.sp
+//                                )
+                            }
+                        }
+                    }
+                }
             )
         }
 
 
 
-        fun GetListajogadoresFunction(
-            sharedViewModelTokenEId: SharedViewTokenEId,
-            sharedViewModelPerfilEditar: SharedViewModelPerfil,
-            sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
-            sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
-            sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
-            sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
-            sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
-            sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
-            sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
-            sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
-            sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
-            sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
-            sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
-        ){
-            // Se o tempo de espera terminou, continue com a validação do token
-            // Restante do código aqui
-            val token = sharedViewModelTokenEId.token
-            // Restante do seu código de validação do token
-            Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
-
-            if(token != null && token.isNotEmpty()){
-
-//                val perPage by remember { mutableStateOf<Int?>(null) }
-//                val page by remember { mutableStateOf<Int?>(null) }
-//                val name by remember { mutableStateOf<String?>("") }
-
-                val perPage = 0
-                val page = 0
-                val name = ""
-
-
-                sharedViewModelNomeJogadorListaJogadores.perPage = perPage
-                sharedViewModelNomeJogadorListaJogadores.page = page
-                sharedViewModelNomeJogadorListaJogadores.name = name
-
-
-
-                val getInfoJogadoresService = RetrofitFactoryCadastro().getJogadoresService()
-
-                getInfoJogadoresService.getListajogadores(perPage, page, name).enqueue(object :
-                    Callback<ResponseGetListaJogadores> {
-                    override fun onResponse(call: Call<ResponseGetListaJogadores>, response: Response<ResponseGetListaJogadores>) {
-                        if (response.isSuccessful) {
-                            Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
-                            val filtragemPorNomeData = response.body()
-
-                            val listaJogadores = filtragemPorNomeData?.players
-
-                            sharedViewModelGetListaJogadores.playerList = listaJogadores ?: emptyList()
-
-
-                            if(listaJogadores != null){
-                                for (infoJogadores in listaJogadores){
-                                    val idJogador = infoJogadores.id
-                                    val nicknameJogador = infoJogadores.nickname
-                                    val jogoJogador = infoJogadores.jogo
-                                    val funcaoJogador = infoJogadores.funcao
-                                    val eloJogador = infoJogadores.elo
-
-                                    testeid.value = infoJogadores.id
-
-                                    listaIds.add(idJogador)
-
-                                    sharedViewModelGetListaJogadoresList.id = infoJogadores.id
-                                    sharedViewModelGetListaJogadoresList.nickname = nicknameJogador
-                                    sharedViewModelGetListaJogadoresList.jogo = jogoJogador
-                                    sharedViewModelGetListaJogadoresList.funcao = funcaoJogador
-                                    sharedViewModelGetListaJogadoresList.elo = eloJogador
-
-                                    //Log.e("ID DE OUTRO JOGADOR 02", "aqui esta o id de outro jogador ${idJogador}")
-
-
-
-                                    val infoPerfilId = infoJogadores.perfil_id
-
-                                    val idInfoPerfilJogador = infoPerfilId?.id
-                                    val nomeUsuarioInfoPerfilJogador = infoPerfilId?.nome_usuario
-                                    val nomeCompletoInfoPerfilJogador = infoPerfilId?.nome_completo
-                                    val emailInfoPerfilJogador = infoPerfilId?.email
-                                    val senhaInfoPerfilJogador = infoPerfilId?.senha
-                                    val dataNascimentoInfoPerfilJogador = infoPerfilId?.data_nascimento
-                                    val generoInfoPerfilJogador = infoPerfilId?.genero
-                                    val nickNameInfoPerfilJogador = infoPerfilId?.nickname
-                                    val biografiaInfoPerfilJogador = infoPerfilId?.biografia
-
-                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
-                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
-
-                                    val infoTimeAtual = infoJogadores.time_atual
-
-                                    val idInfoTime = infoTimeAtual?.id
-                                    val nomeInfoTime = infoTimeAtual?.nome_time
-                                    val jogoInfoTime = infoTimeAtual?.jogo
-                                    val biografiaInfoTime = infoTimeAtual?.biografia
-
-                                    sharedViewModelGetListaJogadoresTimeAtual.idInfoTime = idInfoTime
-                                    sharedViewModelGetListaJogadoresTimeAtual.nomeInfoTime = nomeInfoTime
-                                    sharedViewModelGetListaJogadoresTimeAtual.jogoInfoTime = jogoInfoTime
-                                    sharedViewModelGetListaJogadoresTimeAtual.biografiaInfoTime = biografiaInfoTime
-
-
-                                    val infoJogadoresDentroTime = infoTimeAtual?.jogadores
-
-                                    if(infoJogadoresDentroTime != null){
-                                        for (infoJogadoresTime in infoJogadoresDentroTime){
-                                            val idInfoJogadoresDentroDoTime = infoJogadoresTime.id
-                                            val nickNameInfoJogadoresDentroDoTime = infoJogadoresTime.nickname
-                                            val jogoInfoJogadoresDentroDoTime = infoJogadoresTime.jogo
-                                            val funcaoInfoJogadoresDentroDoTime = infoJogadoresTime.funcao
-                                            val eloInfoJogadoresDentroDoTime = infoJogadoresTime.elo
-
-                                            sharedViewModelGetListaJogadoresDentroDeTimeList.id = idInfoJogadoresDentroDoTime
-                                            sharedViewModelGetListaJogadoresDentroDeTimeList.nickname = nickNameInfoJogadoresDentroDoTime
-                                            sharedViewModelGetListaJogadoresDentroDeTimeList.jogo = jogoInfoJogadoresDentroDoTime
-                                            sharedViewModelGetListaJogadoresDentroDeTimeList.funcao = funcaoInfoJogadoresDentroDoTime
-                                            sharedViewModelGetListaJogadoresDentroDeTimeList.elo = eloInfoJogadoresDentroDoTime
-                                        }
-                                    }
-
-                                    val infoPropostas = infoTimeAtual?.propostas
-
-                                    if (infoPropostas != null){
-                                        for (infoProposta in infoPropostas){
-                                            val idInfoProposta = infoProposta.id
-                                            val menssagemInfoProposta = infoProposta.menssagem
-
-                                            sharedViewModelGetListaJogadoresPropostasList.id = idInfoProposta
-                                            sharedViewModelGetListaJogadoresPropostasList.menssagem = menssagemInfoProposta
-
-                                        }
-                                    }
-                                }
-                            }
-
-                            Log.e("ID DE OUTRO JOGADOR 04", "aqui esta o id de outro jogador ${listaIds}")
-
-
-
-                            Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
-                            Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
-
-
-
-                        } else {
-                            // Trate a resposta não bem-sucedida
-                            Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
-                            // Log de corpo da resposta (se necessário)
-                            Log.d(
-                                "PerfilUsuarioJogadorScreen",
-                                "Corpo da resposta: ${response.errorBody()?.string()}"
-                            )
-                        }
-                    }
-
-                    override fun onFailure(call: Call<ResponseGetListaJogadores>, t: Throwable) {
-                        // Trate o erro de falha na rede.
-                        Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
-                    }
-
-                })
-
-            } else{
-                Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
-
-            }
-        }
+//        fun GetListajogadoresFunction(
+//            sharedViewModelTokenEId: SharedViewTokenEId,
+//            sharedViewModelPerfilEditar: SharedViewModelPerfil,
+//            sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
+//            sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+//            sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
+//            sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
+//            sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
+//            sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
+//            sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
+//            sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
+//            sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
+//            sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
+//            sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
+//        ){
+//            // Se o tempo de espera terminou, continue com a validação do token
+//            // Restante do código aqui
+//            val token = sharedViewModelTokenEId.token
+//            // Restante do seu código de validação do token
+//            Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
+//
+//            if(token != null && token.isNotEmpty()){
+//
+////                val perPage by remember { mutableStateOf<Int?>(null) }
+////                val page by remember { mutableStateOf<Int?>(null) }
+////                val name by remember { mutableStateOf<String?>("") }
+//
+//                val perPage = 0
+//                val page = 0
+//                val name = ""
+//
+//
+//                sharedViewModelNomeJogadorListaJogadores.perPage = perPage
+//                sharedViewModelNomeJogadorListaJogadores.page = page
+//                sharedViewModelNomeJogadorListaJogadores.name = name
+//
+//
+//
+//                val getInfoJogadoresService = RetrofitFactoryCadastro().getJogadoresService()
+//
+//                getInfoJogadoresService.getListajogadores(perPage, page, name).enqueue(object :
+//                    Callback<ResponseGetListaJogadores> {
+//                    override fun onResponse(call: Call<ResponseGetListaJogadores>, response: Response<ResponseGetListaJogadores>) {
+//                        if (response.isSuccessful) {
+//                            Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
+//                            val filtragemPorNomeData = response.body()
+//
+//                            val listaJogadores = filtragemPorNomeData?.players
+//
+//                            sharedViewModelGetListaJogadores.playerList = listaJogadores ?: emptyList()
+//
+//
+//                            if(listaJogadores != null){
+//                                for (infoJogadores in listaJogadores){
+//                                    val idJogador = infoJogadores.id
+//                                    val nicknameJogador = infoJogadores.nickname
+//                                    val jogoJogador = infoJogadores.jogo
+//                                    val funcaoJogador = infoJogadores.funcao
+//                                    val eloJogador = infoJogadores.elo
+//
+//                                    testeid.value = infoJogadores.id
+//
+//                                    listaIds.add(idJogador)
+//
+//                                    sharedViewModelGetListaJogadoresList.id = infoJogadores.id
+//                                    sharedViewModelGetListaJogadoresList.nickname = nicknameJogador
+//                                    sharedViewModelGetListaJogadoresList.jogo = jogoJogador
+//                                    sharedViewModelGetListaJogadoresList.funcao = funcaoJogador
+//                                    sharedViewModelGetListaJogadoresList.elo = eloJogador
+//
+//                                    //Log.e("ID DE OUTRO JOGADOR 02", "aqui esta o id de outro jogador ${idJogador}")
+//
+//
+//
+//                                    val infoPerfilId = infoJogadores.perfil_id
+//
+//                                    val idInfoPerfilJogador = infoPerfilId?.id
+//                                    val nomeUsuarioInfoPerfilJogador = infoPerfilId?.nome_usuario
+//                                    val nomeCompletoInfoPerfilJogador = infoPerfilId?.nome_completo
+//                                    val emailInfoPerfilJogador = infoPerfilId?.email
+//                                    val senhaInfoPerfilJogador = infoPerfilId?.senha
+//                                    val dataNascimentoInfoPerfilJogador = infoPerfilId?.data_nascimento
+//                                    val generoInfoPerfilJogador = infoPerfilId?.genero
+//                                    val nickNameInfoPerfilJogador = infoPerfilId?.nickname
+//                                    val biografiaInfoPerfilJogador = infoPerfilId?.biografia
+//
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
+//                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
+//
+//                                    val infoTimeAtual = infoJogadores.time_atual
+//
+//                                    val idInfoTime = infoTimeAtual?.id
+//                                    val nomeInfoTime = infoTimeAtual?.nome_time
+//                                    val jogoInfoTime = infoTimeAtual?.jogo
+//                                    val biografiaInfoTime = infoTimeAtual?.biografia
+//
+//                                    sharedViewModelGetListaJogadoresTimeAtual.idInfoTime = idInfoTime
+//                                    sharedViewModelGetListaJogadoresTimeAtual.nomeInfoTime = nomeInfoTime
+//                                    sharedViewModelGetListaJogadoresTimeAtual.jogoInfoTime = jogoInfoTime
+//                                    sharedViewModelGetListaJogadoresTimeAtual.biografiaInfoTime = biografiaInfoTime
+//
+//
+//                                    val infoJogadoresDentroTime = infoTimeAtual?.jogadores
+//
+//                                    if(infoJogadoresDentroTime != null){
+//                                        for (infoJogadoresTime in infoJogadoresDentroTime){
+//                                            val idInfoJogadoresDentroDoTime = infoJogadoresTime.id
+//                                            val nickNameInfoJogadoresDentroDoTime = infoJogadoresTime.nickname
+//                                            val jogoInfoJogadoresDentroDoTime = infoJogadoresTime.jogo
+//                                            val funcaoInfoJogadoresDentroDoTime = infoJogadoresTime.funcao
+//                                            val eloInfoJogadoresDentroDoTime = infoJogadoresTime.elo
+//
+//                                            sharedViewModelGetListaJogadoresDentroDeTimeList.id = idInfoJogadoresDentroDoTime
+//                                            sharedViewModelGetListaJogadoresDentroDeTimeList.nickname = nickNameInfoJogadoresDentroDoTime
+//                                            sharedViewModelGetListaJogadoresDentroDeTimeList.jogo = jogoInfoJogadoresDentroDoTime
+//                                            sharedViewModelGetListaJogadoresDentroDeTimeList.funcao = funcaoInfoJogadoresDentroDoTime
+//                                            sharedViewModelGetListaJogadoresDentroDeTimeList.elo = eloInfoJogadoresDentroDoTime
+//                                        }
+//                                    }
+//
+//                                    val infoPropostas = infoTimeAtual?.propostas
+//
+//                                    if (infoPropostas != null){
+//                                        for (infoProposta in infoPropostas){
+//                                            val idInfoProposta = infoProposta.id
+//                                            val menssagemInfoProposta = infoProposta.menssagem
+//
+//                                            sharedViewModelGetListaJogadoresPropostasList.id = idInfoProposta
+//                                            sharedViewModelGetListaJogadoresPropostasList.menssagem = menssagemInfoProposta
+//
+//                                        }
+//                                    }
+//                                }
+//                            }
+//
+//                            Log.e("ID DE OUTRO JOGADOR 04", "aqui esta o id de outro jogador ${listaIds}")
+//
+//
+//
+//                            Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
+//                            Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
+//
+//
+//
+//                        } else {
+//                            // Trate a resposta não bem-sucedida
+//                            Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
+//                            // Log de corpo da resposta (se necessário)
+//                            Log.d(
+//                                "PerfilUsuarioJogadorScreen",
+//                                "Corpo da resposta: ${response.errorBody()?.string()}"
+//                            )
+//                        }
+//                    }
+//
+//                    override fun onFailure(call: Call<ResponseGetListaJogadores>, t: Throwable) {
+//                        // Trate o erro de falha na rede.
+//                        Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
+//                    }
+//
+//                })
+//
+//            } else{
+//                Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
+//
+//            }
+//        }
 
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
@@ -568,21 +934,23 @@ fun ListaDeJogadoresScreen(
             Spacer(modifier = Modifier.height(12.dp))
 
             Button(onClick = {
-                GetListajogadoresFunction(
-                    sharedViewModelTokenEId = sharedViewModelTokenEId,
-                    sharedViewModelPerfilEditar = sharedViewModelPerfilEditar,
-                    sharedViewModelPerfilJogador = sharedViewModelPerfilJogador,
-                    sharedViewModelPerfilOrganizador = sharedViewModelPerfilOrganizador,
-                    sharedViewModelNomeJogadorListaJogadores = sharedViewModelNomeJogadorListaJogadores,
-                    sharedViewModelGetListaJogadores = sharedViewModelGetListaJogadores,
-                    sharedViewModelGetListaJogadoresList = sharedViewModelGetListaJogadoresList,
-                    sharedViewModelGetListaJogadoresInfoPerfil = sharedViewModelGetListaJogadoresInfoPerfil,
-                    sharedViewModelGetListaJogadoresTimeAtual = sharedViewModelGetListaJogadoresTimeAtual,
-                    sharedViewModelGetListaJogadoresDentroDeTime = sharedViewModelGetListaJogadoresDentroDeTime,
-                    sharedViewModelGetListaJogadoresDentroDeTimeList = sharedViewModelGetListaJogadoresDentroDeTimeList,
-                    sharedViewModelGetListaJogadoresPropostasList = sharedViewModelGetListaJogadoresPropostasList,
-                    sharedViewModelGetListaJogadoresPropostasRecebidas = sharedViewModelGetListaJogadoresPropostasRecebidas,
-                )
+//                GetListajogadoresFunction(
+//                    sharedViewModelTokenEId = sharedViewModelTokenEId,
+//                    sharedViewModelPerfilEditar = sharedViewModelPerfilEditar,
+//                    sharedViewModelPerfilJogador = sharedViewModelPerfilJogador,
+//                    sharedViewModelPerfilOrganizador = sharedViewModelPerfilOrganizador,
+//                    sharedViewModelNomeJogadorListaJogadores = sharedViewModelNomeJogadorListaJogadores,
+//                    sharedViewModelGetListaJogadores = sharedViewModelGetListaJogadores,
+//                    sharedViewModelGetListaJogadoresList = sharedViewModelGetListaJogadoresList,
+//                    sharedViewModelGetListaJogadoresInfoPerfil = sharedViewModelGetListaJogadoresInfoPerfil,
+//                    sharedViewModelGetListaJogadoresTimeAtual = sharedViewModelGetListaJogadoresTimeAtual,
+//                    sharedViewModelGetListaJogadoresDentroDeTime = sharedViewModelGetListaJogadoresDentroDeTime,
+//                    sharedViewModelGetListaJogadoresDentroDeTimeList = sharedViewModelGetListaJogadoresDentroDeTimeList,
+//                    sharedViewModelGetListaJogadoresPropostasList = sharedViewModelGetListaJogadoresPropostasList,
+//                    sharedViewModelGetListaJogadoresPropostasRecebidas = sharedViewModelGetListaJogadoresPropostasRecebidas,
+//                )
+
+
 
                 //Log.e("ID DE OUTRO JOGADOR 03", "aqui esta o id de outro jogador ${testeid.value}")
 
@@ -601,92 +969,94 @@ fun ListaDeJogadoresScreen(
 
         Spacer(modifier = Modifier.height(12.dp))
 
-        val playerListAAA = sharedViewModelGetListaJogadores.playerList
-
-        Log.e("Tamanho da Lista", "${playerListAAA?.size}")
-
-        LazyRow(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(80.dp)
-                .padding(start = 0.dp, top = 0.dp)
-            ,
-            verticalAlignment = Alignment.CenterVertically
-
-        ){
-            if (playerListAAA != null) {
-                items(playerListAAA.size) {index ->
-                    val playerDataList = playerListAAA[index]
-
-                    Log.e("ID JOGADORES NA ROW","${playerDataList.id}")
-
-                    listaIds.add(playerDataList.id)
-
-                    Log.e("ID JOGADORES NA ROW", "${playerDataList.id}")
-                    //jogos
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(start = 20.dp, top = 20.dp)
-                        ,
-                        horizontalArrangement = Arrangement.Center
-                    ) {
-                        Button(
-                            onClick = {
-//                                val timeId = time.id // Obtenha o ID do time clicado
-//                                val verificacao = true
+//        val playerListAAA = sharedViewModelGetListaJogadores.playerList
 //
-//                                if (verificacao == true) {
-//                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
-//                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
-//                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-//                                    onNavigate("perfil_time")
-//                                }
+//        Log.e("Tamanho da Lista", "${playerListAAA?.size}")
+//
+//        LazyRow(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(80.dp)
+//                .padding(start = 0.dp, top = 0.dp)
+//            ,
+//            verticalAlignment = Alignment.CenterVertically
+//
+//        ){
+//            if (playerListAAA != null) {
+//                items(playerListAAA.size) {index ->
+//                    val playerDataList = playerListAAA[index]
+//
+//                    Log.e("ID JOGADORES NA ROW","${playerDataList.id}")
+//
+//                    listaIds.add(playerDataList.id)
+//
+//                    Log.e("ID JOGADORES NA ROW", "${playerDataList.id}")
+//                    //jogos
+//                    Row(
+//                        modifier = Modifier
+//                            .fillMaxWidth()
+//                            .padding(start = 20.dp, top = 20.dp)
+//                        ,
+//                        horizontalArrangement = Arrangement.Center
+//                    ) {
+//                        Button(
+//                            onClick = {
+////                                val timeId = time.id // Obtenha o ID do time clicado
+////                                val verificacao = true
+////
+////                                if (verificacao == true) {
+////                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
+////                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
+////                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
+////                                    onNavigate("perfil_time")
+////                                }
+//
+//                            },
+//                            modifier = Modifier
+//                                .fillMaxWidth()
+//                                .height(80.dp)
+//                                .padding(start = 0.dp, top = 0.dp),
+//                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+//                            colors = ButtonDefaults.buttonColors(RedProliseum)
+//                        ) {
+//                            Card(
+//                                modifier = Modifier
+//                                    .height(55.dp)
+//                                    .width(55.dp),
+//                                colors = CardDefaults.cardColors(RedProliseum)
+//                            ) {
+//                                Image(
+//                                    painter =
+//                                    if ("${playerDataList.jogo}" == "0") painterResource(
+//                                        id = R.drawable.iconcsgo
+//                                    )
+//                                    else if ("${playerDataList.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+//                                    else if ("${playerDataList.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+//                                    else painter,
+//                                    contentDescription = "",
+//                                    modifier = Modifier.fillMaxSize(),
+//                                    alignment = Alignment.Center,
+//                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+//                                )
+//                            }
+//
+//                            Spacer(modifier = Modifier.width(5.dp))
+//
+//                            Text(
+//                                text = "${playerDataList.nickname}",
+//                                color = Color.White,
+//                                modifier = Modifier.padding(5.dp),
+//                                fontWeight = FontWeight(600),
+//                                fontFamily = customFontFamilyText,
+//                                fontSize = 12.sp
+//                            )
+//                        }
+//                    }
+//                }
+//            }
+//        }
 
-                            },
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(80.dp)
-                                .padding(start = 0.dp, top = 0.dp),
-                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                            colors = ButtonDefaults.buttonColors(RedProliseum)
-                        ) {
-                            Card(
-                                modifier = Modifier
-                                    .height(55.dp)
-                                    .width(55.dp),
-                                colors = CardDefaults.cardColors(RedProliseum)
-                            ) {
-                                Image(
-                                    painter =
-                                    if ("${playerDataList.jogo}" == "0") painterResource(
-                                        id = R.drawable.iconcsgo
-                                    )
-                                    else if ("${playerDataList.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                    else if ("${playerDataList.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
-                                    else painter,
-                                    contentDescription = "",
-                                    modifier = Modifier.fillMaxSize(),
-                                    alignment = Alignment.Center,
-                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                )
-                            }
 
-                            Spacer(modifier = Modifier.width(5.dp))
-
-                            Text(
-                                text = "${playerDataList.nickname}",
-                                color = Color.White,
-                                modifier = Modifier.padding(5.dp),
-                                fontWeight = FontWeight(600),
-                                fontFamily = customFontFamilyText,
-                                fontSize = 12.sp
-                            )
-                        }
-                    }
-                }
-            }
-        }
 
 
 
