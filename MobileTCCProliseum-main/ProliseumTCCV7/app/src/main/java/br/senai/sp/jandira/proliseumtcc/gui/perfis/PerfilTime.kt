@@ -63,14 +63,33 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeById
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeams
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsOrganizacao
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsPropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTime
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTimeList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresInfoPerfil
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresPropostasList
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresPropostasRecebidas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresTimeAtual
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTimePropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUserPropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelNomeJogadorListaJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogadorOutro
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizadorOutro
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -85,6 +104,9 @@ import kotlinx.coroutines.tasks.await
 @Composable
 fun PerfilTimeScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
+//    sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
+//    sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
+//    sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
     sharedViewModelPerfilEditar: SharedViewModelPerfil,
     sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
     sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
@@ -105,6 +127,25 @@ fun PerfilTimeScreen(
     sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
     sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
     sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
+
+    sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
+    sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
+    sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
+    sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
+    sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
+    sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
+    sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
+    sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
+    sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
+
+    // SharedViewModel GET TIME BY ID
+    sharedGetTimeById: SharedGetTimeById,
+    sharedGetTimeByIdTeams: SharedGetTimeByIdTeams,
+    sharedGetTimeByIdTeamsJogadores: SharedGetTimeByIdTeamsJogadores,
+    sharedGetTimeByIdTeamsJogadoresPerfilId: SharedGetTimeByIdTeamsJogadoresPerfilId,
+    sharedGetTimeByIdTeamsOrganizacao: SharedGetTimeByIdTeamsOrganizacao,
+    sharedGetTimeByIdOrganizacaoDonoId: SharedGetTimeByIdOrganizacaoDonoId,
+    sharedGetTimeByIdTeamsPropostas: SharedGetTimeByIdTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
 
@@ -112,6 +153,7 @@ fun PerfilTimeScreen(
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+
     val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageTimeCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
@@ -149,6 +191,7 @@ fun PerfilTimeScreen(
     val funcaoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.funcaoData
     val eloJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.eloData
 
+
     val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
     Log.e("ID DO TIME COMPARTILHADO","ID compartilhado ${selectedTimeId}")
 
@@ -156,13 +199,43 @@ fun PerfilTimeScreen(
     val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
     Log.e("ID DO TIME ESCOLHIDO","o id do time da tela PerfilTime ${team}")
 
+
+
+//    val selectedJogadorTimeById by remember { mutableStateOf(sharedGetTimeByIdTeams.selectedJogadorIdTimeById) }
+//    Log.e("AAA","ID jogador compartilhado ${selectedJogadorTimeById}")
+//
+//
+//    val teamById = selectedJogadorTimeById?.let { sharedGetTimeByIdTeams.getTeamByIdJogadores(it) }
+//    Log.e("BBB","teste teste:  ${teamById}")
+
     val idProposta = sharedViewModelGetMyTeamsTimePropostas.idData
     val menssagemProposta = sharedViewModelGetMyTeamsTimePropostas.mensagemData
+
+    // GET TIME BY ID
+
+    val  idGetMyTeamCompartilhado = sharedGetTimeByIdTeamsJogadores.id
+    val  nickNameGetMyTeamCompartilhado = sharedGetTimeByIdTeamsJogadores.nickname
+    val  jogoGetMyTeamCompartilhado = sharedGetTimeByIdTeamsJogadores.jogo
+    val  funcaoGetMyTeamCompartilhado = sharedGetTimeByIdTeamsJogadores.funcao
+    val  eloGetMyTeamCompartilhado = sharedGetTimeByIdTeamsJogadores.elo
+
+    val  idGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.id
+    val  nomeUsuarioGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.nome_usuario
+    val  nomeCompletoGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.nome_completo
+    val  emailGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.email
+    val  senhaGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.senha
+    val  dataNascimentoGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.data_nascimento
+    val  biografiaGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.biografia
+    val  generoGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.genero
+    val  nickNameGetMyTeamCompartilhadoPerfilId = sharedGetTimeByIdTeamsJogadoresPerfilId.nickname
+
+    val somenteUmTesteJogadores = sharedGetTimeByIdTeams.jogadores
 
     if(idUser != null && idUser != 0){
 
 
         val storage = Firebase.storage
+
 
         if (idUser != null && idUser != 0) {
             imageRef.value = storage.reference.child("${idUser}/profile")
@@ -559,6 +632,9 @@ fun PerfilTimeScreen(
                             .background(Color.Red)
                     )
 
+                    if (somenteUmTesteJogadores != null) {
+                        Log.e("BODY GET MY TIME ID 01 ","Informacao de jogadores do GET MY TIME BY ID: ${somenteUmTesteJogadores.size}")
+                    }
                     if (team != null) {
 //                        // Exibir informações do time
 //                        Text(text = "Nome do Time: ${team.nomeTime}")
@@ -617,69 +693,142 @@ fun PerfilTimeScreen(
                             verticalAlignment = Alignment.CenterVertically
 
                         ){
-                            if (team.jogadores != null) {
-                                items(team.jogadores.size) { index ->
-                                    val jogador = team.jogadores[index]
-                                    //jogos
-                                    Row(
-                                        modifier = Modifier
-                                            .fillMaxWidth()
-                                            .padding(start = 20.dp, top = 20.dp)
-                                        ,
-                                        horizontalArrangement = Arrangement.Center
-                                    ) {
-                                        Button(
-                                            onClick = {
-//                                                val timeId = time.id // Obtenha o ID do time clicado
-//                                                val verificacao = true
-//
-//                                                if (verificacao == true) {
-//                                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
-//                                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
-//                                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-//                                                    onNavigate("perfil_time")
-//                                                }
+                            if (team != null) {
+                                if (somenteUmTesteJogadores != null) {
+                                    items(somenteUmTesteJogadores.size) { index ->
+                                        val jogador = somenteUmTesteJogadores[index]
 
-                                            },
-                                            modifier = Modifier
-                                                .fillMaxWidth()
-                                                .height(80.dp)
-                                                .padding(start = 0.dp, top = 0.dp),
-                                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-                                            colors = ButtonDefaults.buttonColors(RedProliseum)
-                                        ) {
-                                            Card(
-                                                modifier = Modifier
-                                                    .height(55.dp)
-                                                    .width(55.dp),
-                                                colors = CardDefaults.cardColors(RedProliseum)
-                                            ) {
-                                                Image(
-                                                    painter = when (jogador.funcao) {
-                                                        0 -> painterResource(id = R.drawable.icontoplane)
-                                                        1 -> painterResource(id = R.drawable.iconjungle)
-                                                        2 -> painterResource(id = R.drawable.iconmidlane)
-                                                        3 -> painterResource(id = R.drawable.iconsupport)
-                                                        4 -> painterResource(id = R.drawable.iconadc)
-                                                        else -> painter
-                                                    },
-                                                    contentDescription = "",
-                                                    modifier = Modifier.fillMaxSize(),
-                                                    alignment = Alignment.Center,
-                                                    colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                                )
+                                        val infoPerfilId = jogador.perfil_id?.id
+
+                                        val idInfoIdJogador = infoPerfilId ?: 0
+
+                                        val imageRefJogadorTime = remember { mutableStateOf<StorageReference?>(null) }
+
+                                        if(idUser != null && idUser != 0){
+
+
+                                            val storage = Firebase.storage
+
+                                            if (idInfoIdJogador != null && idInfoIdJogador != 0) {
+                                                imageRefJogadorTime.value = storage.reference.child("${idInfoIdJogador}/profile")
                                             }
 
-                                            Spacer(modifier = Modifier.width(5.dp))
 
-                                            Text(
-                                                text = "${jogador.nickname}",
-                                                color = Color.White,
-                                                modifier = Modifier.padding(5.dp),
-                                                fontWeight = FontWeight(600),
-                                                fontFamily = customFontFamilyText,
-                                                fontSize = 12.sp
-                                            )
+                                        } else{
+                                            Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                                            Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                                        }
+
+                                        var imageUriJogadorTime by remember { mutableStateOf<Uri?>(null) }
+
+                                        if (imageRefJogadorTime.value != null) { // Verifique a referência do Firebase
+                                            LaunchedEffect(Unit) {
+                                                try {
+                                                    val uriJogadorTime = imageRefJogadorTime.value!!.downloadUrl.await()
+                                                    imageUriJogadorTime = uriJogadorTime
+
+                                                    Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriJogadorTime}")
+
+                                                } catch (e: Exception) {
+                                                    // Trate os erros, se houver algum
+                                                    Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                                }
+                                            }
+                                        }
+
+                                        Log.e("BODY GET MY TIME ID 02 ","Informacao de jogadores do GET MY TIME BY ID: ${somenteUmTesteJogadores}")
+                                        //jogos
+                                        Row(
+                                            modifier = Modifier
+                                                .fillMaxWidth()
+                                                .padding(start = 20.dp, top = 20.dp),
+                                            horizontalArrangement = Arrangement.Center
+                                        ) {
+                                            Button(
+                                                onClick = {
+                            //                                                val timeId = time.id // Obtenha o ID do time clicado
+                            //                                                val verificacao = true
+                            //
+                            //                                                if (verificacao == true) {
+                            //                                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
+                            //                                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
+                            //                                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
+                            //                                                    onNavigate("perfil_time")
+                            //                                                }
+
+                                                },
+                                                modifier = Modifier
+                                                    .fillMaxWidth()
+                                                    .height(80.dp)
+                                                    .padding(start = 0.dp, top = 0.dp),
+                                                shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                                                colors = ButtonDefaults.buttonColors(RedProliseum)
+                                            ) {
+
+
+                                                    Column(
+                                                        modifier = Modifier.fillMaxSize(),
+                                                        horizontalAlignment = Alignment.CenterHorizontally,
+                                                    ) {
+                                                        Card(
+                                                            modifier = Modifier
+                                                                .width(40.dp)
+                                                                .height(40.dp),
+                                                            shape = CircleShape
+                                                        ) {
+                                                            if (idUser != null && idUser != 0) {
+                                                                // Exiba a imagem se a URI estiver definida
+                                                                AsyncImage(
+                                                                    model = imageUriJogadorTime,
+                                                                    contentDescription = null,
+                                                                    modifier = Modifier.fillMaxSize(),
+                                                                    contentScale = ContentScale.Crop
+                                                                )
+                                                            } else {
+                                                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                                Text("Carregando imagem...")
+                                                            }
+                                                        }
+
+                                                    }
+
+
+
+                                                Spacer(modifier = Modifier.width(5.dp))
+
+                                                Card(
+                                                    modifier = Modifier
+                                                        .height(55.dp)
+                                                        .width(55.dp),
+                                                    colors = CardDefaults.cardColors(RedProliseum)
+                                                ) {
+                                                    Image(
+                                                        painter = when (jogador.funcao) {
+                                                            0 -> painterResource(id = R.drawable.icontoplane)
+                                                            1 -> painterResource(id = R.drawable.iconjungle)
+                                                            2 -> painterResource(id = R.drawable.iconmidlane)
+                                                            3 -> painterResource(id = R.drawable.iconsupport)
+                                                            4 -> painterResource(id = R.drawable.iconadc)
+                                                            else -> painter
+                                                        },
+                                                        contentDescription = "",
+                                                        modifier = Modifier.fillMaxSize(),
+                                                        alignment = Alignment.Center,
+                                                        colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                                    )
+                                                }
+
+                                                Spacer(modifier = Modifier.width(5.dp))
+
+                                                Text(
+                                                    text = "${jogador.nickname}",
+                                                    color = Color.White,
+                                                    modifier = Modifier.padding(5.dp),
+                                                    fontWeight = FontWeight(600),
+                                                    fontFamily = customFontFamilyText,
+                                                    fontSize = 12.sp
+                                                )
+                                            }
                                         }
                                     }
                                 }

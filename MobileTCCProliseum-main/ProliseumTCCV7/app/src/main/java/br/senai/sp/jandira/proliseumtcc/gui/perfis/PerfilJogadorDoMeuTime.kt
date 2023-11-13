@@ -55,6 +55,13 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeById
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeams
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsOrganizacao
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTime
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTimeList
@@ -69,10 +76,7 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUser
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelNomeJogadorListaJogadores
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogadorOutro
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizador
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizadorOutro
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
@@ -88,7 +92,7 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PerfilDeOutroJogador(
+fun PerfilJogadorDoMeuTime(
     sharedViewModelTokenEId: SharedViewTokenEId,
     sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
     sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
@@ -120,6 +124,15 @@ fun PerfilDeOutroJogador(
     sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
     sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
     sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
+
+    // SharedViewModel GET TIME BY ID
+    sharedGetTimeById: SharedGetTimeById,
+    sharedGetTimeByIdTeams: SharedGetTimeByIdTeams,
+    sharedGetTimeByIdTeamsJogadores: SharedGetTimeByIdTeamsJogadores,
+    sharedGetTimeByIdTeamsJogadoresPerfilId: SharedGetTimeByIdTeamsJogadoresPerfilId,
+    sharedGetTimeByIdTeamsOrganizacao: SharedGetTimeByIdTeamsOrganizacao,
+    sharedGetTimeByIdOrganizacaoDonoId: SharedGetTimeByIdOrganizacaoDonoId,
+    sharedGetTimeByIdTeamsPropostas: SharedGetTimeByIdTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
 
@@ -148,6 +161,13 @@ fun PerfilDeOutroJogador(
     val orgProfile = sharedViewModelPerfilOrganizadorOutro.orgProfile
     val nomeOrganizacao = sharedViewModelPerfilOrganizadorOutro.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizadorOutro.biografia
+
+    val idjogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.idData
+    val nickNameJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.nickNameData
+    val jogoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.jogoData
+    val funcaoJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.funcaoData
+    val eloJogadorNoTime = sharedViewModelGetMyTeamsTimeJogadores.eloData
+
 
     if(idUser != null && idUser != 0){
 

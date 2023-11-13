@@ -36,6 +36,13 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeById
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeams
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsOrganizacao
+import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeByIdTeamsPropostas
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadores
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTime
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresDentroDeTimeList
@@ -45,9 +52,14 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogado
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresPropostasRecebidas
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetListaJogadoresTimeAtual
 import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelNomeJogadorListaJogadores
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilJogadorOutro
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOrganizadorOutro
+import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.gui.CampeonatoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarDeletarOrganizacao
+import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesDoTimeById
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOutroJogador
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.gui.HomeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.ListaDeJogadoresScreen
@@ -71,6 +83,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilTime
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilDeOutroJogador
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
@@ -105,9 +118,19 @@ fun MainScreen() {
 
         val sharedViewModelDataAndGenderCadastroUser = remember { SharedViewModelDataAndGenderCadastroUser()}
 
+        val sharedViewModelPerfilEditar = remember { SharedViewModelPerfil() }
+
         val sharedViewModelPerfilJogador = remember { SharedViewModelPerfilJogador()}
 
         val sharedViewModelPerfilOrganizador = remember { SharedViewModelPerfilOrganizador()}
+
+        // OUTRO
+
+        val sharedViewModelPerfilEditarOutro = remember { SharedViewModelPerfilOutro() }
+
+        val sharedViewModelPerfilJogadorOutro = remember { SharedViewModelPerfilJogadorOutro() }
+
+        val sharedViewModelPerfilOrganizadorOutro = remember { SharedViewModelPerfilOrganizadorOutro() }
 
         // SharedViewModel GET MY TEAMS GERAL
         val sharedGetMyTeamsGeral = remember { SharedGetMyTeamsGeral() }
@@ -148,13 +171,23 @@ fun MainScreen() {
         val sharedViewModelGetListaJogadoresPropostasList = remember { SharedViewModelGetListaJogadoresPropostasList() }
         val sharedViewModelGetListaJogadoresPropostasRecebidas = remember { SharedViewModelGetListaJogadoresPropostasRecebidas() }
 
+        // SharedViewModel GET TIME BY ID
+
+        val  sharedGetTimeById = remember { SharedGetTimeById() }
+        val  sharedGetTimeByIdTeams = remember { SharedGetTimeByIdTeams() }
+        val  sharedGetTimeByIdTeamsJogadores = remember { SharedGetTimeByIdTeamsJogadores() }
+        val  sharedGetTimeByIdTeamsJogadoresPerfilId = remember { SharedGetTimeByIdTeamsJogadoresPerfilId() }
+        val  sharedGetTimeByIdTeamsOrganizacao = remember { SharedGetTimeByIdTeamsOrganizacao() }
+        val  sharedGetTimeByIdOrganizacaoDonoId = remember { SharedGetTimeByIdOrganizacaoDonoId() }
+        val  sharedGetTimeByIdTeamsPropostas = remember { SharedGetTimeByIdTeamsPropostas() }
+
 
         val sharedViewModelTokenEId = remember { SharedViewTokenEId() }
 
 
         val sharedViewModelImageUri = remember { SharedViewModelImageUri() }
 
-        val sharedViewModelPerfilEditar = remember { SharedViewModelPerfil() }
+
 
         var currentScreen by remember { mutableStateOf("start") }
 
@@ -349,17 +382,42 @@ fun MainScreen() {
                 sharedViewModelPerfilEditar,
                 sharedViewModelPerfilJogador,
                 sharedViewModelPerfilOrganizador,
+
+                // SharedViewModel GET MY TEAMS GERAL
                 sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
                 sharedViewModelGetMyTeamsUser,
                 sharedViewModelGetMyTeamsUserPropostas,
                 sharedViewModelGetMyTeamsUserPropostasDe,
                 sharedViewModelGetMyTeamsUserPropostasDeJogadores,
                 sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
                 sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
                 sharedViewModelGetMyTeamsTime,
                 sharedViewModelGetMyTeamsTimeJogadores,
                 sharedViewModelGetMyTeamsTimeJogadoresAtivos,
-                sharedViewModelGetMyTeamsTimePropostas
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTimeById,
+                sharedGetTimeByIdTeams,
+                sharedGetTimeByIdTeamsJogadores,
+                sharedGetTimeByIdTeamsJogadoresPerfilId,
+                sharedGetTimeByIdTeamsOrganizacao,
+                sharedGetTimeByIdOrganizacaoDonoId,
+                sharedGetTimeByIdTeamsPropostas,
             ) {
                 currentScreen = it
             }
@@ -463,6 +521,130 @@ fun MainScreen() {
             }
         }
 
+        val perfilDeOutroJogador: @Composable () -> Unit = {
+            PerfilDeOutroJogador(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val carregarInformacoesPerfilOutroJogador: @Composable () -> Unit = {
+            CarregarInformacoesPerfilOutroJogador(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val carregarInformacoesDoTimeById: @Composable () -> Unit = {
+            CarregarInformacoesDoTimeById(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                sharedGetTimeById,
+                sharedGetTimeByIdTeams,
+                sharedGetTimeByIdTeamsJogadores,
+                sharedGetTimeByIdTeamsJogadoresPerfilId,
+                sharedGetTimeByIdTeamsOrganizacao,
+                sharedGetTimeByIdOrganizacaoDonoId,
+                sharedGetTimeByIdTeamsPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+
+
 
 
 
@@ -504,6 +686,9 @@ fun MainScreen() {
                     "lista_de_publicacoes_times" -> listaDePublicacoesDeTimes()
                     "campeonatos" -> campeonatoScreen()
                     "premium" -> premiumScreen()
+                    "perfil_outro_jogador" -> perfilDeOutroJogador()
+                    "carregar_informacoes_perfil_outro_jogador" -> carregarInformacoesPerfilOutroJogador()
+                    "carregar_informacoes_do_time_by_id" -> carregarInformacoesDoTimeById()
                     else -> startScreen()
                 }
             }

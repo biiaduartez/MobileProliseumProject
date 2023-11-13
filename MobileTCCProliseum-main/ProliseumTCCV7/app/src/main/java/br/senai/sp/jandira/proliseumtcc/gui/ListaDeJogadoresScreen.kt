@@ -130,7 +130,7 @@ fun ListaDeJogadoresScreen(
     onNavigate: (String) -> Unit
 ) {
     val token = sharedViewModelTokenEId.token
-    Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
+    Log.d("TESTE TOKEN", "Token: $token")
 
 
     val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
@@ -346,14 +346,14 @@ fun ListaDeJogadoresScreen(
 
                             listaIdDeJogadores.add(idInfoPerfilJogador)
 
-                            sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
-                            sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
+//                            sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
 
                             val infoTimeAtual = infoJogadores.time_atual
 
@@ -446,65 +446,47 @@ fun ListaDeJogadoresScreen(
     ) {
         ///////
         // Imagem Capa
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(200.dp)
-
-        ) {
-
-            if (idUser != null && idUser != 0) {
-                // Exiba a imagem se a URI estiver definida
-                AsyncImage(
-                    model = imageOrgCapaUri,
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop
-                )
-            } else {
-                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-
-            }
-        }
+//        Column(
+//            modifier = Modifier
+//                .fillMaxWidth()
+//                .height(200.dp)
+//
+//        ) {
+//
+//            if (idUser != null && idUser != 0) {
+//                // Exiba a imagem se a URI estiver definida
+//                AsyncImage(
+//                    model = imageOrgCapaUri,
+//                    contentDescription = null,
+//                    contentScale = ContentScale.Crop
+//                )
+//            } else {
+//                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+//
+//            }
+//        }
 
         Row(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(15.dp),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
+            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
         ) {
-
             Icon(
                 modifier = Modifier.clickable {
                     //rememberNavController.navigate("home")
-                    onNavigate("perfil_usuario_jogador")
+                    onNavigate("home")
                 },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
             )
-            Button(
-                onClick = {
-                    //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_organizador_1")
-                },
-                colors = ButtonDefaults.buttonColors(Color.Transparent)
-            ) {
+            Spacer(modifier = Modifier.height(40.dp))
 
-                Text(
-                    text = stringResource(id = R.string.button_editar),
-                    color = Color.White,
-                    fontFamily = customFontFamilyText,
-                    fontWeight = FontWeight(600),
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.width(3.dp))
-
-                Icon(
-                    painter = painterResource(id = R.drawable.escrever),
-                    contentDescription = "Editar"
-                )
-            }
+            Text(
+                text = "JOGADORES",
+                fontFamily = customFontFamilyText,
+                fontSize = 25.sp,
+                fontWeight = FontWeight(900),
+                color = Color.White
+            )
         }
 
         Spacer(modifier = Modifier.height(100.dp))
@@ -521,19 +503,31 @@ fun ListaDeJogadoresScreen(
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(top = 250.dp),
+                    .padding(top = 50.dp),
                 content = {
                     items(jogadores.size){ index ->
                         val playerListJogadores = jogadores[index]
 
                         val infoPerfilId = playerListJogadores.perfil_id
+
                         val idInfoPerfilJogador = infoPerfilId?.id ?: 0
+                        val nomeUsuarioInfoPerfilJogador = infoPerfilId?.nome_usuario ?: ""
+                        val nomeCompletoInfoPerfilJogador = infoPerfilId?.nome_completo ?: ""
+                        val emailInfoPerfilJogador = infoPerfilId?.email ?: ""
+                        val dataNascimentoInfoPerfilJogador = infoPerfilId?.data_nascimento ?: ""
+                        val generoInfoPerfilJogador = infoPerfilId?.genero ?: 0
+                        val nickNameInfoPerfilJogador = infoPerfilId?.nickname ?: ""
+                        val biografiaInfoPerfilJogador = infoPerfilId?.biografia ?: ""
+
+
+
+
 
                         listaIdsPerfisJogadores.add(idInfoPerfilJogador)
 
                         val imageRef = remember { mutableStateOf<StorageReference?>(null) }
 
-                        if(sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador != null && sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador != 0){
+                        if(idInfoPerfilJogador != null && idInfoPerfilJogador != 0){
 
 
                             val storage = Firebase.storage
@@ -541,7 +535,6 @@ fun ListaDeJogadoresScreen(
                             if (jogadores != null && jogadores.isNotEmpty()) {
                                 val playerListJogadores = jogadores[index]
                                 val infoPerfilId = playerListJogadores.perfil_id
-                                val idInfoPerfilJogador = infoPerfilId?.id
 
                                 if (idInfoPerfilJogador != null && idInfoPerfilJogador != 0) {
                                     // Utilize o ID do perfil aqui
@@ -586,15 +579,16 @@ fun ListaDeJogadoresScreen(
                         ) {
                             Button(
                                 onClick = {
-//                                val timeId = time.id // Obtenha o ID do time clicado
-//                                val verificacao = true
-//
-//                                if (verificacao == true) {
-//                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
-//                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
-//                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-//                                    onNavigate("perfil_time")
-//                                }
+                                    sharedViewModelGetListaJogadoresInfoPerfil.idInfoPerfilJogador = idInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeUsuarioInfoPerfilJogador = nomeUsuarioInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.nomeCompletoInfoPerfilJogador = nomeCompletoInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.emailInfoPerfilJogador = emailInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.dataNascimentoInfoPerfilJogador = dataNascimentoInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.generoInfoPerfilJogador = generoInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.nickNameInfoPerfilJogador = nickNameInfoPerfilJogador
+                                    sharedViewModelGetListaJogadoresInfoPerfil.biografiaInfoPerfilJogador = biografiaInfoPerfilJogador
+
+                                    onNavigate("carregar_informacoes_perfil_outro_jogador")
 
                                 },
                                 modifier = Modifier
@@ -927,47 +921,47 @@ fun ListaDeJogadoresScreen(
 //            }
 //        }
 
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
-        ) {
-            Spacer(modifier = Modifier.height(12.dp))
-
-            Button(onClick = {
-//                GetListajogadoresFunction(
-//                    sharedViewModelTokenEId = sharedViewModelTokenEId,
-//                    sharedViewModelPerfilEditar = sharedViewModelPerfilEditar,
-//                    sharedViewModelPerfilJogador = sharedViewModelPerfilJogador,
-//                    sharedViewModelPerfilOrganizador = sharedViewModelPerfilOrganizador,
-//                    sharedViewModelNomeJogadorListaJogadores = sharedViewModelNomeJogadorListaJogadores,
-//                    sharedViewModelGetListaJogadores = sharedViewModelGetListaJogadores,
-//                    sharedViewModelGetListaJogadoresList = sharedViewModelGetListaJogadoresList,
-//                    sharedViewModelGetListaJogadoresInfoPerfil = sharedViewModelGetListaJogadoresInfoPerfil,
-//                    sharedViewModelGetListaJogadoresTimeAtual = sharedViewModelGetListaJogadoresTimeAtual,
-//                    sharedViewModelGetListaJogadoresDentroDeTime = sharedViewModelGetListaJogadoresDentroDeTime,
-//                    sharedViewModelGetListaJogadoresDentroDeTimeList = sharedViewModelGetListaJogadoresDentroDeTimeList,
-//                    sharedViewModelGetListaJogadoresPropostasList = sharedViewModelGetListaJogadoresPropostasList,
-//                    sharedViewModelGetListaJogadoresPropostasRecebidas = sharedViewModelGetListaJogadoresPropostasRecebidas,
-//                )
-
-
-
-                //Log.e("ID DE OUTRO JOGADOR 03", "aqui esta o id de outro jogador ${testeid.value}")
-
-
-
-
-            }
-            ) {
-
-
-            }
-
-            Spacer(modifier = Modifier.height(12.dp))
-
-        }
-
-        Spacer(modifier = Modifier.height(12.dp))
+//        Column(
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//            verticalArrangement = Arrangement.Center
+//        ) {
+//            Spacer(modifier = Modifier.height(12.dp))
+//
+//            Button(onClick = {
+////                GetListajogadoresFunction(
+////                    sharedViewModelTokenEId = sharedViewModelTokenEId,
+////                    sharedViewModelPerfilEditar = sharedViewModelPerfilEditar,
+////                    sharedViewModelPerfilJogador = sharedViewModelPerfilJogador,
+////                    sharedViewModelPerfilOrganizador = sharedViewModelPerfilOrganizador,
+////                    sharedViewModelNomeJogadorListaJogadores = sharedViewModelNomeJogadorListaJogadores,
+////                    sharedViewModelGetListaJogadores = sharedViewModelGetListaJogadores,
+////                    sharedViewModelGetListaJogadoresList = sharedViewModelGetListaJogadoresList,
+////                    sharedViewModelGetListaJogadoresInfoPerfil = sharedViewModelGetListaJogadoresInfoPerfil,
+////                    sharedViewModelGetListaJogadoresTimeAtual = sharedViewModelGetListaJogadoresTimeAtual,
+////                    sharedViewModelGetListaJogadoresDentroDeTime = sharedViewModelGetListaJogadoresDentroDeTime,
+////                    sharedViewModelGetListaJogadoresDentroDeTimeList = sharedViewModelGetListaJogadoresDentroDeTimeList,
+////                    sharedViewModelGetListaJogadoresPropostasList = sharedViewModelGetListaJogadoresPropostasList,
+////                    sharedViewModelGetListaJogadoresPropostasRecebidas = sharedViewModelGetListaJogadoresPropostasRecebidas,
+////                )
+//
+//
+//
+//                //Log.e("ID DE OUTRO JOGADOR 03", "aqui esta o id de outro jogador ${testeid.value}")
+//
+//
+//
+//
+//            }
+//            ) {
+//
+//
+//            }
+//
+//            Spacer(modifier = Modifier.height(12.dp))
+//
+//        }
+//
+//        Spacer(modifier = Modifier.height(12.dp))
 
 //        val playerListAAA = sharedViewModelGetListaJogadores.playerList
 //

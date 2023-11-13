@@ -519,6 +519,43 @@ fun PerfilOrganizacaoScreen(
                         if (dadosTimeGetMyTeams != null) {
                             items(dadosTimeGetMyTeams.size) {index ->
                                 val time = dadosTimeGetMyTeams[index]
+
+                                val idTime = time.id
+
+                                val imageTimeRef = remember { mutableStateOf<StorageReference?>(null) }
+
+                                if(idUser != null && idUser != 0){
+
+
+                                    val storage = Firebase.storage
+
+                                    if (idTime != null && idTime != 0) {
+                                        imageTimeRef.value = storage.reference.child("team/${idTime}/profile")
+                                    }
+
+
+                                } else{
+                                    Log.e("TOKEN NULO", "Token do usuario esta nulo")
+                                    Log.e("ERRO", "As informaçoes do usuario nao foram carregadas")
+                                }
+
+                                var imageUriTime by remember { mutableStateOf<Uri?>(null) }
+
+                                if (imageTimeRef.value != null) { // Verifique a referência do Firebase
+                                    LaunchedEffect(Unit) {
+                                        try {
+                                            val uriTime = imageTimeRef.value!!.downloadUrl.await()
+                                            imageUriTime = uriTime
+
+                                            Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriTime}")
+
+                                        } catch (e: Exception) {
+                                            // Trate os erros, se houver algum
+                                            Log.e("DEBUG", "Erro ao buscar imagem: $e")
+                                        }
+                                    }
+                                }
+
                                 //jogos
                                 Row(
                                     modifier = Modifier
@@ -536,7 +573,7 @@ fun PerfilOrganizacaoScreen(
                                                 verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
                                                 sharedGetMyTeamsGeral.selectedTimeId = timeId
                                                 Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-                                                onNavigate("perfil_time")
+                                                onNavigate("carregar_informacoes_do_time_by_id")
                                             }
 
                                         },
@@ -547,6 +584,35 @@ fun PerfilOrganizacaoScreen(
                                         shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
                                         colors = ButtonDefaults.buttonColors(RedProliseum)
                                     ) {
+
+                                        Column(
+                                            modifier = Modifier.fillMaxSize(),
+                                            horizontalAlignment = Alignment.CenterHorizontally,
+                                        ) {
+                                            Card(
+                                                modifier = Modifier
+                                                    .width(40.dp)
+                                                    .height(40.dp),
+                                                shape = CircleShape
+                                            ) {
+                                                if (idUser != null && idUser != 0) {
+                                                    // Exiba a imagem se a URI estiver definida
+                                                    AsyncImage(
+                                                        model = imageUriTime,
+                                                        contentDescription = null,
+                                                        modifier = Modifier.fillMaxSize(),
+                                                        contentScale = ContentScale.Crop
+                                                    )
+                                                } else {
+                                                    // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                    Text("Carregando imagem...")
+                                                }
+                                            }
+
+                                        }
+
+                                        Spacer(modifier = Modifier.width(5.dp))
+
                                         Card(
                                             modifier = Modifier
                                                 .height(55.dp)

@@ -1,5 +1,6 @@
 package br.senai.sp.jandira.proliseumtcc.service.primeira_sprint
 
+import br.senai.sp.jandira.proliseumtcc.model.getTimeById
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -89,6 +90,12 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetJogadoresService::class.java)
     }
 
+    fun getJogadoresByIdService(): GetProfileById {
+        return retrofitFactoryCadastro.create(GetProfileById::class.java)
+    }
+    fun theGetTimeByIdService(): GetTimeById {
+        return retrofitFactoryCadastro.create(GetTimeById::class.java)
+    }
 
 
 
