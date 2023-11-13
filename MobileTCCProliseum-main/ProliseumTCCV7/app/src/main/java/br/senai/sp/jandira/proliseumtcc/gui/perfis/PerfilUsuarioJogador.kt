@@ -83,6 +83,7 @@ fun PerfilUsuarioJogadorScreen(
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
+    val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
     val idUser = sharedViewModelPerfilEditar.id
@@ -115,6 +116,10 @@ fun PerfilUsuarioJogadorScreen(
         }
 
         if (idUser != null && idUser != 0) {
+            imageOrgRef.value = storage.reference.child("${idUser}/orgprofile")
+        }
+
+        if (idUser != null && idUser != 0) {
             imageCapaRef.value = storage.reference.child("${idUser}/capa")
         }
 
@@ -126,7 +131,24 @@ fun PerfilUsuarioJogadorScreen(
     //    FIREBASE
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
+    var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
     var imageCapaUri by remember { mutableStateOf<Uri?>(null) }
+
+
+    if (imageOrgRef.value != null) { // Verifique a referência do Firebase
+        LaunchedEffect(Unit) {
+            try {
+                val uriOrg = imageOrgRef.value!!.downloadUrl.await()
+                imageOrgUri = uriOrg
+
+                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
+
+            } catch (e: Exception) {
+                // Trate os erros, se houver algum
+                Log.e("DEBUG", "Erro ao buscar imagem: $e")
+            }
+        }
+    }
 
     if (imageRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
@@ -322,20 +344,53 @@ fun PerfilUsuarioJogadorScreen(
                     if(orgProfile == null) {
                         Spacer(modifier = Modifier.height(12.dp))
                     } else if (orgProfile != null){
+                        Button(onClick = {
+                            onNavigate("perfil_organizacao")
+                        },
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(70.dp)
+                                .padding(start = 0.dp, top = 0.dp),
+                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
+                            colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+                        ) {
+                            Card(
+                                modifier = Modifier
+                                    .width(50.dp)
+                                    .height(50.dp),
+                                shape = CircleShape
+                            ) {
+                                if (idUser != null && idUser != 0) {
+                                    // Exiba a imagem se a URI estiver definida
+                                    AsyncImage(
+                                        model = imageOrgUri,
+                                        contentDescription = null,
+                                        modifier = Modifier.fillMaxSize(),
+                                        contentScale = ContentScale.Crop
+                                    )
+                                } else {
+                                    // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                    Text("Carregando imagem...")
+                                }
+                            }
 
-                        Text(
-                            text = "${nomeOrganizacao}",
-                            modifier = Modifier.clickable {
-                                onNavigate("carregar_informacoes_perfil_organizacao")
-                            },
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight(600),
-                            color = Color.White
-                        )
+                            Spacer(modifier = Modifier.width(12.dp))
 
-                        Spacer(modifier = Modifier.height(12.dp))
+                            Text(
+                                text = "${nomeOrganizacao}",
+                                modifier = Modifier.clickable {
+                                    onNavigate("carregar_informacoes_perfil_organizacao")
+                                },
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight(600),
+                                color = Color.White
+                            )
+
+                            Spacer(modifier = Modifier.height(12.dp))
+                        }
                     }
 
+                    Spacer(modifier = Modifier.height(12.dp))
 
                     //jogos
                     Row(
