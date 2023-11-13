@@ -58,6 +58,7 @@ import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.gui.CampeonatoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarDeletarOrganizacao
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesDoTimeById
+import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilJogadorMeuTime
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOutroJogador
 import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
@@ -84,6 +85,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadr
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
 import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilTime
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilDeOutroJogador
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilJogadorDoMeuTime
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
@@ -643,6 +645,103 @@ fun MainScreen() {
             }
         }
 
+        val carregarInformacoesPerfilJogadorMeuTime: @Composable () -> Unit = {
+            CarregarInformacoesPerfilJogadorMeuTime(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+                sharedViewModelPerfilEditar,
+                sharedViewModelPerfilJogador,
+                sharedViewModelPerfilOrganizador,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTimeById,
+                sharedGetTimeByIdTeams,
+                sharedGetTimeByIdTeamsJogadores,
+                sharedGetTimeByIdTeamsJogadoresPerfilId,
+                sharedGetTimeByIdTeamsOrganizacao,
+                sharedGetTimeByIdOrganizacaoDonoId,
+                sharedGetTimeByIdTeamsPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
+        val perfilJogadorDoMeuTime: @Composable () -> Unit = {
+            PerfilJogadorDoMeuTime(
+                sharedViewModelTokenEId,
+                sharedViewModelPerfilEditarOutro,
+                sharedViewModelPerfilJogadorOutro,
+                sharedViewModelPerfilOrganizadorOutro,
+
+                // SharedViewModel GET MY TEAMS GERAL
+                sharedGetMyTeamsGeral,
+
+                // SharedViewModelGetMyTeams de USUARIO
+                sharedViewModelGetMyTeamsUser,
+                sharedViewModelGetMyTeamsUserPropostas,
+                sharedViewModelGetMyTeamsUserPropostasDe,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadores,
+                sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos,
+                sharedViewModelGetMyTeamsUserPropostasDePropostas,
+
+                // SharedViewModelGetMyTeams de TIME
+                sharedViewModelGetMyTeamsTime,
+                sharedViewModelGetMyTeamsTimeJogadores,
+                sharedViewModelGetMyTeamsTimeJogadoresAtivos,
+                sharedViewModelGetMyTeamsTimePropostas,
+
+                sharedViewModelNomeJogadorListaJogadores,
+                sharedViewModelGetListaJogadores,
+                sharedViewModelGetListaJogadoresList,
+                sharedViewModelGetListaJogadoresInfoPerfil,
+                sharedViewModelGetListaJogadoresTimeAtual,
+                sharedViewModelGetListaJogadoresDentroDeTime,
+                sharedViewModelGetListaJogadoresDentroDeTimeList,
+                sharedViewModelGetListaJogadoresPropostasList,
+                sharedViewModelGetListaJogadoresPropostasRecebidas,
+
+                // SharedViewModel GET TIME BY ID
+                sharedGetTimeById,
+                sharedGetTimeByIdTeams,
+                sharedGetTimeByIdTeamsJogadores,
+                sharedGetTimeByIdTeamsJogadoresPerfilId,
+                sharedGetTimeByIdTeamsOrganizacao,
+                sharedGetTimeByIdOrganizacaoDonoId,
+                sharedGetTimeByIdTeamsPropostas,
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
 
@@ -689,6 +788,8 @@ fun MainScreen() {
                     "perfil_outro_jogador" -> perfilDeOutroJogador()
                     "carregar_informacoes_perfil_outro_jogador" -> carregarInformacoesPerfilOutroJogador()
                     "carregar_informacoes_do_time_by_id" -> carregarInformacoesDoTimeById()
+                    "carregar_informacoes_perfil_jogador_meu_time" -> carregarInformacoesPerfilJogadorMeuTime()
+                    "perfil_jogador_do_meu_time" -> perfilJogadorDoMeuTime()
                     else -> startScreen()
                 }
             }

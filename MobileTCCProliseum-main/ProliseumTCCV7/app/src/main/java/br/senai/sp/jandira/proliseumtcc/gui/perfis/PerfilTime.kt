@@ -746,16 +746,8 @@ fun PerfilTimeScreen(
                                         ) {
                                             Button(
                                                 onClick = {
-                            //                                                val timeId = time.id // Obtenha o ID do time clicado
-                            //                                                val verificacao = true
-                            //
-                            //                                                if (verificacao == true) {
-                            //                                                    verificarIdDoTime(sharedViewModelGetMyTeamsTime, sharedGetMyTeamsGeral, timeId)
-                            //                                                    sharedGetMyTeamsGeral.selectedTimeId = timeId
-                            //                                                    Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-                            //                                                    onNavigate("perfil_time")
-                            //                                                }
-
+                                                    sharedGetTimeByIdTeamsJogadoresPerfilId.id = idInfoIdJogador
+                                                    onNavigate("carregar_informacoes_perfil_jogador_meu_time")
                                                 },
                                                 modifier = Modifier
                                                     .fillMaxWidth()

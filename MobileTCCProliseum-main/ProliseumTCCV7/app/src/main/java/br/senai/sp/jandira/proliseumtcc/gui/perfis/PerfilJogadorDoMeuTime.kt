@@ -301,7 +301,7 @@ fun PerfilJogadorDoMeuTime(
             Icon(
                 modifier = Modifier.clickable {
                     //rememberNavController.navigate("home")
-                    onNavigate("lista_de_jogadores")
+                    onNavigate("perfil_time")
                 },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),
