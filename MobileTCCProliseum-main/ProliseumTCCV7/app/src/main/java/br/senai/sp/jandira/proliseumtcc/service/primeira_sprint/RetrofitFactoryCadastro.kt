@@ -97,6 +97,10 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetTimeById::class.java)
     }
 
+    fun theGetTimeService(): GetTime {
+        return retrofitFactoryCadastro.create(GetTime::class.java)
+    }
+
 
 
 }
