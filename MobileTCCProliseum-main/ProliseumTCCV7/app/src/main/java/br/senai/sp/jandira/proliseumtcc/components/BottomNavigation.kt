@@ -83,7 +83,7 @@ fun BottomNavigationScreeen(onNavigate: (String) -> Unit, onGenderSelected: (Int
                                 onNavigate("home")
                             } else if(button.id == 1){
                                 //navController.navigate("login")
-                                onNavigate("lista_de_times")
+                                onNavigate("lista_times")
                             }else if(button.id == 2){
                                 //navController.navigate("login")
                                 onNavigate("lista_de_publicacoes_times")

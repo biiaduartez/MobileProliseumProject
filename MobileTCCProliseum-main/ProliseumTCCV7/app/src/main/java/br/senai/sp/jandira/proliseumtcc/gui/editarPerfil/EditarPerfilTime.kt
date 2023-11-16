@@ -216,7 +216,7 @@ fun EditarPerfilTime(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        onNavigate("perfil_time")
+                        onNavigate("navigation_configuracoes_meu_time")
                                                   },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),

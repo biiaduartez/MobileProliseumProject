@@ -398,13 +398,13 @@ fun PerfilTimeScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_time")
+                    onNavigate("navigation_configuracoes_meu_time")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
 
                 Text(
-                    text = stringResource(id = R.string.button_editar),
+                    text = "GERENCIAR",
                     color = Color.White,
                     fontFamily = customFontFamilyText,
                     fontWeight = FontWeight(600),
@@ -413,8 +413,10 @@ fun PerfilTimeScreen(
                 Spacer(modifier = Modifier.width(3.dp))
 
                 Icon(
-                    painter = painterResource(id = R.drawable.escrever),
-                    contentDescription = "Editar"
+                    painter = painterResource(id = R.drawable.editar_perfis_icon),
+                    contentDescription = "Editar",
+                    modifier = Modifier.size(22.dp),
+                    tint = Color(255, 255, 255, 255)
                 )
             }
         }
@@ -580,10 +582,10 @@ fun PerfilTimeScreen(
                             Image(
                                 painter =
                                 if ("${team?.jogo}" == "0") painterResource(
-                                    id = R.drawable.iconcsgo
+                                    id = R.drawable.iconlol
                                 )
                                 else if ("${team?.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                else if ("${team?.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                else if ("${team?.jogo}" == "2") painterResource(id = R.drawable.iconlol)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),

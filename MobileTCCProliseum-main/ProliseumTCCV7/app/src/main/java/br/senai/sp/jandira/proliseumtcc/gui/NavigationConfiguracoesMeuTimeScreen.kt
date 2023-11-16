@@ -3,7 +3,6 @@ package br.senai.sp.jandira.proliseumtcc.gui
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,13 +29,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
-import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 @Composable
-fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
+fun NavigationConfiguracoesMeuTimeScreen(
+    onNavigate: (String) -> Unit
+) {
     // Define a família da fonte personalizada
     val customFontFamily = FontFamily(
         Font(R.font.font_title) // Substitua pelo nome da fonte personalizada
@@ -65,19 +64,19 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
             Row(
                 modifier = Modifier.padding(start = 20.dp, top = 20.dp)
             ) {
-                    Icon(
-                        modifier = Modifier.clickable {
-                            //rememberNavController.navigate("home")
-                            onNavigate("navigation_proliseum")
-                        },
-                        painter = painterResource(id = R.drawable.arrow_back_32),
-                        contentDescription = stringResource(id = R.string.button_sair),
-                        tint = Color.White
-                    )
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("perfil_time")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
                 Spacer(modifier = Modifier.height(10.dp))
 
                 Text(
-                    text = stringResource(id = R.string.config_perfil),
+                    text = "GERENCIAR TIME",
                     fontFamily = customFontFamilyText,
                     fontSize = 25.sp,
                     fontWeight = FontWeight(900),
@@ -90,63 +89,7 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
 
             Button(
                 onClick = {
-                    onNavigate("cadastro_usuario_jogador")
-                },
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .height(48.dp),
-                shape = RoundedCornerShape(73.dp),
-                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.proplayer),
-                    contentDescription = stringResource(id = R.string.button_proximo),
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.padding(start = 20.dp))
-                Text(
-                    text = stringResource(id = R.string.jogador),
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    fontFamily = customFontFamilyText,
-                    fontWeight = FontWeight(900),
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(
-                onClick = {
-                    onNavigate("editar_perfil_jogador_1")
-                },
-                modifier = Modifier
-                    .padding(top = 20.dp)
-                    .height(48.dp),
-                shape = RoundedCornerShape(73.dp),
-                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.editar_jogo_icon),
-                    contentDescription = stringResource(id = R.string.button_proximo),
-                    modifier = Modifier.size(30.dp)
-                )
-                Spacer(modifier = Modifier.padding(start = 20.dp))
-                Text(
-                    text = "EDITAR INFORMAÇÕES DE JOGADOR",
-                    fontSize = 16.sp,
-                    textAlign = TextAlign.Center,
-                    color = Color.White,
-                    fontFamily = customFontFamilyText,
-                    fontWeight = FontWeight(900),
-                )
-            }
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Button(
-                onClick = {
-                          onNavigate("cadastro_usuario_organizador")
+//                    onNavigate("cadastro_usuario_organizador")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -156,14 +99,14 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
 
             ) {
                 Icon(
-                    painter = painterResource(id = R.drawable.home_icon),
+                    painter = painterResource(id = R.drawable.search_icon),
                     contentDescription = stringResource(id = R.string.button_proximo),
                     modifier = Modifier.size(30.dp),
                     tint = Color(255, 255, 255, 255)
                 )
                 Spacer(modifier = Modifier.padding(start = 20.dp))
                 Text(
-                    text = stringResource(id = R.string.criar_organizacao),
+                    text = "MINHA POSTAGEM",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Color.White,
@@ -172,11 +115,11 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
                 )
             }
 
-            Spacer(modifier = Modifier.height(20.dp))
+            Spacer(modifier = Modifier.height(10.dp))
 
             Button(
                 onClick = {
-                    onNavigate("deletar_organizacao")
+//                    onNavigate("editar_perfil_jogador_1")
                 },
                 modifier = Modifier
                     .padding(top = 20.dp)
@@ -186,13 +129,41 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
 
             ) {
                 Image(
-                    painter = painterResource(id = R.drawable.botao_deletar_icon),
+                    painter = painterResource(id = R.drawable.juntar_se_a_time),
                     contentDescription = stringResource(id = R.string.button_proximo),
                     modifier = Modifier.size(30.dp)
                 )
                 Spacer(modifier = Modifier.padding(start = 20.dp))
                 Text(
-                    text = "DELETAR ORGANIZAÇÃO",
+                    text = "ENTRAR NO TIME",
+                    fontSize = 16.sp,
+                    textAlign = TextAlign.Center,
+                    color = Color.White,
+                    fontFamily = customFontFamilyText,
+                    fontWeight = FontWeight(900),
+                )
+            }
+            Spacer(modifier = Modifier.height(10.dp))
+
+            Button(
+                onClick = {
+                    onNavigate("editar_perfil_time")
+                },
+                modifier = Modifier
+                    .padding(top = 20.dp)
+                    .height(48.dp),
+                shape = RoundedCornerShape(73.dp),
+                colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.escrever),
+                    contentDescription = stringResource(id = R.string.button_proximo),
+                    modifier = Modifier.size(30.dp)
+                )
+                Spacer(modifier = Modifier.padding(start = 20.dp))
+                Text(
+                    text = "EDITAR PERFIL",
                     fontSize = 16.sp,
                     textAlign = TextAlign.Center,
                     color = Color.White,
@@ -202,6 +173,7 @@ fun NavigationConfiguracoesPerfilScreen(onNavigate: (String) -> Unit) {
             }
 
             Spacer(modifier = Modifier.height(20.dp))
+
 
         }
     }

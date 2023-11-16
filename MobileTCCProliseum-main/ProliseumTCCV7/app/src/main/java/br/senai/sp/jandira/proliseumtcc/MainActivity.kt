@@ -76,6 +76,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeJogadores
 import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeTimes
 import br.senai.sp.jandira.proliseumtcc.gui.ListaDeTimes
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
+import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesMeuTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesPerfilScreen
 import br.senai.sp.jandira.proliseumtcc.gui.NavigationProliseumScreen
 import br.senai.sp.jandira.proliseumtcc.gui.PremiumScreen
@@ -912,7 +913,12 @@ fun MainScreen() {
             }
         }
 
-
+        val navigationConfiguracoesMeuTimeScreen: @Composable () -> Unit = {
+            NavigationConfiguracoesMeuTimeScreen(
+            ) {
+                currentScreen = it
+            }
+        }
 
 
 
@@ -962,6 +968,7 @@ fun MainScreen() {
                     "carregar_informacoes_lista_times" -> carregarInformacoesListaTimes()
                     "lista_times" -> listaDeTimes()
                     "perfil_outro_time" -> perfilDeOutroTimeScreen()
+                    "navigation_configuracoes_meu_time" -> navigationConfiguracoesMeuTimeScreen()
                     else -> startScreen()
                 }
             }

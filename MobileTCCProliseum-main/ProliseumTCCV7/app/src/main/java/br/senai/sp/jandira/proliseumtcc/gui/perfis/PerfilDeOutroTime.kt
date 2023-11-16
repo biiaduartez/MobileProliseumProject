@@ -522,10 +522,10 @@ fun PerfilDeOutroTimeScreen(
                             Image(
                                 painter =
                                 if ("${team?.jogo}" == "0") painterResource(
-                                    id = R.drawable.iconcsgo
+                                    id = R.drawable.iconlol
                                 )
                                 else if ("${team?.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                else if ("${team?.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                else if ("${team?.jogo}" == "2") painterResource(id = R.drawable.iconlol)
                                 else painter,
                                 contentDescription = "",
                                 modifier = Modifier.fillMaxSize(),

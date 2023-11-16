@@ -599,103 +599,95 @@ fun ListaDeJogadoresScreen(
                                 colors = ButtonDefaults.buttonColors(RedProliseum),
                             ) {
 
-                                Box(contentAlignment = Alignment.BottomEnd) {
-                                    Card(
-                                        modifier = Modifier
-                                            .height(150.dp)
-                                            .width(150.dp),
+                                Row(
+                                    modifier = Modifier
+                                        .fillMaxSize(),
+                                    verticalAlignment = Alignment.CenterVertically
+                                ) {
+                                    Box(contentAlignment = Alignment.BottomEnd) {
+                                        Card(
+                                            modifier = Modifier
+                                                .height(150.dp)
+                                                .width(150.dp),
 
-                                        shape = CircleShape
-                                    ) {
+                                            shape = CircleShape
+                                        ) {
 
-                                        if (idUser != null && idUser != 0) {
-                                            // Exiba a imagem se a URI estiver definida
-                                            AsyncImage(
-                                                model = imageUri,
-                                                contentDescription = null,
-                                                modifier = Modifier.fillMaxSize(),
-                                                contentScale = ContentScale.Crop
-                                            )
-                                        } else {
-                                            // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-                                            Text("Carregando imagem...")
+                                            if (idUser != null && idUser != 0) {
+                                                // Exiba a imagem se a URI estiver definida
+                                                AsyncImage(
+                                                    model = imageUri,
+                                                    contentDescription = null,
+                                                    modifier = Modifier.fillMaxSize(),
+                                                    contentScale = ContentScale.Crop
+                                                )
+                                            } else {
+                                                // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
+                                                Text("Carregando imagem...")
+                                            }
                                         }
                                     }
-                                }
 
-                                Spacer(modifier = Modifier.width(25.dp))
+                                    Spacer(modifier = Modifier.padding(start = 20.dp))
 
-                                Text(
-                                    text = "${playerListJogadores.nickname}",
-                                    color = Color.White,
-                                    modifier = Modifier.padding(5.dp),
-                                    fontWeight = FontWeight(600),
-                                    fontFamily = customFontFamilyText,
-                                    fontSize = 12.sp
-                                )
-
-                                Card(
-                                    modifier = Modifier
-                                        .height(250.dp)
-                                        .width(55.dp),
-                                    colors = CardDefaults.cardColors(RedProliseum)
-                                ) {
-                                    Image(
-                                        painter =
-                                        if ("${playerListJogadores.jogo}" == "0") painterResource(
-                                            id = R.drawable.iconcsgo
+                                    Column {
+                                        Text(
+                                            text = "${playerListJogadores.nickname}",
+                                            color = Color.White,
+                                            modifier = Modifier.padding(5.dp),
+                                            fontWeight = FontWeight(600),
+                                            fontFamily = customFontFamilyText,
+                                            fontSize = 16.sp
                                         )
-                                        else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                        else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
-                                        else painter,
-                                        contentDescription = "",
-                                        modifier = Modifier.fillMaxSize(),
-                                        alignment = Alignment.Center,
-                                        colorFilter = ColorFilter.tint(AzulEscuroProliseum)
-                                    )
-                                }
 
-                                Spacer(modifier = Modifier.width(5.dp))
-
-                                Text(
-                                    text = "${playerListJogadores.id}",
-                                    color = Color.White,
-                                    modifier = Modifier.padding(5.dp),
-                                    fontWeight = FontWeight(600),
-                                    fontFamily = customFontFamilyText,
-                                    fontSize = 12.sp
-                                )
-
-                                Spacer(modifier = Modifier.width(5.dp))
-
+                                        Card(
+                                            modifier = Modifier
+                                                .height(55.dp)
+                                                .width(55.dp),
+                                            colors = CardDefaults.cardColors(RedProliseum)
+                                        ) {
+                                            Image(
+                                                painter =
+                                                if ("${playerListJogadores.jogo}" == "0") painterResource(
+                                                    id = R.drawable.iconlol
+                                                )
+                                                else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconlol)
+                                                else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconlol)
+                                                else painter,
+                                                contentDescription = "",
+                                                modifier = Modifier.fillMaxSize(),
+                                                alignment = Alignment.Center,
+                                                colorFilter = ColorFilter.tint(AzulEscuroProliseum)
+                                            )
+                                        }
 
 
-                                Spacer(modifier = Modifier.width(5.dp))
+                                        Spacer(modifier = Modifier.height(5.dp))
 
-                                Card(
-                                    modifier = Modifier
-                                        .height(55.dp)
-                                        .width(55.dp),
-                                    colors = CardDefaults.cardColors(RedProliseum)
-                                ) {
-                                    Image(
-                                        painter =
-                                        if ("${playerListJogadores.elo}" == "0") painterResource(
-                                            id = R.drawable.icone_iron
-                                        )
-                                        else if ("${playerListJogadores.elo}" == "1") painterResource(id = R.drawable.icone_bronze)
-                                        else if ("${playerListJogadores.elo}" == "2") painterResource(id = R.drawable.icone_silver)
-                                        else if ("${playerListJogadores.elo}" == "3") painterResource(id = R.drawable.icone_gold)
-                                        else if ("${playerListJogadores.elo}" == "4") painterResource(id = R.drawable.icone_platinum)
-                                        else if ("${playerListJogadores.elo}" == "5") painterResource(id = R.drawable.icone_diamond)
-                                        else if ("${playerListJogadores.elo}" == "6") painterResource(id = R.drawable.icone_master)
-                                        else if ("${playerListJogadores.elo}" == "7") painterResource(id = R.drawable.icone_grandmaster)
-                                        else if ("${playerListJogadores.elo}" == "8") painterResource(id = R.drawable.icone_challenger)
-                                        else painter,
-                                        contentDescription = "",
-                                        modifier = Modifier.fillMaxSize(),
-                                    )
-                                }
+                                        Card(
+                                            modifier = Modifier
+                                                .height(55.dp)
+                                                .width(55.dp),
+                                            colors = CardDefaults.cardColors(RedProliseum)
+                                        ) {
+                                            Image(
+                                                painter =
+                                                if ("${playerListJogadores.elo}" == "0") painterResource(
+                                                    id = R.drawable.icone_iron
+                                                )
+                                                else if ("${playerListJogadores.elo}" == "1") painterResource(id = R.drawable.icone_bronze)
+                                                else if ("${playerListJogadores.elo}" == "2") painterResource(id = R.drawable.icone_silver)
+                                                else if ("${playerListJogadores.elo}" == "3") painterResource(id = R.drawable.icone_gold)
+                                                else if ("${playerListJogadores.elo}" == "4") painterResource(id = R.drawable.icone_platinum)
+                                                else if ("${playerListJogadores.elo}" == "5") painterResource(id = R.drawable.icone_diamond)
+                                                else if ("${playerListJogadores.elo}" == "6") painterResource(id = R.drawable.icone_master)
+                                                else if ("${playerListJogadores.elo}" == "7") painterResource(id = R.drawable.icone_grandmaster)
+                                                else if ("${playerListJogadores.elo}" == "8") painterResource(id = R.drawable.icone_challenger)
+                                                else painter,
+                                                contentDescription = "",
+                                                modifier = Modifier.fillMaxSize(),
+                                            )
+                                        }
 
 //                                Text(
 //                                    text = "${playerListJogadores.elo}",
@@ -706,38 +698,32 @@ fun ListaDeJogadoresScreen(
 //                                    fontSize = 12.sp
 //                                )
 
-                                Spacer(modifier = Modifier.width(5.dp))
+                                        Spacer(modifier = Modifier.height(5.dp))
 
-                                Card(
-                                    modifier = Modifier
-                                        .height(250.dp)
-                                        .width(55.dp),
-                                    colors = CardDefaults.cardColors(RedProliseum)
-                                ) {
-                                    Image(
-                                        painter =
-                                        if ("${playerListJogadores.jogo}" == "0") painterResource(
-                                            id = R.drawable.icontoplane
-                                        )
-                                        else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconjungle)
-                                        else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconmidlane)
-                                        else if ("${playerListJogadores.jogo}" == "3") painterResource(id = R.drawable.iconsupport)
-                                        else if ("${playerListJogadores.jogo}" == "4") painterResource(id = R.drawable.iconadc)
-                                        else painter,
-                                        contentDescription = "",
-                                        modifier = Modifier.fillMaxSize(),
+                                        Card(
+                                            modifier = Modifier
+                                                .height(55.dp)
+                                                .width(55.dp),
+                                            colors = CardDefaults.cardColors(RedProliseum)
+                                        ) {
+                                            Image(
+                                                painter =
+                                                if ("${playerListJogadores.jogo}" == "0") painterResource(
+                                                    id = R.drawable.icontoplane
+                                                )
+                                                else if ("${playerListJogadores.jogo}" == "1") painterResource(id = R.drawable.iconjungle)
+                                                else if ("${playerListJogadores.jogo}" == "2") painterResource(id = R.drawable.iconmidlane)
+                                                else if ("${playerListJogadores.jogo}" == "3") painterResource(id = R.drawable.iconsupport)
+                                                else if ("${playerListJogadores.jogo}" == "4") painterResource(id = R.drawable.iconadc)
+                                                else painter,
+                                                contentDescription = "",
+                                                modifier = Modifier.fillMaxSize(),
 
-                                    )
+                                                )
+                                        }
+                                    }
+
                                 }
-
-//                                Text(
-//                                    text = "${playerListJogadores.funcao}",
-//                                    color = Color.White,
-//                                    modifier = Modifier.padding(5.dp),
-//                                    fontWeight = FontWeight(600),
-//                                    fontFamily = customFontFamilyText,
-//                                    fontSize = 12.sp
-//                                )
                             }
                         }
                     }

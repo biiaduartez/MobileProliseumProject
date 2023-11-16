@@ -49,6 +49,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
@@ -402,26 +403,66 @@ fun ListaDeTimes (
     ) {
 
         Row(
-            modifier = Modifier.padding(start = 20.dp, top = 20.dp)
+            modifier = Modifier.padding(start = 20.dp)
         ) {
-            Icon(
-                modifier = Modifier.clickable {
-                    //rememberNavController.navigate("home")
-                    onNavigate("navigation_proliseum")
-                },
-                painter = painterResource(id = R.drawable.arrow_back_32),
-                contentDescription = stringResource(id = R.string.button_sair),
-                tint = Color.White
-            )
-            Spacer(modifier = Modifier.height(40.dp))
+            Row(
+                modifier = Modifier.padding(top = 20.dp)
+            ) {
+                Icon(
+                    modifier = Modifier.clickable {
+                        //rememberNavController.navigate("home")
+                        onNavigate("home")
+                    },
+                    painter = painterResource(id = R.drawable.arrow_back_32),
+                    contentDescription = stringResource(id = R.string.button_sair),
+                    tint = Color.White
+                )
+                Spacer(modifier = Modifier.height(40.dp))
 
-            Text(
-                text = "TIMES",
-                fontFamily = customFontFamilyText,
-                fontSize = 25.sp,
-                fontWeight = FontWeight(900),
-                color = Color.White
-            )
+                Text(
+                    text = "TIMES",
+                    fontFamily = customFontFamilyText,
+                    fontSize = 25.sp,
+                    fontWeight = FontWeight(900),
+                    color = Color.White
+                )
+            }
+
+
+            Row(
+                modifier = Modifier.padding(top = 12.dp)
+            ){
+                Spacer(modifier = Modifier.width(20.dp))
+
+                Button(
+                    onClick = {
+                        onNavigate("criar_time")
+                    },
+                    modifier = Modifier
+                        .height(48.dp),
+                    shape = RoundedCornerShape(73.dp),
+                    colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
+
+                ) {
+                    Image(
+                        painter = painterResource(id = R.drawable.teams_icon),
+                        contentDescription = stringResource(id = R.string.button_proximo),
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Spacer(modifier = Modifier.padding(start = 10.dp))
+                    Text(
+                        text = "CRIAR TIME",
+                        fontSize = 25.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        fontFamily = customFontFamilyText,
+                        fontWeight = FontWeight(900),
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(20.dp))
+            }
+
         }
 
         Spacer(modifier = Modifier.height(100.dp))
@@ -646,10 +687,10 @@ fun ListaDeTimes (
                                             Image(
                                                 painter =
                                                 if ("${playerListTimes.jogo}" == "0") painterResource(
-                                                    id = R.drawable.iconcsgo
+                                                    id = R.drawable.iconlol
                                                 )
                                                 else if ("${playerListTimes.jogo}" == "1") painterResource(id = R.drawable.iconlol)
-                                                else if ("${playerListTimes.jogo}" == "2") painterResource(id = R.drawable.iconvalorant)
+                                                else if ("${playerListTimes.jogo}" == "2") painterResource(id = R.drawable.iconlol)
                                                 else painter,
                                                 contentDescription = "",
                                                 modifier = Modifier.fillMaxSize(),

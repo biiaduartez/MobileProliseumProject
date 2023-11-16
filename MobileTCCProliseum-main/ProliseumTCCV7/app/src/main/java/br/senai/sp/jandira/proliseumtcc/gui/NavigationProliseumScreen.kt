@@ -225,9 +225,8 @@ fun NavigationProliseumScreen(
 
             Column(
                 modifier = Modifier
-                    .fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.Center
+                    .fillMaxSize()
+                    .padding(start = 20.dp)
             ) {
 
 
@@ -474,6 +473,16 @@ fun NavigationProliseumScreen(
 
                 Spacer(modifier = Modifier.height(15.dp))
 
+
+
+            }
+
+            Column(
+                modifier = Modifier
+                    .fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Box(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -482,41 +491,49 @@ fun NavigationProliseumScreen(
                 )
 
                 Spacer(modifier = Modifier.height(10.dp))
+            }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center,
-                    verticalAlignment = Alignment.CenterVertically
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+
+
+                Button(
+                    onClick = {
+                        onNavigate("premium")
+                    },
+                    modifier = Modifier
+                        .padding(top = 20.dp)
+                        .height(48.dp)
+                        .width(320.dp),
+                    shape = RoundedCornerShape(73.dp),
+                    colors = ButtonDefaults.buttonColors(RedProliseum)
+
                 ) {
-                    Button(
-                        onClick = {
-                                  onNavigate("premium")
-                        },
-                        modifier = Modifier
-                            .padding(top = 20.dp)
-                            .height(48.dp)
-                            .width(320.dp),
-                        shape = RoundedCornerShape(73.dp),
-                        colors = ButtonDefaults.buttonColors(RedProliseum)
-
-                    ) {
-                        Image(
-                            painter = painterResource(id = R.drawable.logo_proliseum),
-                            contentDescription = stringResource(id = R.string.button_proximo),
-                            modifier = Modifier.size(30.dp)
-                        )
-                        Spacer(modifier = Modifier.padding(start = 20.dp))
-                        Text(
-                            text = "PREMIUM",
-                            fontSize = 16.sp,
-                            textAlign = TextAlign.Center,
-                            color = Color.White,
-                            fontFamily = customFontFamilyText,
-                            fontWeight = FontWeight(900),
-                        )
-                    }
+                    Image(
+                        painter = painterResource(id = R.drawable.logo_proliseum),
+                        contentDescription = stringResource(id = R.string.button_proximo),
+                        modifier = Modifier.size(30.dp)
+                    )
+                    Spacer(modifier = Modifier.padding(start = 20.dp))
+                    Text(
+                        text = "PREMIUM",
+                        fontSize = 16.sp,
+                        textAlign = TextAlign.Center,
+                        color = Color.White,
+                        fontFamily = customFontFamilyText,
+                        fontWeight = FontWeight(900),
+                    )
                 }
+            }
 
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(start = 20.dp)
+            ) {
                 Button(
                     onClick = {
                         onNavigate("start")

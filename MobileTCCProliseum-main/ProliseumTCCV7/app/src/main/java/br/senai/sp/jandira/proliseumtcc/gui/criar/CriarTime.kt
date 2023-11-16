@@ -171,7 +171,7 @@ fun CriarTimeScreen(
                 Icon(
                     modifier = Modifier.clickable {
                         //rememberNavController.navigate("perfil_usuario_jogador")
-                        onNavigate("perfil_usuario_jogador")
+                        onNavigate("lista_times")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
                     contentDescription = stringResource(id = R.string.button_sair),
