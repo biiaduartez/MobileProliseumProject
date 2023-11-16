@@ -101,6 +101,8 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(GetTime::class.java)
     }
 
-
+    fun EntrarNoMeuTimeService(): EntrarNoMeuTimeService {
+        return retrofitFactoryCadastro.create(EntrarNoMeuTimeService::class.java)
+    }
 
 }
