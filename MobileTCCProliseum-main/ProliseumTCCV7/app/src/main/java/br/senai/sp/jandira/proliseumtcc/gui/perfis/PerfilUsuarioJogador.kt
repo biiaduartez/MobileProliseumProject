@@ -345,7 +345,7 @@ fun PerfilUsuarioJogadorScreen(
                         Spacer(modifier = Modifier.height(12.dp))
                     } else if (orgProfile != null){
                         Button(onClick = {
-                            onNavigate("perfil_organizacao")
+                            onNavigate("carregar_informacoes_perfil_organizacao")
                         },
                             modifier = Modifier
                                 .fillMaxWidth()

@@ -151,7 +151,7 @@ fun HomeScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfi
                             .size(48.dp)
                             .clickable {
                                 //rememberNavController.navigate("perfil_usuario_jogador")
-                                onNavigate("carregar_informacoes_perfil_organizacao")
+                                onNavigate("perfil_usuario_jogador")
                             }
                             .background(Color.Gray, CircleShape) // Define um shape circular
                     ) {

@@ -175,7 +175,7 @@ fun NavigationProliseumScreen(
 
                 Button(
                     onClick = {
-                        onNavigate("carregar_informacoes_perfil_organizacao")
+                        onNavigate("perfil_usuario_jogador")
                     },
                     colors = ButtonDefaults.buttonColors(Color.Transparent)
                 )

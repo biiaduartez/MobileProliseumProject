@@ -5,6 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import br.senai.sp.jandira.proliseumtcc.model.MeusTimes
+import br.senai.sp.jandira.proliseumtcc.model.ResponseGetListaJogadoresList
 import br.senai.sp.jandira.proliseumtcc.model.TimeForGetMyTeams
 import br.senai.sp.jandira.proliseumtcc.model.getTimeByIdTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.model.getTimeByIdTeamsOrganizacao
@@ -22,6 +23,8 @@ class SharedGetTimeTeams: ViewModel() {
     var organizacao: getTimeTeamsOrganizacao? = null
     var jogadores: List<getTimeTeamsJogadores>? = null
     var propostas: List<getTimeTeamsPropostas>? = null
+
+
 
 
 //    // Utilize um MutableState para armazenar o ID do time selecionado

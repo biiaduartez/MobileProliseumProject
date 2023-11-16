@@ -472,7 +472,7 @@ fun ListaDeJogadoresScreen(
             Icon(
                 modifier = Modifier.clickable {
                     //rememberNavController.navigate("home")
-                    onNavigate("home")
+                    onNavigate("navigation_proliseum")
                 },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),

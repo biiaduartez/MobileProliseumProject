@@ -303,7 +303,7 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                                 }
 
                                 if(sharedViewModelGetMyTeamsUser.idData != 0){
-                                    onNavigate("perfil_usuario_jogador")
+                                    onNavigate("perfil_organizacao")
                                     Log.d("CarregarInformacoesPerfilOrganizacaoScreen", "SUCESSO NA NAVEGACAO!  ${sharedViewModelGetMyTeamsUser.idData}")
                                 }else{
                                     Log.d("CarregarInformacoesPerfilOrganizacaoScreen", "VISH NAO NAVEGOU ${sharedViewModelGetMyTeamsUser.idData}")

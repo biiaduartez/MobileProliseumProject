@@ -517,7 +517,7 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
                                 "Valores retornados, Nome da Organização ${nomeOrganizacao}, Biografia da Organização ${biografiaOrganizacao}"
                             )
 
-                            onNavigate("carregar_informacoes_perfil_usuario")
+                            onNavigate("perfil_organizacao")
 
                         },
                         modifier = Modifier

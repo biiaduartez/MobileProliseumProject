@@ -143,7 +143,7 @@ fun CarregarInformacoesListaTimes(
                     modifier = Modifier.fillMaxSize(),
                     color = RedProliseum
                 )
-                onNavigate("lista_times")
+                onNavigate("perfil_outro_time")
 
 
             }
