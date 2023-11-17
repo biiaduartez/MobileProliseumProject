@@ -76,7 +76,7 @@ fun CriarTimeScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
     onNavigate: (String) -> Unit
 ) {
-
+    //Token
     val token = sharedViewModelTokenEId.token
 
     //FONTE
@@ -86,10 +86,6 @@ fun CriarTimeScreen(
     val customFontFamilyText = FontFamily(
         Font(R.font.font_poppins)
     )
-
-    var nomeTime by remember { mutableStateOf("") }
-    var biografiaTime by remember { mutableStateOf("") }
-    var selectedJogoUser by remember { mutableStateOf<Jogo?>(null) }
 
     //FOTO DE PERFIL
 
@@ -128,13 +124,15 @@ fun CriarTimeScreen(
             .build()
     )
 
+    // CONTEXTO
     var context = LocalContext.current
 
+    var nomeTime by remember { mutableStateOf("") }
+    var biografiaTime by remember { mutableStateOf("") }
+    var selectedJogoUser by remember { mutableStateOf<Jogo?>(null) }
     val userResponseDataId = remember { mutableStateOf("") }
 
-
-//    var selectedGender by remember { mutableStateOf<Int?>(null) }
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -160,7 +158,6 @@ fun CriarTimeScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        //rememberNavController.navigate("perfil_usuario_jogador")
                         onNavigate("lista_times")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
@@ -416,10 +413,8 @@ fun CriarTimeScreen(
                                 id = null
                             )
 
-                            // Obtenha o serviço Retrofit para editar o perfil do usuário
                             val createTimeService = RetrofitFactoryCadastro().createTimeService()
-
-                            // Realize a chamada de API para editar o perfil
+                            
                             createTimeService.postCreateTime("Bearer " + token, criarTimeData)
                                 .enqueue(object : Callback<CreateTime> {
                                     override fun onResponse(
