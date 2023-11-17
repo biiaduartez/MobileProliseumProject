@@ -75,10 +75,8 @@ fun CadastroGeneroEDataNascimentoScreen(
     val email = sharedViewModelSimpleDataCadastroUser.email
     val password = sharedViewModelSimpleDataCadastroUser.password
 
-    Log.i(
-        "TESTE DE SPAWM 01",
-        "Aqui esta um teste de spawn aaaaaaaaa"
-    )
+    var selectedDate by remember { mutableStateOf("") }
+    var selectedGender by remember { mutableStateOf<Genero?>(null) }
 
     //FOTO DE PERFIL
 
@@ -129,10 +127,7 @@ fun CadastroGeneroEDataNascimentoScreen(
     )
     val contextTipoUsuario = LocalContext.current
 
-    var selectedDate by remember { mutableStateOf("") }
-
-    var selectedGender by remember { mutableStateOf<Genero?>(null) }
-
+    //DESIGN DA TELA
 
     Box(
         modifier = Modifier
@@ -163,7 +158,6 @@ fun CadastroGeneroEDataNascimentoScreen(
 
                 Icon(
                     modifier = Modifier.clickable {
-//                        rememberNavController.navigate("cadastro_perfil")
                         onNavigate("cadastro_perfil")
                                                   },
                     painter = painterResource(id = R.drawable.arrow_back_32),
@@ -395,10 +389,6 @@ fun CadastroGeneroEDataNascimentoScreen(
                                         "URI CAPA IMAGEM 00",
                                         "Aqui esta URI de imagem da capa de perfil tela cadastroTipoUsuarioScreen ${sharedViewModelImageUri.imageCapaUri}"
                                     )
-
-                                    //val route =
-                                        //"cadastro_jogador/${selectedDate}/${selectedGender}/${userName}/${fullName}/${email}/${password}"
-//                                    rememberNavController.navigate(route)
 
                                     val simpleGeneroSelected = selectedGender?.toRepresentationStrinGenero()
 

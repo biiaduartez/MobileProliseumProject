@@ -63,9 +63,21 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelSimpleDataCada
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser, onNavigate: (String) -> Unit) {
+fun CadastroDadosPadraoScreen(
+    sharedViewModelSimpleDataCadastroUser: SharedViewModelSimpleDataCadastroUser,
+    onNavigate: (String) -> Unit
+) {
 
-    val keyboardController = LocalSoftwareKeyboardController.current
+    var userNamePerfilState by rememberSaveable { mutableStateOf("") }
+    var fullNamePerfilState by rememberSaveable { mutableStateOf("") }
+    var userEmailPerfilState by rememberSaveable { mutableStateOf("") }
+    var userPasswordPerfilState by rememberSaveable { mutableStateOf("") }
+
+    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
+    var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
+
+
+    // FONTE E TECLADO
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
@@ -74,21 +86,10 @@ fun CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser: SharedViewM
         Font(R.font.font_poppins)
     )
 
-    Log.i(
-        "TESTE DE SPAWM 00",
-        "Aqui esta um teste de spawn aaaaaaaaa"
-    )
-
-    var userNamePerfilState by rememberSaveable { mutableStateOf("") }
-    var fullNamePerfilState by rememberSaveable { mutableStateOf("") }
-    var userEmailPerfilState by rememberSaveable { mutableStateOf("") }
-    var userPasswordPerfilState by rememberSaveable { mutableStateOf("") }
+    val keyboardController = LocalSoftwareKeyboardController.current
 
 
-
-    var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
-    var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
-
+    //DESIGN DA TELA
 
     Box(
         modifier = Modifier
@@ -115,7 +116,6 @@ fun CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser: SharedViewM
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        //rememberNavController.navigate("login")
                         onNavigate("login")
                                                   },
                     painter = painterResource(id = R.drawable.arrow_back_32),
@@ -149,6 +149,7 @@ fun CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser: SharedViewM
 
             Spacer(modifier = Modifier.height(10.dp))
 
+            //PopUp
             LaunchedEffect(camposPreenchidosCorretamente) {
                 if (!camposPreenchidosCorretamente) {
                     delay(15000)
@@ -390,14 +391,6 @@ fun CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser: SharedViewM
     }
 }
 
-@Preview(showBackground = true)
-@Composable
-fun CadastroPerfilScreenPreview() {
-    ProliseumTCCTheme{
-
-    }
-}
-
 fun isSenhaValida(senha: String): Boolean {
     val senhaPattern = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=\\S+\$).{8,}\$".toRegex()
     return senhaPattern.matches(senha)
@@ -407,3 +400,13 @@ fun isEmailValido(email: String): Boolean{
     val emailPattern = "[a-zA-Z0-9!#%ˆ&*_+-]{3,}+[@](gmail|hotmail|outlook)[.][a-zA-Z]{3,}+([.][a-zA-Z]+)?".toRegex()
     return emailPattern.matches(email)
 }
+
+@Preview(showBackground = true)
+@Composable
+fun CadastroPerfilScreenPreview() {
+    ProliseumTCCTheme{
+
+    }
+}
+
+

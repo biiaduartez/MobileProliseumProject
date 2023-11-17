@@ -62,25 +62,25 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, onNavigate: (String) -> Unit) {
+fun CadastroUsuarioJogadorScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    onNavigate: (String) -> Unit
+) {
 
+    // TOKEN
     val token = sharedViewModelTokenEId.token
-    Log.d("CadastroJogadorScreen", "Token: $token")
 
+    //FONTE
     val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
-
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
 
     var selectedFuncaoLol by remember { mutableStateOf<FuncaoLol?>(null) }
-
     var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
-
     var selectedEloLol by remember { mutableStateOf<EloLol?>(null) }
-
     var createNickNameJogador by remember { mutableStateOf("") }
 
 
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -94,12 +94,10 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
             )
             .verticalScroll(rememberScrollState())
     ) {
-        // Cabeçalho
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            // Botão de retorno
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -116,7 +114,6 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
             }
         }
 
-        // Título e imagem de logotipo
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -137,8 +134,7 @@ fun CadastroUsuarioJogadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, on
                 color = Color.White
             )
         }
-
-        // Conteúdo do formulário
+        
         Column(
             modifier = Modifier
                 .fillMaxSize()

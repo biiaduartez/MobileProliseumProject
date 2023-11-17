@@ -86,27 +86,24 @@ fun FinalizarCadastroUsuarioPadraoScreen(
     val dateNascimentoUsuario = sharedViewModelDataAndGenderCadastroUser.selectedDate
     val generoUsuario = sharedViewModelDataAndGenderCadastroUser.selectedGender
 
-    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
-
-    val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
-
     val userResponseDataId = remember { mutableStateOf("") }
 
-    val uriImage = sharedViewModelImageUri.imageUri
+    // FONTE
 
+    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
+    val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
+
+    // URI DE IMAGEM E CONTEXTO
+    val uriImage = sharedViewModelImageUri.imageUri
     val uriImageCapa = sharedViewModelImageUri.imageCapaUri
 
-    Log.i("URI IMAGEM 01", "Aqui esta a URI da imagem na CadastroUsuarioPadraoScreen ${uriImage}")
-    Log.i(
-        "URI CAPA 01",
-        "Aqui esta a URI da imagem de capa de perfil na CadastroUsuarioPadraoScreen ${uriImageCapa}"
-    )
+    val context = LocalContext.current
 
-    val contextTipoUsuario = LocalContext.current
-
+    // TRATAMENTO DE PREENCHIMENTO DE DADOS INCORRETAMENTE
     var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
     var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -133,7 +130,6 @@ fun FinalizarCadastroUsuarioPadraoScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        //rememberNavController.navigate("cadastro_tipo_usuario")
                         onNavigate("cadastro_tipo_usuario")
                                                   },
                     painter = painterResource(id = R.drawable.arrow_back_32),
@@ -166,6 +162,8 @@ fun FinalizarCadastroUsuarioPadraoScreen(
 
             Spacer(modifier = Modifier.height(20.dp))
 
+            // PopUp
+
             LaunchedEffect(camposPreenchidosCorretamente) {
                 if (!camposPreenchidosCorretamente) {
                     delay(10000)
@@ -187,11 +185,10 @@ fun FinalizarCadastroUsuarioPadraoScreen(
             }
         }
 
-        // Conteúdo do formulário
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 290.dp), // Ajuste o valor do topo para centralizar verticalmente
+                .padding(top = 290.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -235,8 +232,6 @@ fun FinalizarCadastroUsuarioPadraoScreen(
                     Spacer(modifier = Modifier.height(10.dp))
 
                     var NickNameJogadorState by remember { mutableStateOf("") }
-
-
 
                     OutlinedTextField(
                         value = NickNameJogadorState,
@@ -359,7 +354,7 @@ fun FinalizarCadastroUsuarioPadraoScreen(
                                         uriImage?.let {
                                             StorageUtil.uploadToStorage(
                                                 uri = it,
-                                                context = contextTipoUsuario,
+                                                context = context,
                                                 type = "image",
                                                 id = "${userResponseDataId.value}",
                                                 "profile"
@@ -374,7 +369,7 @@ fun FinalizarCadastroUsuarioPadraoScreen(
                                         uriImageCapa?.let {
                                             StorageUtil.uploadToStorage(
                                                 uri = it,
-                                                context = contextTipoUsuario,
+                                                context = context,
                                                 type = "image",
                                                 id = "${userResponseDataId.value}",
                                                 "capa"

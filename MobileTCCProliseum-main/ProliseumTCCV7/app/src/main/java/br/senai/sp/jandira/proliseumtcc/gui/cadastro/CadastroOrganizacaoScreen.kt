@@ -73,10 +73,15 @@ import retrofit2.Response
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador, sharedViewModelImageUri: SharedViewModelImageUri, onNavigate: (String) -> Unit) {
+fun CadastroOrganizadorScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+    sharedViewModelImageUri: SharedViewModelImageUri,
+    onNavigate: (String) -> Unit
+) {
 
+    // TOKEN
     val token = sharedViewModelTokenEId.token
-    Log.d("CadastroJogadorScreen", "Token: $token")
 
     //FOTO DE PERFIL
 
@@ -114,31 +119,30 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
             .data(uriCapa)
             .build()
     )
-    val contextoCadastroOrganizador = LocalContext.current
 
+    // URI
     val uriImage = sharedViewModelImageUri.imageUri
-
     val uriImageCapa = sharedViewModelImageUri.imageCapaUri
 
-    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
+    // CONTEXTO E FONTE
 
+    val contextoCadastroOrganizador = LocalContext.current
+
+    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
     val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
 
 
     var idUserProfile by remember { mutableStateOf(sharedViewModelTokenEId.idUsuario) }
     var nomeOrganizacao  by remember { mutableStateOf(sharedViewModelPerfilOrganizador.nome_organizacao) }
     var biografiaOrganizacao by remember { mutableStateOf(sharedViewModelPerfilOrganizador.biografia) }
-
-    // Declare outras variáveis de estado para outros campos da mesma maneira
+    
     LaunchedEffect(sharedViewModelPerfilOrganizador) {
-
-        // Esta parte só será executada quando o composable for inicializado
         nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
         biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
-        // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
 
 
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -152,12 +156,10 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
             )
             .verticalScroll(rememberScrollState())
     ) {
-        // Cabeçalho
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
         ) {
-            // Botão de retorno
             Row(
                 modifier = Modifier
                     .fillMaxSize()
@@ -174,7 +176,6 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
             }
         }
 
-        // Título e imagem de logotipo
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -196,11 +197,10 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
             )
         }
 
-        // Conteúdo do formulário
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(top = 250.dp), // Ajuste o valor do topo para centralizar verticalmente
+                .padding(top = 250.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -421,10 +421,8 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
                                     biografia = biografiaOrganizacao,
                                     )
 
-                                // Obtenha o serviço de criação do perfil de jogador
                                 val createOrgProfileService = RetrofitFactoryCadastro().createOrganizacaoProfileService()
 
-                                // Execute a chamada passando o token no cabeçalho
                                 createOrgProfileService.postCreateOrganizacaoProfile(
                                     "Bearer $token",
                                     newOrganizadorProfile
@@ -439,8 +437,6 @@ fun CadastroOrganizadorScreen(sharedViewModelTokenEId: SharedViewTokenEId, share
                                                     "Os dados foram enviados para o Banco de Dados!"
                                                 )
 
-                                                // Você pode adicionar aqui a navegação para a próxima tela
-                                                // Exemplo: navController.navigate("tela_sucesso")
                                             } else {
                                                 Log.e(
                                                     "Erro na solicitação",
