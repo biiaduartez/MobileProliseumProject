@@ -69,23 +69,26 @@ fun DeletarOrganizacaoScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    //TOKEN
     val token = sharedViewModelTokenEId.token
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
-
+    //  VERIFICAR CAMPOS PREENCHIDOS INCORRETAMENTE
     var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
     var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
+    // FONTE
+    val customFontFamilyText = FontFamily(
+        Font(R.font.font_poppins)
+    )
+
+    val idUser = sharedViewModelPerfilEditar.id
+    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
     val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
     val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
 
     val aceitarTermosState = remember { mutableStateOf(false) }
 
-    val customFontFamilyText = FontFamily(
-        Font(R.font.font_poppins)
-    )
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()

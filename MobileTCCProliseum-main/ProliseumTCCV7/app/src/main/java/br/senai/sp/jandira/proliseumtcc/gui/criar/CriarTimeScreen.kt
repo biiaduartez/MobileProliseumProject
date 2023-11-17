@@ -414,7 +414,7 @@ fun CriarTimeScreen(
                             )
 
                             val createTimeService = RetrofitFactoryCadastro().createTimeService()
-                            
+
                             createTimeService.postCreateTime("Bearer " + token, criarTimeData)
                                 .enqueue(object : Callback<CreateTime> {
                                     override fun onResponse(
