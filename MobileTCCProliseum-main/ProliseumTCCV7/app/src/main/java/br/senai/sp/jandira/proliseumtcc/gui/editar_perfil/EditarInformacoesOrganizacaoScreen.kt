@@ -91,25 +91,18 @@ fun EditarInformacoesOrganizacaoScreen(
         Font(R.font.font_poppins)
     )
 
-    val context = LocalContext.current
-
-
     var idUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.id) }
     var userNameUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.nome_organizacao) }
     var biografiaUserOrganizadorSharedState by remember { mutableStateOf(sharedViewModelPerfilOrganizador.biografia) }
 
-    // Declare outras variáveis de estado para outros campos da mesma maneira
+
     LaunchedEffect(sharedViewModelPerfilEditar, sharedViewModelPerfilOrganizador) {
 
-        // Esta parte só será executada quando o composable for inicializado
         idUserSharedState = sharedViewModelPerfilEditar.id
         userNameUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.nome_organizacao
         biografiaUserOrganizadorSharedState = sharedViewModelPerfilOrganizador.biografia
-        // Atribua outras variáveis de estado para outros campos da mesma maneira
+
     }
-
-    Log.i("ID USUARIO", "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}")
-
 
     //FOTO DE PERFIL
 
@@ -149,17 +142,13 @@ fun EditarInformacoesOrganizacaoScreen(
     )
 
     val uriImageOrganizacao = sharedViewModelImageUri.imageUri
-
     val uriImageCapaOrganizacao = sharedViewModelImageUri.imageCapaUri
-//    Log.i(
-//        "URI CAPA 04",
-//        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapaOrganizacao}"
-//    )
 
+    //CONTEXTO
     val contextoEditarPerfilJogador1 = LocalContext.current
 
-//    var selectedGender by remember { mutableStateOf<Int?>(null) }
 
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -185,7 +174,6 @@ fun EditarInformacoesOrganizacaoScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        //rememberNavController.navigate("perfil_usuario_jogador")
                         onNavigate("perfil_organizacao")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),

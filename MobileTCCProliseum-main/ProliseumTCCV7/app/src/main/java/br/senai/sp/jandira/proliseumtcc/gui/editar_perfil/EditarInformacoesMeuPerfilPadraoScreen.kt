@@ -121,7 +121,7 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
             .build()
     )
 
-    //FONTE
+    //FONTE E CONTEXTO
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
     )
@@ -140,7 +140,9 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
     var nickNameUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.nickname) }
     var biografiaUserSharedState by remember { mutableStateOf(sharedViewModelPerfilEditar.biografia) }
 
-    // Declare outras variáveis de estado para outros campos da mesma maneira
+    var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
+
+
     LaunchedEffect(sharedViewModelPerfilEditar) {
 
         // Esta parte só será executada quando o composable for inicializado
@@ -153,10 +155,6 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
         biografiaUserSharedState = sharedViewModelPerfilEditar.biografia
         // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
-
-    var selectedGeneroUser by remember { mutableStateOf<Genero?>(null) }
-
-    Log.i("ID USUARIO", "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}")
 
     //FOTO DE PERFIL
 
@@ -196,26 +194,12 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
     )
 
     val uriImage = sharedViewModelImageUri.imageUri
-
     val uriImageCapa = sharedViewModelImageUri.imageCapaUri
 
-    Log.i(
-        "URI IMAGEM 04",
-        "Aqui esta a URI da imagem na EditarPerfilJogadorPart1Screen ${uriImage}"
-    )
-    Log.i(
-        "URI CAPA 04",
-        "Aqui esta a URI da imagem de capa de perfil na EditarPerfilJogadorPart1Screen ${uriImageCapa}"
-    )
-    Log.i(
-        "GENERO 01",
-        "Aqui esta o genero de perfil na EditarPerfilJogadorPart1Screen ${generoUserSharedState}"
-    )
 
-    val contextoEditarPerfilJogador1 = LocalContext.current
+    val outroContexto = LocalContext.current
 
-//    var selectedGender by remember { mutableStateOf<Int?>(null) }
-
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -616,7 +600,7 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
                                     uri?.let {
                                         StorageUtil.uploadToStorage(
                                             uri = it,
-                                            context = contextoEditarPerfilJogador1,
+                                            context = outroContexto,
                                             type = "image",
                                             id = "${idUserSharedState}",
                                             "profile"
@@ -631,7 +615,7 @@ fun EditarInformacoesMeuPerfilPadraoScreen(
                                     uriCapa?.let {
                                         StorageUtil.uploadToStorage(
                                             uri = it,
-                                            context = contextoEditarPerfilJogador1,
+                                            context = outroContexto,
                                             type = "image",
                                             id = "${idUserSharedState}",
                                             "capa"

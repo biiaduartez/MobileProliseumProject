@@ -87,28 +87,20 @@ fun EditarInformacoesJogadorScreen(
     var funcaoUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.funcao) }
     var eloUserSharedState by remember { mutableStateOf(sharedViewModelPerfilJogador.elo) }
 
-    // Declare outras variáveis de estado para outros campos da mesma maneira
+    var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
+    var selectedFuncao by remember { mutableStateOf<FuncaoLol?>(null) }
+    var selectedElo by remember { mutableStateOf<EloLol?>(null) }
+
     LaunchedEffect(sharedViewModelPerfilEditar) {
 
-        // Esta parte só será executada quando o composable for inicializado
         idUserSharedState = sharedViewModelPerfilEditar.id
         nickNameUserSharedState = sharedViewModelPerfilJogador.nickname
         jogoUserSharedState = sharedViewModelPerfilJogador.jogo
         funcaoUserSharedState = sharedViewModelPerfilJogador.funcao
         eloUserSharedState = sharedViewModelPerfilJogador.elo
-        // Atribua outras variáveis de estado para outros campos da mesma maneira
     }
 
-    Log.i("ID USUARIO", "Id do usuario EditarPerfilJogadorPart1Screen ${idUserSharedState}")
-
-
-    var selectedJogo by remember { mutableStateOf<Jogo?>(null) }
-
-    var selectedFuncao by remember { mutableStateOf<FuncaoLol?>(null) }
-
-    var selectedElo by remember { mutableStateOf<EloLol?>(null) }
-
-
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -134,7 +126,6 @@ fun EditarInformacoesJogadorScreen(
             ) {
                 Icon(
                     modifier = Modifier.clickable {
-                        //rememberNavController.navigate("perfil_usuario_jogador")
                         onNavigate("home")
                     },
                     painter = painterResource(id = R.drawable.arrow_back_32),
@@ -319,6 +310,7 @@ fun AtualizarDadosPerfilUsuarioJogador(
     funcaoUsuariojogadorAtualizar: String?,
     eloUsuariojogadorAtualizar: String?
 ) {
+    //TOKEN
     val token = sharedViewModelTokenEId.token
 
     // Criar uma instância da classe EditarPerfilUsuario com os dados a serem atualizados

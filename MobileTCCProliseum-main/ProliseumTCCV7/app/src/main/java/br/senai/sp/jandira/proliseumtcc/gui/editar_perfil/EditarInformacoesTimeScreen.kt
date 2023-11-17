@@ -83,56 +83,28 @@ fun EditarInformacoesTimeScreen(
     sharedViewModelImageUri: SharedViewModelImageUri,
     onNavigate: (String) -> Unit
 ) {
-
-    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
-    val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
-
-//    var editarFotoPerfilTimeUri by remember {
-//        mutableStateOf<Uri?>(null)
-//    }
-//
-//    var launcherEditarFotoPerfilTime = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.GetContent()
-//    ){
-//        editarFotoPerfilTimeUri = it
-//    }
-//
-//    var painterEditarFotoPerfilTime = rememberAsyncImagePainter(
-//        ImageRequest.Builder(LocalContext.current)
-//            .data(editarFotoPerfilTimeUri)
-//            .build()
-//    )
-
-//    //EDITAR FOTO DE CAPA DE PERFIL TIME
-//
-//    var editarFotoCapaPerfilTimeUri by remember {
-//        mutableStateOf<Uri?>(null)
-//    }
-//
-//    var launcherEditarFotoCapaPerfilTime = rememberLauncherForActivityResult(
-//        contract = ActivityResultContracts.GetContent()
-//    ){
-//        editarFotoCapaPerfilTimeUri = it
-//    }
-//
-//    var painterEditarFotoCapaPerfilTime = rememberAsyncImagePainter(
-//        ImageRequest.Builder(LocalContext.current)
-//            .data(editarFotoCapaPerfilTimeUri)
-//            .build()
-//    )
-
+    //TOKEN
     val token = sharedViewModelTokenEId.token
 
+    //FONTE
+    val customFontFamilyTitle = FontFamily(Font(R.font.font_title))
+    val customFontFamilyText = FontFamily(Font(R.font.font_poppins))
+    
+
+    // ID DE TIME COMPARTILHADO
     val selectedTimeId by remember { mutableStateOf(sharedGetMyTeamsGeral.selectedTimeId) }
     Log.e("ID DO TIME COMPARTILHADO 02","ID compartilhado EditarPerfilTime ${selectedTimeId}")
 
     val team = selectedTimeId?.let { sharedGetMyTeamsGeral.getTeamById(it) }
     Log.e("ID DO TIME ESCOLHIDO 02","o id do time da tela EditarPerfilTime ${team}")
 
+    // OUTRAS INFORMAÇÕES
     val idUsuarioOrganizador = sharedViewModelPerfilEditar.id
 
     var nomeTime by remember { mutableStateOf(team?.nome_time ?: "Nome do Time não encontrado") }
     var biografiaTime by remember { mutableStateOf(team?.biografia ?: "Biografia do Time não encontrado") }
+
+    val idTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.idData) }
 
     //FOTO DE PERFIL
 
@@ -171,17 +143,15 @@ fun EditarInformacoesTimeScreen(
             .build()
     )
 
-    Log.e("URI FOTO TIME","URI DA FOTO DO TIME -> ${uriTime}")
-    Log.e("URI CAPA TIME","URI DA CAPA DO TIME -> ${uriCapaTime}")
+    // CONTEXTO E URI DE IMAGENS
 
     val uriImageTime = sharedViewModelImageUri.imageUri
-
     val uriImageCapaTime = sharedViewModelImageUri.imageCapaUri
 
     val context = LocalContext.current
 
-    val idTime by remember { mutableStateOf(sharedViewModelGetMyTeamsTime.idData) }
 
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -195,7 +165,6 @@ fun EditarInformacoesTimeScreen(
             )
             .verticalScroll(rememberScrollState())
     ) {
-        // Cabeçalho
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Top
@@ -416,97 +385,6 @@ fun EditarInformacoesTimeScreen(
                         )
                     }
 
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    Column(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        Box(contentAlignment = Alignment.BottomEnd){
-//                            Card(
-//                                modifier = Modifier
-//                                    .size(100.dp)
-//                                    .clickable {
-//                                        launcherEditarFotoPerfilTime.launch("image/*")
-//                                        var message = "nada"
-//                                        Log.i(
-//                                            "PROLISEUM",
-//                                            "URI: ${editarFotoPerfilTimeUri?.path ?: message} "
-//                                        )
-//                                    },
-//                                shape = CircleShape
-//                            ){
-//                                Image(
-//                                    modifier = Modifier
-//                                        .background(Color.White),
-//                                    painter = if(editarFotoPerfilTimeUri == null) painterResource (id = R.drawable.superpersonicon) else painterEditarFotoPerfilTime,
-//                                    contentDescription = "",
-//                                    contentScale = ContentScale.Crop
-//                                )
-//                            }
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.add_a_photo),
-//                                contentDescription = "",
-//                                tint = RedProliseum
-//                            )
-//
-//                        }
-//                    }
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    Row(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                    ) {
-//                        Text(
-//                            text = "CAPA PERFIL:",
-//                            fontFamily = customFontFamilyText,
-//                            fontSize = 25.sp,
-//                            fontWeight = FontWeight(900),
-//                            color = Color.White
-//                        )
-//                    }
-//
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    Column(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalAlignment = Alignment.CenterHorizontally
-//                    ) {
-//                        Box(contentAlignment = Alignment.BottomEnd){
-//                            Card(
-//                                modifier = Modifier
-//                                    .height(200.dp)
-//                                    .width(370.dp)
-//                                    .clickable {
-//                                        launcherEditarFotoCapaPerfilTime.launch("image/*")
-//                                        var message = "nada"
-//                                        Log.i(
-//                                            "PROLISEUM",
-//                                            "URI: ${editarFotoCapaPerfilTimeUri?.path ?: message} "
-//                                        )
-//                                    },
-//                                shape = RoundedCornerShape(24.dp, 24.dp, 24.dp, 24.dp)
-//                            ){
-//                                Image(
-//                                    modifier = Modifier
-//                                        .background(Color.White),
-//                                    painter = if(editarFotoCapaPerfilTimeUri == null) painterResource (id = R.drawable.capa_perfil_usuario) else painterEditarFotoCapaPerfilTime,
-//                                    contentDescription = "",
-//                                    contentScale = ContentScale.Crop
-//                                )
-//                            }
-//                            Icon(
-//                                painter = painterResource(id = R.drawable.add_circle),
-//                                contentDescription = "",
-//                                tint = RedProliseum
-//                            )
-//
-//                        }
-//                    }
-
                     Spacer(modifier = Modifier.height(20.dp))
 
                     //var fullBioJogadorState by remember { mutableStateOf("") }
@@ -548,26 +426,7 @@ fun EditarInformacoesTimeScreen(
                                 )
                                 onNavigate("carregar_informacoes_perfil_usuario")
                             }
-
-//                            uriOrganizacao?.let {
-//                                StorageUtil.uploadToStorage(
-//                                    uri = it,
-//                                    context = contextoEditarPerfilJogador1,
-//                                    type = "image",
-//                                    id = "${idUserSharedState}",
-//                                    "orgprofile"
-//                                )
-//                            }
-//
-//                            uriCapaOrganizacao?.let {
-//                                StorageUtil.uploadToStorage(
-//                                    uri = it,
-//                                    context = contextoEditarPerfilJogador1,
-//                                    type = "image",
-//                                    id = "${idUserSharedState}",
-//                                    "orgcapa"
-//                                )
-//                            }
+                            
                             if (team != null) {
                                 if (team.id != null && team.id != 0) {
                                     uriTime?.let {
