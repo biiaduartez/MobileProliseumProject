@@ -60,11 +60,10 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.Genero
-import br.senai.sp.jandira.proliseumtcc.components.Jogo
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
-import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
 import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro

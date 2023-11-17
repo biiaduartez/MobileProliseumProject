@@ -51,11 +51,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.lifecycle.viewmodel.compose.viewModel
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.components.BottomNavigationScreeen
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.model.Login
 import br.senai.sp.jandira.proliseumtcc.model.LoginResponse
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.LoginService

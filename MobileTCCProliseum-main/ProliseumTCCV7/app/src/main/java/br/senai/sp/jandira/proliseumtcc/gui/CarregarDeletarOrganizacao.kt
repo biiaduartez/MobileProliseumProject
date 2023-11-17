@@ -18,16 +18,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import br.senai.sp.jandira.proliseumtcc.MainActivity
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
-import br.senai.sp.jandira.proliseumtcc.model.ProfileResponse
-import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @Composable
 fun CarregarDeletarOrganizacao(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfilEditar: SharedViewModelPerfil, onNavigate: (String) -> Unit) {

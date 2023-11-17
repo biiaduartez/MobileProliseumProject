@@ -1,6 +1,5 @@
 package br.senai.sp.jandira.proliseumtcc.gui.editarPerfil
 
-import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -55,18 +54,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetMyTeamsGeral
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelGetMyTeamsTime
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
-import br.senai.sp.jandira.proliseumtcc.components.StorageTeamUtil
-import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
-import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonFuncaoLolUI
-import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonJogoUI
-import br.senai.sp.jandira.proliseumtcc.model.EditarPerfilJogador
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
+import br.senai.sp.jandira.proliseumtcc.firebase.StorageTeamUtil
 import br.senai.sp.jandira.proliseumtcc.model.infoAtualizarTime
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum

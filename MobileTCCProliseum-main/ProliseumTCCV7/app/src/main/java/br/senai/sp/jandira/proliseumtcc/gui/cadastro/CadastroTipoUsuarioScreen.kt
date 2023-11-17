@@ -48,13 +48,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.components.DateInputSample
 import br.senai.sp.jandira.proliseumtcc.components.Genero
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelDataAndGenderCadastroUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelSimpleDataCadastroUser
 import br.senai.sp.jandira.proliseumtcc.components.ToggleButtonGeneroUI
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum

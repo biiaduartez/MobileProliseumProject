@@ -53,10 +53,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelDataAndGenderCadastroUser
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelImageUri
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelSimpleDataCadastroUser
-import br.senai.sp.jandira.proliseumtcc.components.StorageUtil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelDataAndGenderCadastroUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelImageUri
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelSimpleDataCadastroUser
+import br.senai.sp.jandira.proliseumtcc.firebase.StorageUtil
 import br.senai.sp.jandira.proliseumtcc.model.PerfilUsuario
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.PerfilUsuarioService
 import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro

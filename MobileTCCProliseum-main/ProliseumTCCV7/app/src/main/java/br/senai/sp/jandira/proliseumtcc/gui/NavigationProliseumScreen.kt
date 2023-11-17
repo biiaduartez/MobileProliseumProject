@@ -45,19 +45,16 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
 import br.senai.sp.jandira.proliseumtcc.R
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTime
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeOrganizacaoDonoId
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeTeams
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeTeamsJogadores
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeTeamsJogadoresPerfilId
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeTeamsOrganizacao
-import br.senai.sp.jandira.proliseumtcc.components.SharedGetTimeTeamsPropostas
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.components.SharedViewTokenEId
-import br.senai.sp.jandira.proliseumtcc.model.getTime
-import br.senai.sp.jandira.proliseumtcc.service.primeira_sprint.RetrofitFactoryCadastro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsOrganizacao
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import coil.compose.AsyncImage
@@ -65,9 +62,6 @@ import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 @Composable
 fun NavigationProliseumScreen(
