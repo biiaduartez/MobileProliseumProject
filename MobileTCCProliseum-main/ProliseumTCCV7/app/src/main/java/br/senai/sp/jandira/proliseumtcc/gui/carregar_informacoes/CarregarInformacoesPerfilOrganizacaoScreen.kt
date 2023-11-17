@@ -64,7 +64,7 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
     onNavigate: (String) -> Unit
 ) {
 
-
+    //CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -73,7 +73,7 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
         loading = false
     }
 
-
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -85,7 +85,6 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                 )
             )
     ) {
-        // Imagem Capa
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -105,11 +104,8 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                     color = RedProliseum
                 )
 
-                // Se o tempo de espera terminou, continue com a validação do token
-                // Restante do código aqui
+                //TOKEN
                 val token = sharedViewModelTokenEId.token
-                // Restante do seu código de validação do token
-                Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
                 if (token != null && token.isNotEmpty()){
 
@@ -224,14 +220,10 @@ fun CarregarInformacoesPerfilOrganizacaoScreen(
                                                                 sharedViewModelGetMyTeamsUserPropostasDePropostas.mensagemData = propostasInfoList.menssagem
                                                             }
                                                         }
-
-                                                        // Faça o que você precisa com os dados de UserPropostasDeListForGetMyTeams
-
                                                 }
-                                                // Faça o que você precisa com os dados da proposta
                                             }
                                         }
-                                        // Faça o que você precisa com os dados do usuário
+
                                     }
 
                                 if (dataMyTeamsTeam != null) {

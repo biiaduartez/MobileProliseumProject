@@ -134,7 +134,7 @@ fun CadastroUsuarioJogadorScreen(
                 color = Color.White
             )
         }
-        
+
         Column(
             modifier = Modifier
                 .fillMaxSize()

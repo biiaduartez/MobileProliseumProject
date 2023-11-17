@@ -95,15 +95,16 @@ fun CarregarInformacoesListaTimesScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    //CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
-        // Espera por 3 segundos antes de continuar
+        // Espera por 5 segundos antes de continuar
         delay(5000)
         loading = false
     }
 
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -115,7 +116,6 @@ fun CarregarInformacoesListaTimesScreen(
                 )
             )
     ) {
-        // Imagem Capa
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -99,6 +99,7 @@ fun CarregarInformacoesDoTimeByIdScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    // CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -107,7 +108,7 @@ fun CarregarInformacoesDoTimeByIdScreen(
         loading = false
     }
 
-
+    // DESIGN TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -289,18 +290,7 @@ fun CarregarInformacoesDoTimeByIdScreen(
 
                                     val jogadorIdCompartilhado = sharedGetTimeByIdOrganizacaoDonoId.id // Obtenha o ID do time clicado
 
-//                                    if(jogadorIdCompartilhado != null){
-//                                        val verificacao = true
-//
-//                                        if (verificacao == true) {
-//                                            verificarIdDoJogadorTimeById( sharedGetTimeByIdTeams, jogadorIdCompartilhado)
-//                                            sharedGetTimeByIdTeams.selectedJogadorIdTimeById = jogadorIdCompartilhado
-//                                            Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetMyTeamsGeral.selectedTimeId}")
-//                                            onNavigate("carregar_informacoes_do_time_by_id")
-//                                        }
-
                                         onNavigate("perfil_time")
-//                                    }
 
 
 
@@ -325,9 +315,6 @@ fun CarregarInformacoesDoTimeByIdScreen(
 
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
-                    // Lidar com o caso em que o token é nulo ou vazio
-                    // Por exemplo, você pode exibir uma mensagem de erro ou redirecionar o usuário para fazer login.
-                    // Ou então, pode simplesmente não fazer nada.
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize(),
                         color = RedProliseum
@@ -340,11 +327,3 @@ fun CarregarInformacoesDoTimeByIdScreen(
     }
 
 }
-
-//fun verificarIdDoJogadorTimeById(
-//    sharedGetTimeByIdTeams: SharedGetTimeByIdTeams,
-//    jogadorId: Int // Adicione um novo parâmetro para o ID do time
-//) {
-//    val jogador = sharedGetTimeByIdTeams.getTeamByIdJogadores(jogadorId) // Use o ID do time passado como argumento
-//    Log.e("ID TIME 01", "Aqui está o id do jogador escolhido $jogador")
-//}

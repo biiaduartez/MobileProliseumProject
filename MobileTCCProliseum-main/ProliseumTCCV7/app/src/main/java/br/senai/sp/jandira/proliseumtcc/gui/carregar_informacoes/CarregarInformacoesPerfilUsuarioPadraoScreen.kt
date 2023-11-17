@@ -36,6 +36,7 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    //CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -44,7 +45,7 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
         loading = false
     }
 
-
+    // DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -56,7 +57,6 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                 )
             )
     ) {
-        // Imagem Capa
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -76,11 +76,8 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                     color = RedProliseum
                 )
 
-                // Se o tempo de espera terminou, continue com a validação do token
-                // Restante do código aqui
+                //TOKEN
                 val token = sharedViewModelTokenEId.token
-                // Restante do seu código de validação do token
-                Log.d("CarregarPerfilUsuarioScreen", "Token: $token")
 
                 if(token != null && token.isNotEmpty()){
 
@@ -93,12 +90,6 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                 val profileResponseData = response.body()
 
                                 val user = profileResponseData!!.user
-//                    idUsuario.value = user.id.toString()
-//                    nomeUsuarioPerfil.value = user.nome_usuario
-//                    nickNamePerfil.value = user.nickname
-//                    emailPerfil.value = user.email
-//                    biografiaPerfil.value = user.biografia
-//                    generoPerfil.value = user.genero.toString()
 
                                 sharedViewModelPerfilEditar.id = user.id
                                 sharedViewModelPerfilEditar.nome_usuario = user.nome_usuario
@@ -130,26 +121,6 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                 }
 
 
-
-//                    val storage = Firebase.storage
-//
-//                    if (idUsuario.value != null && idUsuario.value != "0") {
-//                        imageRef.value = storage.reference.child("${idUsuario.value}/profile")
-//                    }
-//
-//                    if (idUsuario.value != null && idUsuario.value != "0") {
-//                        imageCapaRef.value = storage.reference.child("${idUsuario.value}/capa")
-//                    }
-//
-//                    if (profileResponseData.playerProfile != null) {
-//                        val playerProfile = profileResponseData.playerProfile
-//                        nickNameJogadorPerfil.value = playerProfile.nickname
-//                        jogoJogadorPerfil.value = playerProfile.jogo.toString()
-//                        funcaoJogadorPerfil.value = playerProfile.funcao.toString()
-//                        eloJogadorPerfil.value = playerProfile.elo.toString()
-//                    }
-
-
                                 Log.d("INFORMAÇOES DE USUARIO 01", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
                                 Log.d("CarregarPerfilUsuarioScreen", "Resposta corpo bem-sucedida: ${response.code()}")
 
@@ -160,7 +131,6 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
                                     onNavigate("home")
                                 }
 
-//                            onNavigate("home")
                             } else {
                                 // Trate a resposta não bem-sucedida
                                 Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
@@ -179,53 +149,14 @@ fun CarregarInformacoesPerfilUsuarioPadraoScreen(
 
                     })
 
-                    // Time
-
-//                    val createTimeService = RetrofitFactoryCadastro().createTimeService()
-//
-//                    createTimeService.postCreateTime("Bearer " + token, CreateTime).enqueue(object : Callback<CreateTime> {
-//                        override fun onResponse(call: Call<CreateTime>, response: Response<CreateTime>) {
-//                            if (response.isSuccessful) {
-//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta bem-sucedida: ${response.code()}")
-//                                val profileResponseData = response.body()
-//
-//                                //val user = profileResponseData!!.user
-//
-//
-////                            onNavigate("home")
-//                            } else {
-//                                // Trate a resposta não bem-sucedida
-//                                Log.d("PerfilUsuarioJogadorScreen", "Resposta não bem-sucedida: ${response.code()}")
-//                                // Log de corpo da resposta (se necessário)
-//                                Log.d(
-//                                    "PerfilUsuarioJogadorScreen",
-//                                    "Corpo da resposta: ${response.errorBody()?.string()}"
-//                                )
-//                            }
-//                        }
-//
-//                        override fun onFailure(call: Call<CreateTime>, t: Throwable) {
-//                            // Trate o erro de falha na rede.
-//                            Log.d("PerfilUsuarioJogadorScreen", "Erro de rede: ${t.message}")
-//                        }
-//
-//                    })
-//
-//                    Log.e("SUCESSO","Informações do usuario carregadas com sucesso")
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
-                    // Lidar com o caso em que o token é nulo ou vazio
-                    // Por exemplo, você pode exibir uma mensagem de erro ou redirecionar o usuário para fazer login.
-                    // Ou então, pode simplesmente não fazer nada.
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize(),
                         color = RedProliseum
                     )
                 }
             }
-
-
         }
     }
-    
 }

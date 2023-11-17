@@ -30,6 +30,7 @@ fun CarregarInformacoesListajogadoresScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    // CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -38,7 +39,7 @@ fun CarregarInformacoesListajogadoresScreen(
         loading = false
     }
 
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()

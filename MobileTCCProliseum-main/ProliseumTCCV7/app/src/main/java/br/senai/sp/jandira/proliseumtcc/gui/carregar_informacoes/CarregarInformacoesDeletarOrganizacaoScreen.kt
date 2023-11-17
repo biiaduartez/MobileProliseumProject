@@ -25,10 +25,15 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
 
 @Composable
-fun CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId: SharedViewTokenEId, sharedViewModelPerfilEditar: SharedViewModelPerfil, onNavigate: (String) -> Unit) {
-
+fun CarregarInformacoesDeletarOrganizacaoScreen(
+    sharedViewModelTokenEId: SharedViewTokenEId,
+    sharedViewModelPerfilEditar: SharedViewModelPerfil,
+    onNavigate: (String) -> Unit
+) {
+    // CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
+    // Contexto
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
@@ -37,7 +42,7 @@ fun CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId: SharedV
         loading = false
     }
 
-
+    //DESIGN TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -49,7 +54,7 @@ fun CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId: SharedV
                 )
             )
     ) {
-        // Imagem Capa
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -58,7 +63,6 @@ fun CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId: SharedV
 
 
             if (loading) {
-                // Exibe um indicador de progresso enquanto carrega
                 CircularProgressIndicator(
                     modifier = Modifier.fillMaxSize(),
                     color = RedProliseum
@@ -75,11 +79,10 @@ fun CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId: SharedV
 
                     Log.d("INFORMAÇOES DE USUARIO 02", "Token: $token, Id: ${sharedViewModelPerfilEditar.id}, Nome de usuario: ${sharedViewModelPerfilEditar.nome_usuario}")
 
-                    // Coloque sua lógica de validação aqui
-                    val suaCondicaoDeValidacao = true // Substitua por sua condição real
+                    val suaCondicaoDeValidacao = true
 
                     if (suaCondicaoDeValidacao) {
-                        // Reinicie o aplicativo
+                        // Reinicia o aplicativo
                         val intent = Intent(context, MainActivity::class.java)
                         context.startActivity(intent)
                         (context as ComponentActivity).finish()

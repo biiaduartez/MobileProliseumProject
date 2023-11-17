@@ -83,6 +83,7 @@ fun CarregarInformacoesPerfilOutroJogadorScreen(
     onNavigate: (String) -> Unit
 ) {
 
+    //CARREGAR TELA
     var loading by remember { mutableStateOf(true) }
 
     LaunchedEffect(Unit) {
@@ -91,7 +92,7 @@ fun CarregarInformacoesPerfilOutroJogadorScreen(
         loading = false
     }
 
-
+    //DESIGN DA TELA
     Box(
         modifier = Modifier
             .fillMaxSize()
@@ -103,7 +104,6 @@ fun CarregarInformacoesPerfilOutroJogadorScreen(
                 )
             )
     ) {
-        // Imagem Capa
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -142,12 +142,6 @@ fun CarregarInformacoesPerfilOutroJogadorScreen(
                                 val profileResponseData = response.body()
 
                                 val user = profileResponseData!!.user
-//                    idUsuario.value = user.id.toString()
-//                    nomeUsuarioPerfil.value = user.nome_usuario
-//                    nickNamePerfil.value = user.nickname
-//                    emailPerfil.value = user.email
-//                    biografiaPerfil.value = user.biografia
-//                    generoPerfil.value = user.genero.toString()
 
                                 sharedViewModelPerfilEditarOutro.id = user.id
                                 sharedViewModelPerfilEditarOutro.nome_usuario = user.nome_usuario
@@ -211,9 +205,6 @@ fun CarregarInformacoesPerfilOutroJogadorScreen(
 
                 } else{
                     Log.e("TOKEN NULO","o token esta nulo, carregando informaçoes")
-                    // Lidar com o caso em que o token é nulo ou vazio
-                    // Por exemplo, você pode exibir uma mensagem de erro ou redirecionar o usuário para fazer login.
-                    // Ou então, pode simplesmente não fazer nada.
                     CircularProgressIndicator(
                         modifier = Modifier.fillMaxSize(),
                         color = RedProliseum
