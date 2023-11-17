@@ -58,43 +58,43 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelNomeJogadorLis
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogadorOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizadorOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOutro
-import br.senai.sp.jandira.proliseumtcc.gui.CampeonatoScreen
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarDeletarOrganizacao
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesDoTimeById
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesListaTimes
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilJogadorMeuTime
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOrganizacaoScreen
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilOutroJogador
-import br.senai.sp.jandira.proliseumtcc.gui.CarregarInformacoesPerfilUsuario
+import br.senai.sp.jandira.proliseumtcc.gui.futuramente.CampeonatoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesDeletarOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesDoTimeByIdScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesListaTimesScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilJogadorMeuTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilOutroJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.carregar_informacoes.CarregarInformacoesPerfilUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.HomeScreen
-import br.senai.sp.jandira.proliseumtcc.gui.ListaDeJogadoresScreen
-import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeJogadores
-import br.senai.sp.jandira.proliseumtcc.gui.ListaDePublicacoesDeTimes
-import br.senai.sp.jandira.proliseumtcc.gui.ListaDeTimes
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePublicacoesDeJogadoresScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDePublicacoesDeTimesScreen
+import br.senai.sp.jandira.proliseumtcc.gui.listagem.ListaDeTimesScreen
 import br.senai.sp.jandira.proliseumtcc.gui.LoginScreen
-import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesMeuTimeScreen
-import br.senai.sp.jandira.proliseumtcc.gui.NavigationConfiguracoesPerfilScreen
-import br.senai.sp.jandira.proliseumtcc.gui.NavigationProliseumScreen
-import br.senai.sp.jandira.proliseumtcc.gui.PremiumScreen
+import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesMeuTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavegacaoConfiguracoesPerfilScreen
+import br.senai.sp.jandira.proliseumtcc.gui.navegacao.NavigationPrincipalScreen
+import br.senai.sp.jandira.proliseumtcc.gui.futuramente.PremiumScreen
 import br.senai.sp.jandira.proliseumtcc.gui.PropostasScreen
 import br.senai.sp.jandira.proliseumtcc.gui.StartScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroOrganizadorScreen
 import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioJogadorScreen
-import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroPerfilScreen
-import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroTipoUsuario
-import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroDadosPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.CadastroGeneroEDataNascimentoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.cadastro.FinalizarCadastroUsuarioPadraoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.criar.CriarTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.deletar.DeletarOrganizacaoScreen
-import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilJogadorPart1
-import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilUsuarioPadraoPart1
-import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilOrganizadorPart1
-import br.senai.sp.jandira.proliseumtcc.gui.editarPerfil.EditarPerfilTime
-import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilDeOutroJogador
-import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilDeOutroTimeScreen
-import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilJogadorDoMeuTime
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesMeuPerfilPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesOrganizacaoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.editar_perfil.EditarInformacoesTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.outros_perfis.PerfilDeOutroTimeScreen
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilJogadorDoMeuTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
-import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioJogadorScreen
+import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -199,6 +199,11 @@ fun MainScreen() {
         val  sharedGetTimeOrganizacaoDonoId = remember { SharedGetTimeOrganizacaoDonoId() }
         val  sharedGetTimeTeamsPropostas = remember { SharedGetTimeTeamsPropostas() }
 
+        /**********************************************************************************************************************************/
+
+        // TELAS DO PROJETO
+
+        /**********************************************************************************************************************************/
 
         // TELA DE INÍCIO
         val startScreen: @Composable () -> Unit = {
@@ -214,16 +219,16 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE CADASTRO DE PERFIL
-        val cadastroPerfilScreen: @Composable () -> Unit = {
-            CadastroPerfilScreen(sharedViewModelSimpleDataCadastroUser) {
+        // TELA DE CADASTRO DE DADOS PADRAO
+        val cadastroDadosPadraoScreen: @Composable () -> Unit = {
+            CadastroDadosPadraoScreen(sharedViewModelSimpleDataCadastroUser) {
                 currentScreen = it
             }
         }
 
-        // TELA DE CADASTRO TIPO DE USUÁRIO
-        val cadastroTipoUsuarioScreen: @Composable () -> Unit = {
-            CadastroTipoUsuario(
+        // TELA DE CADASTRO GENERO E DATA DE NASCIMENTO
+        val cadastroGeneroEDataNascimentoScreen: @Composable () -> Unit = {
+            CadastroGeneroEDataNascimentoScreen(
                 sharedViewModelDataAndGenderCadastroUser,
                 sharedViewModelSimpleDataCadastroUser,
                 sharedViewModelImageUri,
@@ -232,9 +237,9 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE CADASTRO DE USUÁRIO PADRÃO
-        val cadastroUsuarioPadraoScreen: @Composable () -> Unit = {
-            CadastroUsuarioPadraoScreen(
+        // TELA PARA FINALIZAR CADASTRO DO USUARIO PADRAO
+        val finalizarCadastroUsuarioPadraoScreen: @Composable () -> Unit = {
+            FinalizarCadastroUsuarioPadraoScreen(
                 sharedViewModelDataAndGenderCadastroUser ,
                 sharedViewModelSimpleDataCadastroUser,
                 sharedViewModelImageUri,
@@ -250,30 +255,30 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE CARREGAR INFORMAÇÕES DE PERFIL DE USUÁRIO
-        val carregarInformacoesPerfilUsuarioScreen: @Composable () -> Unit = {
-            CarregarInformacoesPerfilUsuario(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
+        // TELA DE CARREGAR INFORMAÇÕES DE PERFIL DE USUÁRIO PADRÃO
+        val carregarInformacoesPerfilUsuarioPadraoScreen: @Composable () -> Unit = {
+            CarregarInformacoesPerfilUsuarioPadraoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
                 currentScreen = it
             }
         }
 
-        // TELA PERFIL DE USUÁRIO JOGADOR
-        val perfilUsuarioJogador: @Composable () -> Unit = {
-            PerfilUsuarioJogadorScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
+        // TELA PERFIL DE USUÁRIO PADRÃO
+        val perfilUsuarioPadraoScreen: @Composable () -> Unit = {
+            PerfilUsuarioPadraoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador, sharedViewModelPerfilOrganizador) {
                 currentScreen = it
             }
         }
 
-        // TELA EDITAR USUÁRIO PADRÃO
-        val editarInformacoesPerfilUsuarioPadrao: @Composable () -> Unit = {
-            EditarPerfilUsuarioPadraoPart1(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelImageUri) {
+        // TELA EDITAR INFORMAÇÕES DO MEU PERFIL DE USUÁRIO PADRÃO
+        val editarInformacoesMeuPerfilPadraoScreen: @Composable () -> Unit = {
+            EditarInformacoesMeuPerfilPadraoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelImageUri) {
                 currentScreen = it
             }
         }
 
-        // TELA PARA NAVEGAÇÃO ENTRE AS TELAS
-        val navigationProliseum: @Composable () -> Unit = {
-            NavigationProliseumScreen(
+        // TELA DE NAVEGAÇÃO PRINCIPAL ENTRE AS TELAS
+        val navegacaoPrincipalScreen: @Composable () -> Unit = {
+            NavigationPrincipalScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
                 sharedGetTime,
@@ -288,22 +293,22 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE NAVEGAÇÃO DA PARTE DE CONFIGURAÇÕES DE PERFIL
-        val navigationConfiguracoesPerfil: @Composable () -> Unit = {
-            NavigationConfiguracoesPerfilScreen() {
+        // TELA DE NAVEGAÇÃO DE CONFIGURAÇÕES DE PERFIL
+        val navegacaoConfiguracoesPerfilScreen: @Composable () -> Unit = {
+            NavegacaoConfiguracoesPerfilScreen() {
                 currentScreen = it
             }
         }
 
         // TELA DE CADASTRO DO USUÁRIO JOGADOR
-        val cadastroUsuarioJogador: @Composable () -> Unit = {
+        val cadastroUsuarioJogadorScreen: @Composable () -> Unit = {
             CadastroUsuarioJogadorScreen(sharedViewModelTokenEId) {
                 currentScreen = it
             }
         }
 
         // TELA DE CADASTRO DA ORGANIZACAO
-        val cadastroUsuarioOrganizacao: @Composable () -> Unit = {
+        val cadastroOrganizacaoScreen: @Composable () -> Unit = {
             CadastroOrganizadorScreen(sharedViewModelTokenEId, sharedViewModelPerfilOrganizador, sharedViewModelImageUri) {
                 currentScreen = it
             }
@@ -333,42 +338,42 @@ fun MainScreen() {
         }
 
         // TELA DE EDITAR INFORMAÇÕES DA ORGANIZAÇÃO
-        val editarInformacoesPerfilUsuarioOrganizador: @Composable () -> Unit = {
-            EditarPerfilOrganizadorPart1(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilOrganizador, sharedViewModelImageUri) {
+        val editarInformacoesOrganizacaoScreen: @Composable () -> Unit = {
+            EditarInformacoesOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilOrganizador, sharedViewModelImageUri) {
                 currentScreen = it
             }
         }
 
         // TELA DE EDITAR INFORMAÇÕES DO JOGADOR
-        val editarInformacoesPerfilUsuarioJogador: @Composable () -> Unit = {
-            EditarPerfilJogadorPart1(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador) {
+        val editarInformacoesJogadorScreen: @Composable () -> Unit = {
+            EditarInformacoesJogadorScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilJogador) {
                 currentScreen = it
             }
         }
 
-        // TELA PARA DELETAR ORGANIZAÇÃO
-        val deletarOrganizacao: @Composable () -> Unit = {
+        // TELA DE DELETAR ORGANIZAÇÃO
+        val deletarOrganizacaoScreen: @Composable () -> Unit = {
             DeletarOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfil, sharedViewModelPerfilOrganizador) {
                 currentScreen = it
             }
         }
 
         // TELA DE CARREGAR INFORMAÇÕES PARA DELETAR A ORGANIZAÇÃO
-        val carregarDeletarOrganizacao: @Composable () -> Unit = {
-            CarregarDeletarOrganizacao(sharedViewModelTokenEId, sharedViewModelPerfil) {
+        val carregarInformacoesDeletarOrganizacaoScreen: @Composable () -> Unit = {
+            CarregarInformacoesDeletarOrganizacaoScreen(sharedViewModelTokenEId, sharedViewModelPerfil) {
                 currentScreen = it
             }
         }
 
         // TELA DE CRIAR TIME
-        val criarTime: @Composable () -> Unit = {
+        val criarTimeScreen: @Composable () -> Unit = {
             CriarTimeScreen(sharedViewModelTokenEId) {
                 currentScreen = it
             }
         }
 
-        // TELA DE CARREGAR INFORMAÇÕES DA ORGANIZAÇÃO
-        val carregarInformacoesPerfilOrganizacao: @Composable () -> Unit = {
+        // TELA DE CARREGAR INFORMAÇÕES DO PERFIL DA ORGANIZAÇÃO
+        val carregarInformacoesPerfilOrganizacaoScreen: @Composable () -> Unit = {
             CarregarInformacoesPerfilOrganizacaoScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
@@ -438,9 +443,9 @@ fun MainScreen() {
             }
         }
 
-        // TELA EDITAR PERFIL DO TIME
-        val editarPerfilTime: @Composable () -> Unit = {
-            EditarPerfilTime(
+        // TELA EDITAR INFORMAÇÕES DO TIME
+        val editarInformacoesTimeScreen: @Composable () -> Unit = {
+            EditarInformacoesTimeScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
                 sharedGetMyTeamsGeral,
@@ -490,7 +495,7 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE PROPOSTAS RECEBIDAS
+        // TELA DE PROPOSTAS
         val propostasScreen: @Composable () -> Unit = {
             PropostasScreen(
 
@@ -500,8 +505,8 @@ fun MainScreen() {
         }
 
         // TELA DE LISTAGEM DE PUBLICAÇÕES DE JOGADORES
-        val listaDePublicacoesDeJogadores: @Composable () -> Unit = {
-            ListaDePublicacoesDeJogadores(
+        val listaDePublicacoesDeJogadoresScreen: @Composable () -> Unit = {
+            ListaDePublicacoesDeJogadoresScreen(
 
             ) {
                 currentScreen = it
@@ -509,8 +514,8 @@ fun MainScreen() {
         }
 
         // TELA DE PUBLICAÇÕES DE TIMES
-        val listaDePublicacoesDeTimes: @Composable () -> Unit = {
-            ListaDePublicacoesDeTimes(
+        val listaDePublicacoesDeTimesScreen: @Composable () -> Unit = {
+            ListaDePublicacoesDeTimesScreen(
 
             ) {
                 currentScreen = it
@@ -527,7 +532,7 @@ fun MainScreen() {
             }
         }
 
-        // TELA PREMIUM PROLISEUM
+        // TELA PREMIUM
         // /* FUTURAMENTE */
         val premiumScreen: @Composable () -> Unit = {
             PremiumScreen(
@@ -538,8 +543,8 @@ fun MainScreen() {
         }
 
         // TELA DE PERFIL DE OUTRO JOGADOR
-        val perfilDeOutroJogador: @Composable () -> Unit = {
-            PerfilDeOutroJogador(
+        val perfilDeOutroJogadorScreen: @Composable () -> Unit = {
+            PerfilDeOutroJogadorScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfilEditarOutro,
                 sharedViewModelPerfilJogadorOutro,
@@ -576,9 +581,9 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE CARREGAR INFORMAÇÕES DE OUTRO JOGADOR
-        val carregarInformacoesPerfilOutroJogador: @Composable () -> Unit = {
-            CarregarInformacoesPerfilOutroJogador(
+        // TELA DE CARREGAR INFORMAÇÕES DE PERFIL DE OUTRO JOGADOR
+        val carregarInformacoesPerfilOutroJogadorScreen: @Composable () -> Unit = {
+            CarregarInformacoesPerfilOutroJogadorScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfilEditarOutro,
                 sharedViewModelPerfilJogadorOutro,
@@ -616,8 +621,8 @@ fun MainScreen() {
         }
 
         // TELA CARREGAR INFORMAÇÕES DO TIME PELO ID
-        val carregarInformacoesDoTimeById: @Composable () -> Unit = {
-            CarregarInformacoesDoTimeById(
+        val carregarInformacoesDoTimeByIdScreen: @Composable () -> Unit = {
+            CarregarInformacoesDoTimeByIdScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfilEditarOutro,
                 sharedViewModelPerfilJogadorOutro,
@@ -663,8 +668,8 @@ fun MainScreen() {
         }
 
         // TELA DE CARREGAR AS INFORMAÇÕES DE PERFIL DE UM JOGADOR DO MEU TIME
-        val carregarInformacoesPerfilJogadorMeuTime: @Composable () -> Unit = {
-            CarregarInformacoesPerfilJogadorMeuTime(
+        val carregarInformacoesPerfilJogadorMeuTimeScreen: @Composable () -> Unit = {
+            CarregarInformacoesPerfilJogadorMeuTimeScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfilEditarOutro,
                 sharedViewModelPerfilJogadorOutro,
@@ -713,9 +718,9 @@ fun MainScreen() {
             }
         }
 
-        // TELA DE PERFIL DE UM JOGADOR DENTRO DO MEU TIME
-        val perfilJogadorDoMeuTime: @Composable () -> Unit = {
-            PerfilJogadorDoMeuTime(
+        // TELA DE PERFIL DE UM JOGADOR DENTRO DE UM DO(S) MEU(S) TIME(S)
+        val perfilJogadorDoMeuTimeScreen: @Composable () -> Unit = {
+            PerfilJogadorDoMeuTimeScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfilEditarOutro,
                 sharedViewModelPerfilJogadorOutro,
@@ -762,8 +767,8 @@ fun MainScreen() {
         }
 
         // TELA DE LISTAGEM DE TIMES
-        val listaDeTimes: @Composable () -> Unit = {
-            ListaDeTimes(
+        val listaDeTimesScreen: @Composable () -> Unit = {
+            ListaDeTimesScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
                 sharedViewModelPerfilEditarOutro,
@@ -811,8 +816,8 @@ fun MainScreen() {
         }
 
         // TELA DE CARREGAR AS INFORMAÇÕES DE LISTAGEM DE TIMES
-        val carregarInformacoesListaTimes: @Composable () -> Unit = {
-            CarregarInformacoesListaTimes(
+        val carregarInformacoesListaTimesScreen: @Composable () -> Unit = {
+            CarregarInformacoesListaTimesScreen(
                 sharedViewModelTokenEId,
                 sharedViewModelPerfil,
                 sharedViewModelPerfilEditarOutro,
@@ -909,8 +914,8 @@ fun MainScreen() {
         }
 
         // TELA DE NAVEGAÇÃO DE CONFIGURAÇÕES/GERENCIAMENTO DO MEU TIME
-        val navigationConfiguracoesMeuTimeScreen: @Composable () -> Unit = {
-            NavigationConfiguracoesMeuTimeScreen(
+        val navegacaoConfiguracoesMeuTimeScreen: @Composable () -> Unit = {
+            NavegacaoConfiguracoesMeuTimeScreen(
             ) {
                 currentScreen = it
             }
@@ -926,41 +931,41 @@ fun MainScreen() {
                 when (screen) {
                     "start" -> startScreen()
                     "login" -> loginScreen()
-                    "cadastro_perfil" -> cadastroPerfilScreen()
-                    "cadastro_tipo_usuario" -> cadastroTipoUsuarioScreen()
-                    "cadastro_usuario_padrao" -> cadastroUsuarioPadraoScreen()
+                    "cadastro_perfil" -> cadastroDadosPadraoScreen()
+                    "cadastro_tipo_usuario" -> cadastroGeneroEDataNascimentoScreen()
+                    "cadastro_usuario_padrao" -> finalizarCadastroUsuarioPadraoScreen()
                     "home" -> homeScreen()
-                    "carregar_informacoes_perfil_usuario" -> carregarInformacoesPerfilUsuarioScreen()
-                    "perfil_usuario_jogador" -> perfilUsuarioJogador()
-                    "editar_perfil_usuario_padrao_1" -> editarInformacoesPerfilUsuarioPadrao()
-                    "navigation_proliseum" -> navigationProliseum()
-                    "navigation_configuracoes_perfil" -> navigationConfiguracoesPerfil()
-                    "cadastro_usuario_jogador" -> cadastroUsuarioJogador()
-                    "cadastro_usuario_organizador" -> cadastroUsuarioOrganizacao()
+                    "carregar_informacoes_perfil_usuario" -> carregarInformacoesPerfilUsuarioPadraoScreen()
+                    "perfil_usuario_jogador" -> perfilUsuarioPadraoScreen()
+                    "editar_perfil_usuario_padrao_1" -> editarInformacoesMeuPerfilPadraoScreen()
+                    "navigation_proliseum" -> navegacaoPrincipalScreen()
+                    "navigation_configuracoes_perfil" -> navegacaoConfiguracoesPerfilScreen()
+                    "cadastro_usuario_jogador" -> cadastroUsuarioJogadorScreen()
+                    "cadastro_usuario_organizador" -> cadastroOrganizacaoScreen()
                     "perfil_organizacao" -> perfilOrganizacaoScreen()
-                    "editar_perfil_organizador_1" -> editarInformacoesPerfilUsuarioOrganizador()
-                    "editar_perfil_jogador_1" -> editarInformacoesPerfilUsuarioJogador()
-                    "deletar_organizacao" -> deletarOrganizacao()
-                    "carregar_deletar_organizacao" -> carregarDeletarOrganizacao()
-                    "criar_time" -> criarTime()
-                    "carregar_informacoes_perfil_organizacao" -> carregarInformacoesPerfilOrganizacao()
+                    "editar_perfil_organizador_1" -> editarInformacoesOrganizacaoScreen()
+                    "editar_perfil_jogador_1" -> editarInformacoesJogadorScreen()
+                    "deletar_organizacao" -> deletarOrganizacaoScreen()
+                    "carregar_deletar_organizacao" -> carregarInformacoesDeletarOrganizacaoScreen()
+                    "criar_time" -> criarTimeScreen()
+                    "carregar_informacoes_perfil_organizacao" -> carregarInformacoesPerfilOrganizacaoScreen()
                     "perfil_time" -> perfilTimeScreen()
-                    "editar_perfil_time" -> editarPerfilTime()
+                    "editar_perfil_time" -> editarInformacoesTimeScreen()
                     "lista_de_jogadores" -> listaDeJogadoresScreen()
                     "propostas" -> propostasScreen()
-                    "lista_de_publicacoes_jogadores" -> listaDePublicacoesDeJogadores()
-                    "lista_de_publicacoes_times" -> listaDePublicacoesDeTimes()
+                    "lista_de_publicacoes_jogadores" -> listaDePublicacoesDeJogadoresScreen()
+                    "lista_de_publicacoes_times" -> listaDePublicacoesDeTimesScreen()
                     "campeonatos" -> campeonatoScreen()
                     "premium" -> premiumScreen()
-                    "perfil_outro_jogador" -> perfilDeOutroJogador()
-                    "carregar_informacoes_perfil_outro_jogador" -> carregarInformacoesPerfilOutroJogador()
-                    "carregar_informacoes_do_time_by_id" -> carregarInformacoesDoTimeById()
-                    "carregar_informacoes_perfil_jogador_meu_time" -> carregarInformacoesPerfilJogadorMeuTime()
-                    "perfil_jogador_do_meu_time" -> perfilJogadorDoMeuTime()
-                    "carregar_informacoes_lista_times" -> carregarInformacoesListaTimes()
-                    "lista_times" -> listaDeTimes()
+                    "perfil_outro_jogador" -> perfilDeOutroJogadorScreen()
+                    "carregar_informacoes_perfil_outro_jogador" -> carregarInformacoesPerfilOutroJogadorScreen()
+                    "carregar_informacoes_do_time_by_id" -> carregarInformacoesDoTimeByIdScreen()
+                    "carregar_informacoes_perfil_jogador_meu_time" -> carregarInformacoesPerfilJogadorMeuTimeScreen()
+                    "perfil_jogador_do_meu_time" -> perfilJogadorDoMeuTimeScreen()
+                    "carregar_informacoes_lista_times" -> carregarInformacoesListaTimesScreen()
+                    "lista_times" -> listaDeTimesScreen()
                     "perfil_outro_time" -> perfilDeOutroTimeScreen()
-                    "navigation_configuracoes_meu_time" -> navigationConfiguracoesMeuTimeScreen()
+                    "navigation_configuracoes_meu_time" -> navegacaoConfiguracoesMeuTimeScreen()
                     else -> startScreen()
                 }
             }

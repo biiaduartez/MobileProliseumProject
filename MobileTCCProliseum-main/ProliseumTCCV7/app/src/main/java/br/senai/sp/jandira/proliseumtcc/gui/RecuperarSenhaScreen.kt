@@ -50,7 +50,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RecuperarSenha(rememberNavController: NavController){
+fun RecuperarSenhaScreen(rememberNavController: NavController){
 
     val customFontFamily = FontFamily(
         Font(R.font.font_title)
