@@ -1,4 +1,4 @@
-package br.senai.sp.jandira.proliseumtcc.gui.perfis
+package br.senai.sp.jandira.proliseumtcc.gui.outros_perfis
 
 import android.net.Uri
 import android.util.Log
@@ -49,9 +49,37 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsOrganizacao
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresDentroDeTimeList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresInfoPerfil
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasList
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresPropostasRecebidas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetListaJogadoresTimeAtual
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTime
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimeJogadores
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsTimePropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUser
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelGetMyTeamsUserPropostas
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelNomeJogadorListaJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfil
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogador
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizador
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilJogadorOutro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOrganizadorOutro
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewModelPerfilOutro
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedViewTokenEId
 import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
@@ -65,11 +93,38 @@ import com.google.firebase.storage.ktx.storage
 import kotlinx.coroutines.tasks.await
 
 @Composable
-fun PerfilUsuarioPadraoScreen(
+fun PerfilDeOutroJogadorListaTimesScreen(
     sharedViewModelTokenEId: SharedViewTokenEId,
-    sharedViewModelPerfilEditar: SharedViewModelPerfil,
-    sharedViewModelPerfilJogador: SharedViewModelPerfilJogador,
-    sharedViewModelPerfilOrganizador: SharedViewModelPerfilOrganizador,
+    sharedViewModelPerfilEditarOutro: SharedViewModelPerfilOutro,
+    sharedViewModelPerfilJogadorOutro: SharedViewModelPerfilJogadorOutro,
+    sharedViewModelPerfilOrganizadorOutro: SharedViewModelPerfilOrganizadorOutro,
+
+    // SharedViewModel GET MY TEAMS GERAL
+    sharedGetMyTeamsGeral: SharedGetMyTeamsGeral,
+
+    // SharedViewModelGetMyTeams de USUARIO
+    sharedViewModelGetMyTeamsUser: SharedViewModelGetMyTeamsUser,
+    sharedViewModelGetMyTeamsUserPropostas: SharedViewModelGetMyTeamsUserPropostas,
+    sharedViewModelGetMyTeamsUserPropostasDe: SharedGetMyTeamsUserPropostasDe,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadores: SharedGetMyTeamsUserPropostasDeJogadores,
+    sharedViewModelGetMyTeamsUserPropostasDeJogadoresAtivos: SharedGetMyTeamsUserPropostasDeJogadoresAtivos,
+    sharedViewModelGetMyTeamsUserPropostasDePropostas: SharedGetMyTeamsUserPropostasDePropostas,
+
+    // SharedViewModelGetMyTeams de TIME
+    sharedViewModelGetMyTeamsTime: SharedViewModelGetMyTeamsTime,
+    sharedViewModelGetMyTeamsTimeJogadores: SharedViewModelGetMyTeamsTimeJogadores,
+    sharedViewModelGetMyTeamsTimeJogadoresAtivos: SharedGetMyTeamsTimeJogadoresAtivos,
+    sharedViewModelGetMyTeamsTimePropostas: SharedViewModelGetMyTeamsTimePropostas,
+
+    sharedViewModelNomeJogadorListaJogadores: SharedViewModelNomeJogadorListaJogadores,
+    sharedViewModelGetListaJogadores: SharedViewModelGetListaJogadores,
+    sharedViewModelGetListaJogadoresList: SharedViewModelGetListaJogadoresList,
+    sharedViewModelGetListaJogadoresInfoPerfil: SharedViewModelGetListaJogadoresInfoPerfil,
+    sharedViewModelGetListaJogadoresTimeAtual: SharedViewModelGetListaJogadoresTimeAtual,
+    sharedViewModelGetListaJogadoresDentroDeTime: SharedViewModelGetListaJogadoresDentroDeTime,
+    sharedViewModelGetListaJogadoresDentroDeTimeList: SharedViewModelGetListaJogadoresDentroDeTimeList,
+    sharedViewModelGetListaJogadoresPropostasList: SharedViewModelGetListaJogadoresPropostasList,
+    sharedViewModelGetListaJogadoresPropostasRecebidas: SharedViewModelGetListaJogadoresPropostasRecebidas,
     onNavigate: (String) -> Unit
 ) {
 
@@ -77,28 +132,27 @@ fun PerfilUsuarioPadraoScreen(
     Log.d("PerfilUsuarioJogadorScreen", "Token: $token")
 
     val imageRef = remember { mutableStateOf<StorageReference?>(null) }
-    val imageOrgRef = remember { mutableStateOf<StorageReference?>(null) }
     val imageCapaRef = remember { mutableStateOf<StorageReference?>(null) }
 
-    val idUser = sharedViewModelPerfilEditar.id
-    val nomeUser = sharedViewModelPerfilEditar.nome_usuario
-    val fullNomeUser = sharedViewModelPerfilEditar.nome_completo
-    val dataNascimentoUser = sharedViewModelPerfilEditar.data_nascimento
-    val emailUser = sharedViewModelPerfilEditar.email
-    val nickNameUser = sharedViewModelPerfilEditar.nickname
-    val biografiaUser = sharedViewModelPerfilEditar.biografia
-    val generoPerfilUser = sharedViewModelPerfilEditar.genero
+    val idUser = sharedViewModelPerfilEditarOutro.id
+    val nomeUser = sharedViewModelPerfilEditarOutro.nome_usuario
+    val fullNomeUser = sharedViewModelPerfilEditarOutro.nome_completo
+    val dataNascimentoUser = sharedViewModelPerfilEditarOutro.data_nascimento
+    val emailUser = sharedViewModelPerfilEditarOutro.email
+    val nickNameUser = sharedViewModelPerfilEditarOutro.nickname
+    val biografiaUser = sharedViewModelPerfilEditarOutro.biografia
+    val generoPerfilUser = sharedViewModelPerfilEditarOutro.genero
 
-    val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogador.id
-    val nickNamejogadorPerfilUser = sharedViewModelPerfilJogador.nickname
-    val jogoJogadorPerfilUser = sharedViewModelPerfilJogador.jogo
-    val funcaoJogadorPerfilUser = sharedViewModelPerfilJogador.funcao
-    val eloJogadorPerfilUser = sharedViewModelPerfilJogador.elo
+    val idUsuarioJogadorPerfilUser = sharedViewModelPerfilJogadorOutro.id
+    val nickNamejogadorPerfilUser = sharedViewModelPerfilJogadorOutro.nickname
+    val jogoJogadorPerfilUser = sharedViewModelPerfilJogadorOutro.jogo
+    val funcaoJogadorPerfilUser = sharedViewModelPerfilJogadorOutro.funcao
+    val eloJogadorPerfilUser = sharedViewModelPerfilJogadorOutro.elo
 
 
-    val orgProfile = sharedViewModelPerfilOrganizador.orgProfile
-    val nomeOrganizacao = sharedViewModelPerfilOrganizador.nome_organizacao
-    val biografiaOrganizacao = sharedViewModelPerfilOrganizador.biografia
+    val orgProfile = sharedViewModelPerfilOrganizadorOutro.orgProfile
+    val nomeOrganizacao = sharedViewModelPerfilOrganizadorOutro.nome_organizacao
+    val biografiaOrganizacao = sharedViewModelPerfilOrganizadorOutro.biografia
 
     if(idUser != null && idUser != 0){
 
@@ -107,10 +161,6 @@ fun PerfilUsuarioPadraoScreen(
 
         if (idUser != null && idUser != 0) {
             imageRef.value = storage.reference.child("${idUser}/profile")
-        }
-
-        if (idUser != null && idUser != 0) {
-            imageOrgRef.value = storage.reference.child("${idUser}/orgprofile")
         }
 
         if (idUser != null && idUser != 0) {
@@ -125,24 +175,7 @@ fun PerfilUsuarioPadraoScreen(
     //    FIREBASE
 
     var imageUri by remember { mutableStateOf<Uri?>(null) }
-    var imageOrgUri by remember { mutableStateOf<Uri?>(null) }
     var imageCapaUri by remember { mutableStateOf<Uri?>(null) }
-
-
-    if (imageOrgRef.value != null) { // Verifique a referência do Firebase
-        LaunchedEffect(Unit) {
-            try {
-                val uriOrg = imageOrgRef.value!!.downloadUrl.await()
-                imageOrgUri = uriOrg
-
-                Log.e("URI IMAGEM DO USUARIO 02", "URI da imagem do usuario ${uriOrg}")
-
-            } catch (e: Exception) {
-                // Trate os erros, se houver algum
-                Log.e("DEBUG", "Erro ao buscar imagem: $e")
-            }
-        }
-    }
 
     if (imageRef.value != null) { // Verifique a referência do Firebase
         LaunchedEffect(Unit) {
@@ -253,8 +286,8 @@ fun PerfilUsuarioPadraoScreen(
             Icon(
                 modifier = Modifier.clickable {
                     //rememberNavController.navigate("home")
-                    onNavigate("home")
-                                              },
+                    onNavigate("lista_times")
+                },
                 painter = painterResource(id = R.drawable.arrow_back_32),
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
@@ -262,23 +295,17 @@ fun PerfilUsuarioPadraoScreen(
             Button(
                 onClick = {
                     //rememberNavController.navigate("editar_perfil_jogador_part_1")
-                    onNavigate("editar_perfil_usuario_padrao_1")
+                    //onNavigate("editar_perfil_usuario_padrao_1")
                 },
                 colors = ButtonDefaults.buttonColors(Color.Transparent)
             ) {
 
                 Text(
-                    text = stringResource(id = R.string.button_editar),
+                    text = "ENVIAR PROPOSTA",
                     color = Color.White,
                     fontFamily = customFontFamilyText,
                     fontWeight = FontWeight(600),
                     fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.width(3.dp))
-
-                Icon(
-                    painter = painterResource(id = R.drawable.escrever),
-                    contentDescription = "Editar"
                 )
             }
         }
@@ -335,56 +362,23 @@ fun PerfilUsuarioPadraoScreen(
 
                     Spacer(modifier = Modifier.height(2.dp))
 
-//                    if(orgProfile == null) {
-//                        Spacer(modifier = Modifier.height(12.dp))
-//                    } else if (orgProfile != null){
-//                        Button(onClick = {
-//                            onNavigate("carregar_informacoes_perfil_organizacao")
-//                        },
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .height(70.dp)
-//                                .padding(start = 0.dp, top = 0.dp),
-//                            shape = RoundedCornerShape(20.dp, 20.dp, 20.dp, 20.dp),
-//                            colors = ButtonDefaults.buttonColors(AzulEscuroProliseum)
-//                        ) {
-//                            Card(
-//                                modifier = Modifier
-//                                    .width(50.dp)
-//                                    .height(50.dp),
-//                                shape = CircleShape
-//                            ) {
-//                                if (idUser != null && idUser != 0) {
-//                                    // Exiba a imagem se a URI estiver definida
-//                                    AsyncImage(
-//                                        model = imageOrgUri,
-//                                        contentDescription = null,
-//                                        modifier = Modifier.fillMaxSize(),
-//                                        contentScale = ContentScale.Crop
-//                                    )
-//                                } else {
-//                                    // Caso a URI não esteja definida, você pode mostrar uma mensagem ou um indicador de carregamento
-//                                    Text("Carregando imagem...")
-//                                }
-//                            }
-//
-//                            Spacer(modifier = Modifier.width(12.dp))
-//
-//                            Text(
-//                                text = "${nomeOrganizacao}",
-//                                modifier = Modifier.clickable {
-//                                    onNavigate("carregar_informacoes_perfil_organizacao")
-//                                },
-//                                fontSize = 18.sp,
-//                                fontWeight = FontWeight(600),
-//                                color = Color.White
-//                            )
-//
-//                            Spacer(modifier = Modifier.height(12.dp))
-//                        }
-//                    }
+                    if(orgProfile == null) {
+                        Spacer(modifier = Modifier.height(12.dp))
+                    } else if (orgProfile != null){
 
-                    Spacer(modifier = Modifier.height(12.dp))
+                        Text(
+                            text = "${nomeOrganizacao}",
+                            modifier = Modifier.clickable {
+//                                onNavigate("carregar_informacoes_perfil_organizacao")
+                            },
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight(600),
+                            color = Color.White
+                        )
+
+                        Spacer(modifier = Modifier.height(12.dp))
+                    }
+
 
                     //jogos
                     Row(
@@ -665,5 +659,3 @@ fun PerfilUsuarioPadraoScreen(
         }
     }
 }
-
-

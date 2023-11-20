@@ -59,7 +59,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
@@ -143,7 +143,7 @@ fun ListaDeTimesScreen (
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
     sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
-    sharedGetTimeOrganizacaoDonoId: SharedGetTimeOrganizacaoDonoId,
+    sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
@@ -209,7 +209,7 @@ fun ListaDeTimesScreen (
 
                     Log.d("BODY", "$profileTimeResponseData")
 
-                    val timeResponse = profileTimeResponseData!!.teams
+                    val timeResponse = profileTimeResponseData?.teams
 
 
 
@@ -236,46 +236,35 @@ fun ListaDeTimesScreen (
                             sharedGetTimeTeams.jogo = time.jogo
                             sharedGetTimeTeams.biografia = time.biografia
 
-                            val organizacaoTime = time.organizacao
+                            val donoTime = time.dono
 
-                            if(organizacaoTime != null){
-                                val idInfoOrganizacaoTimeById = organizacaoTime.id
-                                val nomeOrganizacaoInfoOrganizacaoTimeById = organizacaoTime.nome_organizacao
-                                val biografiaInfoOrganizacaoTimeById = organizacaoTime.biografia
+                            if(donoTime != null){
+                                val idInfoDonoOrganizacaoTimeById = donoTime.id
+                                val nomeUsuarioInfoDonoOrganizacaoTimeById = donoTime.nome_usuario
+                                val nomeCompletoInfoDonoOrganizacaoTimeById = donoTime.nome_completo
+                                val emailInfoDonoOrganizacaoTimeById = donoTime.email
+                                val senhaInfoDonoOrganizacaoTimeById = donoTime.senha
+                                val dataNascimentoInfoDonoOrganizacaoTimeById = donoTime.data_nascimento
+                                val generoInfoDonoOrganizacaoTimeById = donoTime.genero
+                                val nicknameInfoDonoOrganizacaoTimeById = donoTime.nickname
+                                val biografiaInfoDonoOrganizacaoTimeById = donoTime.biografia
 
-                                sharedGetTimeTeamsOrganizacao.id = organizacaoTime.id
-                                sharedGetTimeTeamsOrganizacao.nome_organizacao = organizacaoTime.nome_organizacao
-                                sharedGetTimeTeamsOrganizacao.biografia = organizacaoTime.biografia
-
-
-                                val donoOrganizacaoTime = organizacaoTime.dono_id
-
-                                sharedGetTimeTeamsOrganizacao.dono_id = donoOrganizacaoTime
-
-                                if(donoOrganizacaoTime != null){
-                                    val idInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.id
-                                    val nomeUsuarioInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.nome_usuario
-                                    val nomeCompletoInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.nome_completo
-                                    val emailInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.email
-                                    val senhaInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.senha
-                                    val dataNascimentoInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.data_nascimento
-                                    val generoInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.genero
-                                    val nicknameInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.nickname
-                                    val biografiaInfoDonoOrganizacaoTimeById = donoOrganizacaoTime.biografia
-
-                                    sharedGetTimeOrganizacaoDonoId.id = donoOrganizacaoTime.id
-                                    sharedGetTimeOrganizacaoDonoId.nome_usuario = donoOrganizacaoTime.nome_usuario
-                                    sharedGetTimeOrganizacaoDonoId.nome_completo = donoOrganizacaoTime.nome_completo
-                                    sharedGetTimeOrganizacaoDonoId.email = donoOrganizacaoTime.email
-                                    sharedGetTimeOrganizacaoDonoId.senha = donoOrganizacaoTime.senha
-                                    sharedGetTimeOrganizacaoDonoId.data_nascimento = donoOrganizacaoTime.data_nascimento
-                                    sharedGetTimeOrganizacaoDonoId.genero = donoOrganizacaoTime.genero
-                                    sharedGetTimeOrganizacaoDonoId.nickname = donoOrganizacaoTime.nickname
-                                    sharedGetTimeOrganizacaoDonoId.biografia = donoOrganizacaoTime.biografia
-                                }
+                                sharedGetTimeDono.id = donoTime.id
+                                sharedGetTimeDono.nome_usuario = donoTime.nome_usuario
+                                sharedGetTimeDono.nome_completo = donoTime.nome_completo
+                                sharedGetTimeDono.email = donoTime.email
+                                sharedGetTimeDono.senha = donoTime.senha
+                                sharedGetTimeDono.data_nascimento = donoTime.data_nascimento
+                                sharedGetTimeDono.genero = donoTime.genero
+                                sharedGetTimeDono.nickname = donoTime.nickname
+                                sharedGetTimeDono.biografia = donoTime.biografia
                             }
 
-                            sharedGetTimeTeams.jogadores = time.jogadores
+
+                            //sharedGetTimeTeams.jogadores = time.jogadores
+
+
+                            Log.e("TIME JOGADORES", "Aqui esta como time.jogadores está sendo guardado${time.jogadores}")
 
                             val jogadoresTime = time.jogadores
 
@@ -336,7 +325,7 @@ fun ListaDeTimesScreen (
                         }
                     }
 
-                    val jogadorIdCompartilhado = sharedGetTimeOrganizacaoDonoId.id // Obtenha o ID do time clicado
+                    val jogadorIdCompartilhado = sharedGetTimeDono.id // Obtenha o ID do time clicado
 
 //                                    if(jogadorIdCompartilhado != null){
 //                                        val verificacao = true
@@ -490,14 +479,14 @@ fun ListaDeTimesScreen (
                         val jogoTimeInfoTime = playerListTimes?.jogo ?: 0
 
                         val listaJogadoresTimeInfoTime = playerListTimes?.jogadores ?: null
-                        val listaOrganizacaoTimeInfoTime = playerListTimes?.organizacao
+                        val listaOrganizacaoTimeInfoTime = playerListTimes?.dono ?: null
                         val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
 //                        val listaJogadoresTimeInfoTime = playerListTimes?.jogadores
 //                        val listaOrganizacaoTimeInfoTime = playerListTimes?.organizacao
 //                        val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
-                        val nomeGerenciadorTime = playerListTimes.organizacao?.dono_id?.nickname ?: ""
+                        val nomeGerenciadorTime = playerListTimes.dono?.nickname ?: ""
 
 
                         listaIdsTimes.add(idInfoTime)
@@ -553,49 +542,10 @@ fun ListaDeTimesScreen (
                             Button(
                                 onClick = {
 
-//                                    sharedGetTimeTeams.id = idInfoTime
-//                                    sharedGetTimeTeams.nome_time = nomeTimeInfoTime
-//                                    sharedGetTimeTeams.biografia = biografiaTimeInfoTime
-//                                    sharedGetTimeTeams.jogo = jogoTimeInfoTime
-//
-//                                    sharedGetTimeTeams.jogadores = listaJogadoresTimeInfoTime
-//
-//                                    if (listaJogadoresTimeInfoTime != null){
-//                                        for (listaJogadoresTime in listaJogadoresTimeInfoTime){
-//                                            val idInfoTimeCompartilhado = listaJogadoresTime.id ?: 0
-//                                            val nicknameInfoTimeCompartilhado = listaJogadoresTime.nickname ?: ""
-//                                            val jogoInfoTimeCompartilhado = listaJogadoresTime.jogo ?: 0
-//                                            val funcaoInfoTimeCompartilhado = listaJogadoresTime.funcao ?: 0
-//                                            val eloInfoTimeCompartilhado = listaJogadoresTime.elo ?: 0
-//
-//                                            val idPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.id ?: 0
-//                                            val nomeCompletoPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.nome_completo ?: ""
-//                                            val nomeUsuarioPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.nome_usuario ?: ""
-//                                            val dataNascimentoPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.data_nascimento ?: ""
-//                                            val emailPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.email ?: ""
-//                                            val generoPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.genero ?: 0
-//                                            val nicknamePerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.nickname ?: ""
-//                                            val biografiaPerfilInfoTimeCompartilhado = listaJogadoresTime.perfil_id?.biografia ?: ""
-//
-//
-//                                            sharedGetTimeTeamsJogadores.id = idInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadores.nickname = nicknameInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadores.jogo = jogoInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadores.funcao = funcaoInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadores.elo = eloInfoTimeCompartilhado
-//
-//                                            sharedGetTimeTeamsJogadoresPerfilId.id = idPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.nome_completo = nomeCompletoPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.nome_usuario = nomeUsuarioPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.email =  emailPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.data_nascimento = dataNascimentoPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.genero =  generoPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.biografia = biografiaPerfilInfoTimeCompartilhado
-//                                            sharedGetTimeTeamsJogadoresPerfilId.nickname = nicknamePerfilInfoTimeCompartilhado
-//
-//                                        }
-//
-//                                    }
+                                    // Verifique se listaJogadoresTimeInfoTime não é nulo antes de atribuir ao ViewModel
+                                    listaJogadoresTimeInfoTime?.let { jogadoresList ->
+                                        sharedGetTimeTeams.jogadores = jogadoresList
+                                    }
 
                                     val timeId = infoPerfilId // Obtenha o ID do time clicado
                                     val verificacao = true
@@ -610,6 +560,7 @@ fun ListaDeTimesScreen (
                                         sharedGetTime.selectedTimeFilterId = timeId
                                         Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetTime.selectedTimeFilterId}")
                                         onNavigate("carregar_informacoes_lista_times")
+
                                     }
 
                                 },

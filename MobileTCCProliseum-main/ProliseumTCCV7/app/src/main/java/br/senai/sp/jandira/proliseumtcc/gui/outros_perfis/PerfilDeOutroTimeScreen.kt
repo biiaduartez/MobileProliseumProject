@@ -49,6 +49,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
+import br.senai.sp.jandira.proliseumtcc.model.getTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsGeral
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsTimeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDe
@@ -56,7 +57,7 @@ import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDeJogadoresAtivos
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetMyTeamsUserPropostasDePropostas
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
@@ -133,7 +134,7 @@ fun PerfilDeOutroTimeScreen(
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
     sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
-    sharedGetTimeOrganizacaoDonoId: SharedGetTimeOrganizacaoDonoId,
+    sharedGetTimeOrganizacaoDonoId: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
@@ -219,6 +220,8 @@ fun PerfilDeOutroTimeScreen(
     val  nickNameGetMyTeamCompartilhadoPerfilId = sharedGetTimeTeamsJogadoresPerfilId.nickname
 
     val somenteUmTesteJogadores = sharedGetTimeTeams.jogadores
+
+    //val jogadoresDoTime: List<getTimeTeamsJogadores>? = sharedGetTimeTeams.jogadores
 
     if(idUser != null && idUser != 0){
 
@@ -589,7 +592,14 @@ fun PerfilDeOutroTimeScreen(
                                     items(somenteUmTesteJogadores.size) { index ->
                                         val jogador = somenteUmTesteJogadores[index]
 
-                                        val infoPerfilId = jogador.perfil_id?.id
+                                        val infoPerfilId = jogador.perfil_id?.id ?: 0
+                                        val nomeUsuarioInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.nome_usuario ?: ""
+                                        val nomeCompletoInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.nome_completo ?: ""
+                                        val emailInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.email ?: ""
+                                        val dataNascimentoInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.data_nascimento ?: ""
+                                        val generoInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.genero ?: 0
+                                        val nicknameInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.nickname ?: ""
+                                        val biografiaInfoPerfilOutroJogadorListaTimes = jogador.perfil_id?.biografia ?: ""
 
                                         val idInfoIdJogador = infoPerfilId ?: 0
 
@@ -638,7 +648,15 @@ fun PerfilDeOutroTimeScreen(
                                             Button(
                                                 onClick = {
                                                     sharedGetTimeTeamsJogadoresPerfilId.id = idInfoIdJogador
-                                                    onNavigate("carregar_informacoes_perfil_jogador_meu_time")
+                                                    sharedGetTimeTeamsJogadoresPerfilId.nome_usuario = nomeUsuarioInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.nome_completo = nomeCompletoInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.email = emailInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.data_nascimento = dataNascimentoInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.genero = generoInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.nickname = nicknameInfoPerfilOutroJogadorListaTimes
+                                                    sharedGetTimeTeamsJogadoresPerfilId.biografia = biografiaInfoPerfilOutroJogadorListaTimes
+
+                                                    onNavigate("carregar_informacoes_perfil_outro_jogador_lista_jogadores")
                                                 },
                                                 modifier = Modifier
                                                     .fillMaxWidth()

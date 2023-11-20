@@ -47,7 +47,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import br.senai.sp.jandira.proliseumtcc.R
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTime
-import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeOrganizacaoDonoId
+import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeDono
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeams
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadores
 import br.senai.sp.jandira.proliseumtcc.sharedview.SharedGetTimeTeamsJogadoresPerfilId
@@ -72,7 +72,7 @@ fun NavigationPrincipalScreen(
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
     sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
-    sharedGetTimeOrganizacaoDonoId: SharedGetTimeOrganizacaoDonoId,
+    sharedGetTimeOrganizacaoDonoId: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {

@@ -1,6 +1,6 @@
 package br.senai.sp.jandira.proliseumtcc.model
 
-data class getTimeTeamsOrganizacaoDonoId(
+data class getTimeTeamsDonoId(
     val id: Int?,
     val nome_usuario: String?,
     val nome_completo: String?,

@@ -2,7 +2,7 @@ package br.senai.sp.jandira.proliseumtcc.sharedview
 
 import androidx.lifecycle.ViewModel
 
-class SharedGetTimeOrganizacaoDonoId: ViewModel() {
+class SharedGetTimeDono: ViewModel() {
 
     var id: Int? = 0
     var nome_usuario: String? = ""
