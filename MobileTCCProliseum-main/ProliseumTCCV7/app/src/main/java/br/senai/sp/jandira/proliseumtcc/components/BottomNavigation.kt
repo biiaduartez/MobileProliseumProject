@@ -92,7 +92,7 @@ fun BottomNavigationScreeen(onNavigate: (String) -> Unit, onGenderSelected: (Int
                                 onNavigate("campeonatos")
                             }else if(button.id == 4){
                                 //navController.navigate("login")
-                                onNavigate("propostas")
+                                onNavigate("postagem_jogador_screen")
                             }
                             // Chame a função de retorno para notificar a seleção
                             onGenderSelected(selectedButtonGenero.value)

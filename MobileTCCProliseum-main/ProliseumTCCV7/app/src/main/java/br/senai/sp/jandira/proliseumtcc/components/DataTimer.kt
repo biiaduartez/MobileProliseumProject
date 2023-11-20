@@ -1,6 +1,7 @@
 package br.senai.sp.jandira.proliseumtcc.components
 
 
+import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,50 +27,65 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.AzulEscuroProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TimePickerComponent() {
+fun TimePickerComponent(
+    onStartTimeSelected: (LocalTime) -> Unit,
+    onEndTimeSelected: (LocalTime) -> Unit
+) {
+    fun getTimeString(time: LocalTime): String {
+        val formatter = DateTimeFormatter.ofPattern("HH:mm")
+        return time.format(formatter)
+    }
 
     Surface(
-        modifier = Modifier
-            .fillMaxSize(),
+        modifier = Modifier.fillMaxSize(),
         color = Color.Transparent
     ) {
+        var isStartTimePickerVisible by remember { mutableStateOf(false) }
+        var selectedStartTime by remember { mutableStateOf(LocalTime.now()) }
+
+        var isEndTimePickerVisible by remember { mutableStateOf(false) }
+        var selectedEndTime by remember { mutableStateOf(LocalTime.now()) }
+
         Column(
             modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            var isTimePickerVisible by remember { mutableStateOf(false) }
-            var selectedTime by remember { mutableStateOf(LocalTime.now()) }
-
+            // Tempo de Início
             Button(
-                onClick = { isTimePickerVisible = true },
+                onClick = { isStartTimePickerVisible = true },
                 colors = ButtonDefaults.buttonColors(RedProliseum)
             ) {
-                Text(text = "Tempo de inicio")
+                Text(text = "Tempo de início")
             }
 
             Spacer(modifier = Modifier.height(16.dp))
 
+            var selectedStartTimeString by remember(selectedStartTime) {
+                mutableStateOf(getTimeString(selectedStartTime))
+            }
+
             Text(
-                text = "${selectedTime.hour}:${selectedTime.minute}",
-                color = Color.White,
+                text = selectedStartTimeString,
+                color = Color.Black,
                 fontWeight = FontWeight(900),
                 fontSize = 22.sp
             )
 
-            if (isTimePickerVisible) {
+            if (isStartTimePickerVisible) {
                 val timePickerState by remember {
                     mutableStateOf(
                         androidx.compose.material3.TimePickerState(
-                            initialHour = selectedTime.hour,
-                            initialMinute = selectedTime.minute,
+                            initialHour = selectedStartTime.hour,
+                            initialMinute = selectedStartTime.minute,
                             is24Hour = false,
                         )
                     )
                 }
+
                 TimePicker(
                     state = timePickerState,
                     modifier = Modifier.background(
@@ -79,13 +95,15 @@ fun TimePickerComponent() {
                             )
                         )
                     )
-
                 )
 
                 Button(
                     onClick = {
-                        isTimePickerVisible = false
-                        selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        isStartTimePickerVisible = false
+                        selectedStartTime =
+                            LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        selectedStartTimeString = getTimeString(selectedStartTime)
+                        Log.d("TimePickerComponent", " $selectedStartTimeString")
                     },
                     modifier = Modifier.padding(8.dp),
                     colors = ButtonDefaults.buttonColors(RedProliseum)
@@ -96,69 +114,65 @@ fun TimePickerComponent() {
 
             Spacer(modifier = Modifier.height(20.dp))
 
-        }
-    }
-
-    Column(
-        modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Center,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        var isTimePickerVisible by remember { mutableStateOf(false) }
-        var selectedTime by remember { mutableStateOf(LocalTime.now()) }
-
-        Button(
-            onClick = { isTimePickerVisible = true },
-            colors = ButtonDefaults.buttonColors(RedProliseum)
-        ) {
-            Text(text = "Tempo de inicio")
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-
-        Text(
-            text = "${selectedTime.hour}:${selectedTime.minute}",
-            color = Color.White,
-            fontWeight = FontWeight(900),
-            fontSize = 22.sp
-        )
-
-        if (isTimePickerVisible) {
-            val timePickerState by remember {
-                mutableStateOf(
-                    androidx.compose.material3.TimePickerState(
-                        initialHour = selectedTime.hour,
-                        initialMinute = selectedTime.minute,
-                        is24Hour = false,
-                    )
-                )
+            // Tempo de Fim
+            Button(
+                onClick = { isEndTimePickerVisible = true },
+                colors = ButtonDefaults.buttonColors(RedProliseum)
+            ) {
+                Text(text = "Tempo de fim")
             }
-            TimePicker(
-                state = timePickerState,
-                modifier = Modifier.background(
-                    Brush.horizontalGradient(
-                        listOf(
-                            AzulEscuroProliseum, AzulEscuroProliseum
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            var selectedEndTimeString by remember(selectedEndTime) {
+                mutableStateOf(getTimeString(selectedEndTime))
+            }
+
+            Text(
+                text = selectedEndTimeString,
+                color = Color.Black,
+                fontWeight = FontWeight(900),
+                fontSize = 22.sp
+            )
+
+            if (isEndTimePickerVisible) {
+                val timePickerState by remember {
+                    mutableStateOf(
+                        androidx.compose.material3.TimePickerState(
+                            initialHour = selectedEndTime.hour,
+                            initialMinute = selectedEndTime.minute,
+                            is24Hour = false,
+                        )
+                    )
+                }
+
+                TimePicker(
+                    state = timePickerState,
+                    modifier = Modifier.background(
+                        Brush.horizontalGradient(
+                            listOf(
+                                AzulEscuroProliseum, AzulEscuroProliseum
+                            )
                         )
                     )
                 )
 
-            )
-
-            Button(
-                onClick = {
-                    isTimePickerVisible = false
-                    selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
-                },
-                modifier = Modifier.padding(8.dp),
-                colors = ButtonDefaults.buttonColors(RedProliseum)
-            ) {
-                Text(text = "OK")
+                Button(
+                    onClick = {
+                        isEndTimePickerVisible = false
+                        selectedEndTime =
+                            LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        selectedEndTimeString = getTimeString(selectedEndTime)
+                        Log.d("TimePickerComponent", " $selectedEndTimeString")
+                    },
+                    modifier = Modifier.padding(8.dp),
+                    colors = ButtonDefaults.buttonColors(RedProliseum)
+                ) {
+                    Text(text = "OK")
+                }
             }
         }
-
-        Spacer(modifier = Modifier.height(20.dp))
-
     }
 }
+
 

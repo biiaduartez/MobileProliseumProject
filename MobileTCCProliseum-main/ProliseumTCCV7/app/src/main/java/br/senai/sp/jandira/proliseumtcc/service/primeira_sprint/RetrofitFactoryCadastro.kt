@@ -105,4 +105,8 @@ class RetrofitFactoryCadastro {
         return retrofitFactoryCadastro.create(EntrarNoMeuTimeService::class.java)
     }
 
+    fun PostagemJogadorService(): PostagemJogadorService {
+        return retrofitFactoryCadastro.create(PostagemJogadorService::class.java)
+    }
+
 }

@@ -97,6 +97,7 @@ import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilJogadorDoMeuTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilOrganizacaoScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilTimeScreen
 import br.senai.sp.jandira.proliseumtcc.gui.perfis.PerfilUsuarioPadraoScreen
+import br.senai.sp.jandira.proliseumtcc.gui.postagem.PostagemJogadorScreen
 
 
 class MainActivity : ComponentActivity() {
@@ -1009,6 +1010,14 @@ fun MainScreen() {
             }
         }
 
+        // TELA DE PERFIL DE OUTRO TIME
+        val postagemJogadorScreen: @Composable () -> Unit = {
+            PostagemJogadorScreen(
+            ) {
+                currentScreen = it
+            }
+        }
+
 
 
         // NAVEGAÇÃO DO PROJETO
@@ -1058,6 +1067,7 @@ fun MainScreen() {
                     "navigation_configuracoes_meu_time" -> navegacaoConfiguracoesMeuTimeScreen()
                     "carregar_informacoes_perfil_outro_jogador_lista_jogadores" -> carregarInformacoesPerfilOutroJogadorListaTimesScreen()
                     "perfil_outro_jogador_lista_times" -> perfilDeOutroJogadorListaTimesScreen()
+                    "postagem_jogador_screen" -> postagemJogadorScreen()
                     else -> startScreen()
                 }
             }

@@ -383,7 +383,7 @@ fun PerfilDeOutroTimeScreen(
 //                        onClick = {
 //                            onNavigate("navigation_configuracoes_meu_time")
 //                        },
-//                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+//                        colors = ButtonDefaults.buttonColors(Color.Transp arent)
 //                    ) {
 //                        Text(
 //                            text = "GERENCIAR TIME",
