@@ -197,8 +197,9 @@ fun MainScreen() {
         val  sharedGetTimeTeams = remember { SharedGetTimeTeams() }
         val  sharedGetTimeTeamsJogadores = remember { SharedGetTimeTeamsJogadores() }
         val  sharedGetTimeTeamsJogadoresPerfilId = remember { SharedGetTimeTeamsJogadoresPerfilId() }
-        val  sharedGetTimeTeamsOrganizacao = remember { SharedGetTimeTeamsOrganizacao() }
-        val  sharedGetTimeOrganizacaoDonoId = remember { SharedGetTimeDono() }
+//        val  sharedGetTimeTeamsOrganizacao = remember { SharedGetTimeTeamsOrganizacao() }
+//        val  sharedGetTimeOrganizacaoDonoId = remember { SharedGetTimeDono() }
+        val  sharedGetTimeDono = remember { SharedGetTimeDono() }
         val  sharedGetTimeTeamsPropostas = remember { SharedGetTimeTeamsPropostas() }
 
         /**********************************************************************************************************************************/
@@ -287,8 +288,7 @@ fun MainScreen() {
                 sharedGetTimeTeams,
                 sharedGetTimeTeamsJogadores,
                 sharedGetTimeTeamsJogadoresPerfilId,
-                sharedGetTimeTeamsOrganizacao,
-                sharedGetTimeOrganizacaoDonoId,
+                sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
             ) {
                 currentScreen = it
@@ -809,8 +809,7 @@ fun MainScreen() {
                 sharedGetTimeTeams,
                 sharedGetTimeTeamsJogadores,
                 sharedGetTimeTeamsJogadoresPerfilId,
-                sharedGetTimeTeamsOrganizacao,
-                sharedGetTimeOrganizacaoDonoId,
+                sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
             ) {
                 currentScreen = it
@@ -858,8 +857,7 @@ fun MainScreen() {
                 sharedGetTimeTeams,
                 sharedGetTimeTeamsJogadores,
                 sharedGetTimeTeamsJogadoresPerfilId,
-                sharedGetTimeTeamsOrganizacao,
-                sharedGetTimeOrganizacaoDonoId,
+                sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
             ) {
                 currentScreen = it
@@ -907,8 +905,7 @@ fun MainScreen() {
                 sharedGetTimeTeams,
                 sharedGetTimeTeamsJogadores,
                 sharedGetTimeTeamsJogadoresPerfilId,
-                sharedGetTimeTeamsOrganizacao,
-                sharedGetTimeOrganizacaoDonoId,
+                sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas,
             ) {
                 currentScreen = it
@@ -964,8 +961,7 @@ fun MainScreen() {
                 sharedGetTimeTeams,
                 sharedGetTimeTeamsJogadores,
                 sharedGetTimeTeamsJogadoresPerfilId,
-                sharedGetTimeTeamsOrganizacao,
-                sharedGetTimeOrganizacaoDonoId,
+                sharedGetTimeDono,
                 sharedGetTimeTeamsPropostas
             ) {
                 currentScreen = it

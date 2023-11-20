@@ -93,8 +93,7 @@ fun CarregarInformacoesPerfilOutroJogadorListaTimesScreen(
     sharedGetTimeTeams: SharedGetTimeTeams,
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
-    sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
-    sharedGetTimeOrganizacaoDonoId: SharedGetTimeDono,
+    sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {

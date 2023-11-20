@@ -142,7 +142,6 @@ fun ListaDeTimesScreen (
     sharedGetTimeTeams: SharedGetTimeTeams,
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
-    sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
     sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
@@ -477,16 +476,17 @@ fun ListaDeTimesScreen (
                         val nomeTimeInfoTime = playerListTimes?.nome_time ?: ""
                         val biografiaTimeInfoTime = playerListTimes?.biografia ?: ""
                         val jogoTimeInfoTime = playerListTimes?.jogo ?: 0
-
                         val listaJogadoresTimeInfoTime = playerListTimes?.jogadores ?: null
-                        val listaOrganizacaoTimeInfoTime = playerListTimes?.dono ?: null
+                        val listaDonoTimeInfoTime = playerListTimes?.dono ?: null
                         val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
 //                        val listaJogadoresTimeInfoTime = playerListTimes?.jogadores
 //                        val listaOrganizacaoTimeInfoTime = playerListTimes?.organizacao
 //                        val listaPropostasTimeInfoTime = playerListTimes?.propostas
 
+                        val idDonoTime = playerListTimes.dono?.id ?: 0
                         val nomeGerenciadorTime = playerListTimes.dono?.nickname ?: ""
+
 
 
                         listaIdsTimes.add(idInfoTime)
@@ -547,6 +547,13 @@ fun ListaDeTimesScreen (
                                         sharedGetTimeTeams.jogadores = jogadoresList
                                     }
 
+//                                    listaDonoTimeInfoTime?.let { donoList ->
+//                                        sharedGetTimeTeams.dono = donoList
+//                                        sharedGetTimeDono.id = donoList.id
+//                                    }
+
+
+
                                     val timeId = infoPerfilId // Obtenha o ID do time clicado
                                     val verificacao = true
 
@@ -559,6 +566,10 @@ fun ListaDeTimesScreen (
                                         }
                                         sharedGetTime.selectedTimeFilterId = timeId
                                         Log.e("SHAREDVIEW ID"," Aqui esta o id do time que ficou salvo no SharedViewModel${sharedGetTime.selectedTimeFilterId}")
+
+
+                                        sharedGetTimeDono.id = idDonoTime
+                                        Log.e("ID DONO ORIGINAL", "Id do dono do time na lista time${idDonoTime}")
                                         onNavigate("carregar_informacoes_lista_times")
 
                                     }

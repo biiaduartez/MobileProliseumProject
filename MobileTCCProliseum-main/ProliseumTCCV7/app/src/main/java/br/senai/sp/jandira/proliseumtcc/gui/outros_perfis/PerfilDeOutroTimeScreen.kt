@@ -133,8 +133,7 @@ fun PerfilDeOutroTimeScreen(
     sharedGetTimeTeams: SharedGetTimeTeams,
     sharedGetTimeTeamsJogadores: SharedGetTimeTeamsJogadores,
     sharedGetTimeTeamsJogadoresPerfilId: SharedGetTimeTeamsJogadoresPerfilId,
-    sharedGetTimeTeamsOrganizacao: SharedGetTimeTeamsOrganizacao,
-    sharedGetTimeOrganizacaoDonoId: SharedGetTimeDono,
+    sharedGetTimeDono: SharedGetTimeDono,
     sharedGetTimeTeamsPropostas: SharedGetTimeTeamsPropostas,
     onNavigate: (String) -> Unit
 ) {
@@ -220,6 +219,12 @@ fun PerfilDeOutroTimeScreen(
     val  nickNameGetMyTeamCompartilhadoPerfilId = sharedGetTimeTeamsJogadoresPerfilId.nickname
 
     val somenteUmTesteJogadores = sharedGetTimeTeams.jogadores
+
+    val donoId = sharedGetTimeDono.id
+
+    Log.e("DONO TIME","id do dono do time ${donoId}")
+
+    Log.e("MEU ID","O meu id ${idUser}")
 
     //val jogadoresDoTime: List<getTimeTeamsJogadores>? = sharedGetTimeTeams.jogadores
 
@@ -356,28 +361,47 @@ fun PerfilDeOutroTimeScreen(
                 contentDescription = stringResource(id = R.string.button_sair),
                 tint = Color.White
             )
-            Button(
-                onClick = {
-                    //rememberNavController.navigate("editar_perfil_jogador_part_1")
-//                    onNavigate("editar_perfil_time")
-                },
-                colors = ButtonDefaults.buttonColors(Color.Transparent)
-            ) {
 
-                Text(
-                    text = stringResource(id = R.string.button_editar),
-                    color = Color.White,
-                    fontFamily = customFontFamilyText,
-                    fontWeight = FontWeight(600),
-                    fontSize = 16.sp
-                )
-                Spacer(modifier = Modifier.width(3.dp))
 
-                Icon(
-                    painter = painterResource(id = R.drawable.escrever),
-                    contentDescription = "Editar"
-                )
-            }
+//                Text(
+//                    text = stringResource(id = R.string.button_editar),
+//                    color = Color.White,
+//                    fontFamily = customFontFamilyText,
+//                    fontWeight = FontWeight(600),
+//                    fontSize = 16.sp
+//                )
+//                Spacer(modifier = Modifier.width(3.dp))
+//
+//                Icon(
+//                    painter = painterResource(id = R.drawable.escrever),
+//                    contentDescription = "Editar"
+//                )
+//                if(idUser != donoId){
+//                    Log.e("ERROU","ESSE NÃO É SEU TIME")
+//                }else if(idUser == donoId){
+//                    Button(
+//                        onClick = {
+//                            onNavigate("navigation_configuracoes_meu_time")
+//                        },
+//                        colors = ButtonDefaults.buttonColors(Color.Transparent)
+//                    ) {
+//                        Text(
+//                            text = "GERENCIAR TIME",
+//                            color = Color.White,
+//                            fontFamily = customFontFamilyText,
+//                            fontWeight = FontWeight(600),
+//                            fontSize = 16.sp
+//                        )
+//
+//                        Spacer(modifier = Modifier.width(3.dp))
+//
+//                        Icon(
+//                            painter = painterResource(id = R.drawable.escrever),
+//                            contentDescription = "Editar"
+//                        )
+//                    }
+//                }
+
         }
 
         // Imagem Perfil
