@@ -32,24 +32,21 @@ import java.time.format.DateTimeFormatter
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TimePickerComponent(
-    onStartTimeSelected: (LocalTime) -> Unit,
-    onEndTimeSelected: (LocalTime) -> Unit
+    selectedStartTime: LocalTime,
+    onStartTimeSelected: (LocalTime) -> Unit
 ) {
     fun getTimeString(time: LocalTime): String {
         val formatter = DateTimeFormatter.ofPattern("HH:mm")
         return time.format(formatter)
     }
 
+    var isStartTimePickerVisible by remember { mutableStateOf(false) }
+    var selectedTime by remember(selectedStartTime) { mutableStateOf(selectedStartTime) }
+
     Surface(
         modifier = Modifier.fillMaxSize(),
         color = Color.Transparent
     ) {
-        var isStartTimePickerVisible by remember { mutableStateOf(false) }
-        var selectedStartTime by remember { mutableStateOf(LocalTime.now()) }
-
-        var isEndTimePickerVisible by remember { mutableStateOf(false) }
-        var selectedEndTime by remember { mutableStateOf(LocalTime.now()) }
-
         Column(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
@@ -64,12 +61,12 @@ fun TimePickerComponent(
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            var selectedStartTimeString by remember(selectedStartTime) {
-                mutableStateOf(getTimeString(selectedStartTime))
+            var selectedTimeString by remember(selectedTime) {
+                mutableStateOf(getTimeString(selectedTime))
             }
 
             Text(
-                text = selectedStartTimeString,
+                text = selectedTimeString,
                 color = Color.Black,
                 fontWeight = FontWeight(900),
                 fontSize = 22.sp
@@ -79,8 +76,8 @@ fun TimePickerComponent(
                 val timePickerState by remember {
                     mutableStateOf(
                         androidx.compose.material3.TimePickerState(
-                            initialHour = selectedStartTime.hour,
-                            initialMinute = selectedStartTime.minute,
+                            initialHour = selectedTime.hour,
+                            initialMinute = selectedTime.minute,
                             is24Hour = false,
                         )
                     )
@@ -100,70 +97,10 @@ fun TimePickerComponent(
                 Button(
                     onClick = {
                         isStartTimePickerVisible = false
-                        selectedStartTime =
-                            LocalTime.of(timePickerState.hour, timePickerState.minute)
-                        selectedStartTimeString = getTimeString(selectedStartTime)
-                        Log.d("TimePickerComponent", " $selectedStartTimeString")
-                    },
-                    modifier = Modifier.padding(8.dp),
-                    colors = ButtonDefaults.buttonColors(RedProliseum)
-                ) {
-                    Text(text = "OK")
-                }
-            }
-
-            Spacer(modifier = Modifier.height(20.dp))
-
-            // Tempo de Fim
-            Button(
-                onClick = { isEndTimePickerVisible = true },
-                colors = ButtonDefaults.buttonColors(RedProliseum)
-            ) {
-                Text(text = "Tempo de fim")
-            }
-
-            Spacer(modifier = Modifier.height(16.dp))
-
-            var selectedEndTimeString by remember(selectedEndTime) {
-                mutableStateOf(getTimeString(selectedEndTime))
-            }
-
-            Text(
-                text = selectedEndTimeString,
-                color = Color.Black,
-                fontWeight = FontWeight(900),
-                fontSize = 22.sp
-            )
-
-            if (isEndTimePickerVisible) {
-                val timePickerState by remember {
-                    mutableStateOf(
-                        androidx.compose.material3.TimePickerState(
-                            initialHour = selectedEndTime.hour,
-                            initialMinute = selectedEndTime.minute,
-                            is24Hour = false,
-                        )
-                    )
-                }
-
-                TimePicker(
-                    state = timePickerState,
-                    modifier = Modifier.background(
-                        Brush.horizontalGradient(
-                            listOf(
-                                AzulEscuroProliseum, AzulEscuroProliseum
-                            )
-                        )
-                    )
-                )
-
-                Button(
-                    onClick = {
-                        isEndTimePickerVisible = false
-                        selectedEndTime =
-                            LocalTime.of(timePickerState.hour, timePickerState.minute)
-                        selectedEndTimeString = getTimeString(selectedEndTime)
-                        Log.d("TimePickerComponent", " $selectedEndTimeString")
+                        selectedTime = LocalTime.of(timePickerState.hour, timePickerState.minute)
+                        onStartTimeSelected(selectedTime)
+                        selectedTimeString = getTimeString(selectedTime)
+                        Log.d("TimePickerComponent", " $selectedTimeString")
                     },
                     modifier = Modifier.padding(8.dp),
                     colors = ButtonDefaults.buttonColors(RedProliseum)
@@ -174,5 +111,6 @@ fun TimePickerComponent(
         }
     }
 }
+
 
 

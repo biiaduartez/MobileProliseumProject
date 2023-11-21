@@ -72,6 +72,7 @@ import br.senai.sp.jandira.proliseumtcc.ui.theme.BlackTransparentProliseum
 import br.senai.sp.jandira.proliseumtcc.ui.theme.RedProliseum
 import kotlinx.coroutines.delay
 import java.time.LocalTime
+import java.time.format.DateTimeFormatter
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 @Composable
@@ -101,10 +102,16 @@ fun PostagemJogadorScreen(
     var camposPreenchidosCorretamente by rememberSaveable { mutableStateOf(true) }
     var mensagemErroInputsPerfil = rememberSaveable { mutableStateOf("") }
 
+//    var selectedStartTime by remember { mutableStateOf(LocalTime.now()) }
+//    var selectedEndTime by remember { mutableStateOf(LocalTime.now()) }
+
+    // Use o LocalTime como valor inicial no remember
     var selectedStartTime by remember { mutableStateOf(LocalTime.now()) }
-    var selectedEndTime by remember { mutableStateOf(LocalTime.now()) }
 
-
+    // Use a função getTimeString para obter a String formatada
+    var selectedStartTimeString by remember(selectedStartTime) {
+        mutableStateOf(getTimeString(selectedStartTime))
+    }
 
 
     //DESIGN DA TELA
@@ -308,12 +315,15 @@ fun PostagemJogadorScreen(
                     Spacer(modifier = Modifier.height(20.dp))
 
                     TimePickerComponent(
-                        onStartTimeSelected = { selectedStartTime = it },
-                        onEndTimeSelected = { selectedEndTime = it }
+                        selectedStartTime = selectedStartTime,
+                        onStartTimeSelected = {
+                            selectedStartTime = it
+                            selectedStartTimeString = getTimeString(it)
+                        }
                     )
 
-                    Log.e("HORARIO INICIO", "Horario de inicio${selectedStartTime}")
-                    Log.e("HORARIO SAIDA", "Horario de saida${selectedEndTime}")
+                    Log.e("HORARIO SELECIONADO", "Horario selecionado ${selectedStartTimeString}")
+                    Log.e("HORARIO SELECIONADO 2", "Horario selecionado 2 ${selectedStartTime}")
 
 
 
@@ -500,6 +510,18 @@ fun PostagemJogadorScreen(
 //
 //                    }
 
+                    Button(onClick = {
+
+                        Log.e("DEFINITIVO HORARIO","Horario que foi selecionado ao clicar no botao ${selectedStartTimeString}")
+                        Log.e("DESCRICAO 10","Descricao: ${descricaoPublicacao}")
+                        Log.e("FUNCAO 10","Funcao: ${selectedFuncaoLol?.toRepresentationStrinFuncao()}")
+                        Log.e("JOGO 10","Jogo: ${selectedJogo?.toRepresentationStringJogo()}")
+                        Log.e("ELO 10","Elo: ${selectedEloLol?.toRepresentationStringEloLol()}")
+                        Log.e("REMUNERACAO 10","Remuneração: ${jogadorRemunerado.value}")
+                        Log.e("PROS 10","Pros: ${prosJogador}")
+                    }) {
+
+                    }
                 }
 
 
@@ -507,4 +529,9 @@ fun PostagemJogadorScreen(
 
         }
     }
+}
+
+fun getTimeString(time: LocalTime): String {
+    val formatter = DateTimeFormatter.ofPattern("HH:mm")
+    return time.format(formatter)
 }
